@@ -1,15 +1,15 @@
 package com.aleksus.handtohand;
 
-public class RecyclerItem {
+public class RecyclerAdsItem {
 
     private String title;
-    private String description;
+    private String author;
     private String collection;
     private String price;
 
-    public RecyclerItem(String title, String description, String collection, String price) {
+    public RecyclerAdsItem(String title, String author, String collection, String price) {
         this.title = title;
-        this.description = description;
+        this.author = author;
         this.collection = collection;
         this.price = price;
     }
@@ -22,10 +22,10 @@ public class RecyclerItem {
         this.title = title;
     }
 
-    public String getDescription() { return description; }
+    public String getAuthor() { return author; }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getCollection() {

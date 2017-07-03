@@ -18,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.DefaultCallback;
-import com.aleksus.handtohand.MyAdapter;
 import com.aleksus.handtohand.R;
-import com.aleksus.handtohand.RecyclerItem;
+import com.aleksus.handtohand.RecyclerAdsAdapter;
+import com.aleksus.handtohand.RecyclerAdsItem;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
@@ -33,9 +33,9 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView recyclerView;
-    private MyAdapter adapter;
-    private List<RecyclerItem> listItems;
+    private RecyclerView recyclerViewAds;
+    private RecyclerAdsAdapter adapter;
+    private List<RecyclerAdsItem> listItems;
     private List collectionTable;
     private int c;
     public String UserName;
@@ -75,9 +75,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     Toast.LENGTH_SHORT ).show();
         }
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewAds = (RecyclerView) findViewById(R.id.recyclerViewAds);
+        recyclerViewAds.setHasFixedSize(true);
+        recyclerViewAds.setLayoutManager(new LinearLayoutManager(this));
 
         listItems = new ArrayList<>();
 
@@ -90,11 +90,11 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     public void handleResponse( Integer cnt ) {
 
                         for (int i = 0; i<cnt; i++) {
-                            listItems.add(new RecyclerItem( foundAds.get(i).get( "name" ).toString(), "Автор: " + foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString() ));
+                            listItems.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString() ));
                         }
                         //Set adapter
-                        adapter = new MyAdapter(listItems, ProfileActivity.this);
-                        recyclerView.setAdapter(adapter);
+                        adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
+                        recyclerViewAds.setAdapter(adapter);
                     }
 
                     @Override
@@ -171,18 +171,42 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
 
-        if (id == R.id.nav_camera) {
-            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_gallery) {
-            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_slideshow) {
-            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
+        if (id == R.id.nav_myads) {
+            Toast.makeText(ProfileActivity.this, "Мои объявления", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MyAdsActivity.class);
+            startActivity(intent);
+//        } else if (id == R.id.nav_gallery) {
+//            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
+//        } else if (id == R.id.nav_slideshow) {
+//            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_manage) {
             Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
-            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_send) {
-            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ProfileActivity.this, "Поделиться", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_about) {
+            Toast.makeText(ProfileActivity.this, getString(R.string.action_about), Toast.LENGTH_SHORT).show();
+            Intent intent1 = new Intent(this, AboutActivity.class);
+            startActivity(intent1);
+        } else if (id == R.id.nav_exit) {
+            Backendless.UserService.logout( new DefaultCallback<Void>( this ) {
+                @Override
+                public void handleResponse( Void response ) {
+                    super.handleResponse( response );
+                    startActivity( new Intent( ProfileActivity.this, LoginActivity.class ) );
+                    finish();
+                }
+
+                @Override
+                public void handleFault( BackendlessFault fault ) {
+                    if( fault.getCode().equals( "3023" ) ) // Unable to logout: not logged in (session expired, etc.)
+                        handleResponse( null );
+                    else
+                        super.handleFault( fault );
+                }
+            } );
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

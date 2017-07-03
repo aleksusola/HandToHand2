@@ -58,4 +58,10 @@
     <string name="user_name">User name</string>
     <string name="user_email">user email</string>
     <string name="user_phone">user phone</string>
+    <string name="item_change">Редактировать</string>
+    <string name="item_settings">Настройки</string>
+    <string name="item_share">Поделиться</string>
+    <string name="item_about">О программе</string>
+    <string name="item_exit">Выйти</string>
+    <string name="item_myads">Мои объявления</string>
 </resources>

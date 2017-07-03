@@ -35,6 +35,8 @@
         <activity android:name=".presentation.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".presentation.MyAdsActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".presentation.SettingsActivity" />
         <activity android:name=".presentation.AboutActivity" />
     </application>

@@ -11,14 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
-        <!--android:saveEnabled="false"-->
-        <!--android:touchscreenBlocksFocus="false"-->
+        android:padding="@dimen/dp16">
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recyclerView">
+            android:id="@+id/recyclerViewAds">
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
