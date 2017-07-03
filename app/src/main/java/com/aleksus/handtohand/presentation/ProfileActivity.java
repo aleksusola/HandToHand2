@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.DefaultCallback;
@@ -20,6 +22,7 @@ import com.aleksus.handtohand.MyAdapter;
 import com.aleksus.handtohand.R;
 import com.aleksus.handtohand.RecyclerItem;
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
@@ -41,23 +44,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     public void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_profile);
-//        BackendlessUser user = Backendless.UserService.CurrentUser();
-//        if( user != null ) {
-//            String name = (String) user.getProperty( "name" );
-//            TextView textView = (TextView) findViewById(R.id.textView1);
-//            textView.setText("Добро пожаловать, " + name);
-//            String email = (String) user.getProperty( "email" );
-//            TextView textView1 = (TextView) findViewById(R.id.textView3);
-//            textView1.setText("Электронная почта: " + email);
-//            Double phone = (Double) user.getProperty( "phone" );
-//            TextView textView2 = (TextView) findViewById(R.id.textView4);
-//            textView2.setText("Телефон: +" + phone);
-//        }
-//        else {
-//            Toast.makeText( ProfileActivity.this,
-//                    "User hasn't been logged",
-//                    Toast.LENGTH_SHORT ).show();
-//        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,6 +55,25 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        BackendlessUser user = Backendless.UserService.CurrentUser();
+        if( user != null ) {
+            View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_profile); // инфлейтим разметку нашего хедера во время выполнения
+            TextView textView = (TextView) headerLayout.findViewById(R.id.userName); // и теперь имеем доступ к любому компоненту в headerLayout
+            String name = (String) user.getProperty( "name" );
+            textView.setText("Добро пожаловать, " + name);
+            TextView textView1 = (TextView) headerLayout.findViewById(R.id.userMail);
+            String email = (String) user.getProperty( "email" );
+            textView1.setText(email);
+            TextView textView2 = (TextView) headerLayout.findViewById(R.id.userPhone);
+            String phone = (String) user.getProperty( "phone" );
+            textView2.setText("+7" + phone);
+        }
+        else {
+            Toast.makeText( ProfileActivity.this,
+                    "User hasn't been logged",
+                    Toast.LENGTH_SHORT ).show();
+        }
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
