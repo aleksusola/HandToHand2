@@ -175,8 +175,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             Toast.makeText(ProfileActivity.this, "Мои объявления", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, MyAdsActivity.class);
             startActivity(intent);
-//        } else if (id == R.id.nav_gallery) {
-//            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_new_ad) {
+            Toast.makeText(ProfileActivity.this, "Новое объявление", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MyAdsActivity.class));
 //        } else if (id == R.id.nav_slideshow) {
 //            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_manage) {

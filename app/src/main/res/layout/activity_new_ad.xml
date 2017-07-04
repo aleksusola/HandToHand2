@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp16">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_margin="@dimen/dp4"
+            android:text="@string/new_add"
+            android:textSize="@dimen/text_large" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginRight="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:paddingRight="@dimen/dp4"
+                android:text="@string/new_ad_name"
+                android:textSize="@dimen/text_medium" />
+
+            <EditText
+
+                android:id="@+id/name_select"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginRight="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:paddingRight="@dimen/dp4"
+                android:text="@string/new_ad_price"
+                android:textSize="@dimen/text_medium" />
+
+            <EditText
+
+                android:id="@+id/price_select"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:inputType="textEmailAddress"
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginRight="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:paddingRight="@dimen/dp4"
+                android:text="@string/new_ad_collection"
+                android:textSize="@dimen/text_medium" />
+
+            <ExpandableListView
+                android:id="@+id/collection_select"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/text_medium"/>
+
+        </TableRow>
+
+        <Button
+            android:id="@+id/new_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp48"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp4"
+            android:height="@dimen/dp40"
+            android:text="@string/new_ad_button"
+            android:textSize="@dimen/text_medium" />
+    </LinearLayout>
+</ScrollView>

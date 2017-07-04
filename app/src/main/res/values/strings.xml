@@ -64,4 +64,9 @@
     <string name="item_about">О программе</string>
     <string name="item_exit">Выйти</string>
     <string name="item_myads">Мои объявления</string>
+    <string name="new_add">Новое объявление</string>
+    <string name="new_ad_name">Название:</string>
+    <string name="new_ad_price">Цена:</string>
+    <string name="new_ad_collection">Коллекция</string>
+    <string name="new_ad_button">Добавить</string>
 </resources>

@@ -2,6 +2,7 @@ package com.aleksus.handtohand;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aleksus.handtohand.presentation.EditActivity;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
@@ -70,14 +72,14 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                         switch (item.getItemId()) {
                             case R.id.mnu_item_change:
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
-//                                Intent intent = new Intent( EditActivity.class);
-//                                mContext.startActivity(intent);;
+                                Intent intent = new Intent(holder.itemView.getContext(),  EditActivity.class);
+                                mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_delete:
                                 //Delete item
                                 listItemsMy.remove(position);
                                 notifyDataSetChanged();
-                                Toast.makeText(mContext, "Скрыто", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Скрываем", Toast.LENGTH_LONG).show();
                                 break;
                             default:
                                 break;
@@ -109,4 +111,9 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
         }
     }
+
+    interface OnClickItemListener {
+        void OnClickItemListener();
+    }
+
 }
