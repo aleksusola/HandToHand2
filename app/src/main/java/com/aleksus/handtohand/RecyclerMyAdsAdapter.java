@@ -11,7 +11,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
+
 import java.util.List;
+import java.util.Map;
 
 public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdapter.ViewHolder> {
 
@@ -34,9 +40,21 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
 
         final RecyclerMyAdsItem itemList = listItemsMy.get(position);
         holder.txtTitle.setText(itemList.getTitle());
-        holder.txtCollection.setText(itemList.getCollection());
         holder.txtPrice.setText(itemList.getPrice());
-
+        String whereClause = "ads_users[collection].name = '"+ itemList.getTitle() +"'";
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause( whereClause );
+        Backendless.Data.of( "collection" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
+            @Override
+            public void handleResponse(final List<Map> foundCollection ) {
+                holder.txtCollection.setText("Коллекция: " + foundCollection.get(0).get("type").toString());
+            }
+            @Override
+            public void handleFault( BackendlessFault fault )
+            {
+                // an error has occurred, the error code can be retrieved with fault.getCode()
+            }
+        });
 
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +70,8 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                         switch (item.getItemId()) {
                             case R.id.mnu_item_change:
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
+//                                Intent intent = new Intent( EditActivity.class);
+//                                mContext.startActivity(intent);;
                                 break;
                             case R.id.mnu_item_delete:
                                 //Delete item

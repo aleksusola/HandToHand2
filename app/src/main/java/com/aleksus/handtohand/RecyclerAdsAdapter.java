@@ -16,15 +16,17 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
 
 import java.util.List;
+import java.util.Map;
 
 public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.ViewHolder> {
 
     private List<RecyclerAdsItem> listItems;
     private Context mContext;
     public String userPhone;
-    public String userName;
+    public String ownerName;
 
     public RecyclerAdsAdapter(List<RecyclerAdsItem> listItems, Context mContext) {
         this.listItems = listItems;
@@ -41,20 +43,33 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         final RecyclerAdsItem itemList = listItems.get(position);
-        holder.txtTitle.setText(itemList.getTitle());
-        holder.txtCollection.setText(itemList.getCollection());
-        holder.txtPrice.setText(itemList.getPrice());
-
-        Backendless.UserService.findById(itemList.getAuthor().toString(), new AsyncCallback<BackendlessUser>() {
+        Backendless.UserService.findById(itemList.getAuthor(), new AsyncCallback<BackendlessUser>() {
             public void handleResponse( BackendlessUser adsOwner ) {
-                userName = adsOwner.getProperty( "name" ).toString();;
+                ownerName = adsOwner.getProperty( "name" ).toString();;
+                holder.txtAuthor.setText(ownerName);
             }
 
             public void handleFault( BackendlessFault fault ) {
                 // login failed, to get the error code call fault.getCode()
             }
         });
-        holder.txtAuthor.setText(userName);
+
+        String whereClause = "ads_users[collection].name = '"+ itemList.getTitle() +"'";
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause( whereClause );
+        Backendless.Data.of( "collection" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
+            @Override
+            public void handleResponse(final List<Map> foundCollection ) {
+                holder.txtCollection.setText("Коллекция: " + foundCollection.get(0).get("type").toString());
+            }
+            @Override
+            public void handleFault( BackendlessFault fault )
+            {
+                // an error has occurred, the error code can be retrieved with fault.getCode()
+            }
+        });
+        holder.txtTitle.setText(itemList.getTitle());
+        holder.txtPrice.setText(itemList.getPrice());
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +87,6 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 Backendless.UserService.findById(itemList.getAuthor().toString(), new AsyncCallback<BackendlessUser>() {
                                     public void handleResponse( BackendlessUser adsOwner ) {
                                         userPhone = adsOwner.getProperty( "phone" ).toString();
-                                        userName = adsOwner.getProperty( "name" ).toString();
                                         Intent intent = new Intent(Intent.ACTION_DIAL);
                                         intent.setData(Uri.parse("tel:+7"+ userPhone));
                                         mContext.startActivity(intent);

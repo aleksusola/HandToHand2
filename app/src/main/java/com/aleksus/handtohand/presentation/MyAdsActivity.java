@@ -44,38 +44,30 @@ public class MyAdsActivity extends AppCompatActivity {
         final String whereClause = "Users[MyAds].ownerId = '" + parentObjectId + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
-        Backendless.Data.of( "ads_users" ).find( queryBuilder,
-                new AsyncCallback<List<Map>>(){
+        Backendless.Data.of( "ads_users" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
+            @Override
+            public void handleResponse(final List<Map> foundMyAds ) {
+                DataQueryBuilder queryBuilderCount = DataQueryBuilder.create();
+                queryBuilderCount.setWhereClause( whereClause );
+                Backendless.Data.of( "ads_users" ).getObjectCount( queryBuilderCount, new AsyncCallback<Integer>() {
                     @Override
-                    public void handleResponse(final List<Map> foundMyAds ) {
-                        DataQueryBuilder queryBuilderCount = DataQueryBuilder.create();
-                        queryBuilderCount.setWhereClause( whereClause );
-                        Backendless.Data.of( "ads_users" ).getObjectCount( queryBuilderCount, new AsyncCallback<Integer>() {
-
-                            @Override
-                            public void handleResponse( Integer acnt )
-                            {
-                                for (int i = 0; i<acnt; i++) {
-                                    listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("collection").toString() , "Цена" + foundMyAds.get(i).get("price") ));
-                                }
-                                adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
-                                recyclerViewMyAds.setAdapter(adapterMy);
-                            }
-
-                            @Override
-                            public void handleFault( BackendlessFault backendlessFault )
-                            {
-                                Log.i( "MYAPP", " error - " + backendlessFault.getMessage() );
-                            }
-                        } );
+                    public void handleResponse( Integer acnt ) {
+                        for (int i = 0; i<acnt; i++) {
+                            listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("collection").toString() , "Цена: " + foundMyAds.get(i).get("price") ));
+                        }
+                        adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
+                        recyclerViewMyAds.setAdapter(adapterMy);
                     }
                     @Override
-                    public void handleFault( BackendlessFault fault )
-                    {
-                        // an error has occurred, the error code can be retrieved with fault.getCode()
+                    public void handleFault( BackendlessFault backendlessFault ) {
+                        Log.i( "MYAPP", " error - " + backendlessFault.getMessage() );
                     }
-                });
-
-
+                } );
+            }
+            @Override
+            public void handleFault( BackendlessFault fault ) {
+                // an error has occurred, the error code can be retrieved with fault.getCode()
+            }
+        });
     }
 }
