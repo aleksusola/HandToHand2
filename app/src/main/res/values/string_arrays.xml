@@ -5,4 +5,8 @@
         <item>true</item>
         <item>false</item>
     </string-array>
+    <string-array name="collections">
+        <item>car</item>
+        <item>house</item>
+    </string-array>
 </resources>

@@ -36,9 +36,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private RecyclerView recyclerViewAds;
     private RecyclerAdsAdapter adapter;
     private List<RecyclerAdsItem> listItems;
-    private List collectionTable;
-    private int c;
-    public String UserName;
 
     @Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -177,7 +174,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             startActivity(intent);
         } else if (id == R.id.nav_new_ad) {
             Toast.makeText(ProfileActivity.this, "Новое объявление", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, MyAdsActivity.class));
+            startActivity(new Intent(this, NewAdActivity.class));
 //        } else if (id == R.id.nav_slideshow) {
 //            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_manage) {

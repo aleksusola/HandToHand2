@@ -27,7 +27,6 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".presentation.SearchActivity" />
         <activity android:name=".presentation.PasswordRecoveryActivity" />
         <activity android:name=".presentation.RegisterActivity" />
         <activity android:name=".presentation.RegistrationSuccessActivity" />
