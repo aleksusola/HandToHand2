@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,7 +51,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             }
 
             public void handleFault( BackendlessFault fault ) {
-                // login failed, to get the error code call fault.getCode()
+                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
             }
         });
 
@@ -69,7 +70,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             @Override
             public void handleFault( BackendlessFault fault )
             {
-                // an error has occurred, the error code can be retrieved with fault.getCode()
+                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
             }
         });
         holder.txtTitle.setText(itemList.getTitle());
@@ -97,7 +98,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                     }
 
                                     public void handleFault( BackendlessFault fault ) {
-                                        // login failed, to get the error code call fault.getCode()
+                                        Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
                                     }
                                 });
                                 break;

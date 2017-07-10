@@ -60,13 +60,13 @@ public class MyAdsActivity extends AppCompatActivity {
                     }
                     @Override
                     public void handleFault( BackendlessFault backendlessFault ) {
-                        Log.i( "MYAPP", " error - " + backendlessFault.getMessage() );
+                        Log.e( "MYAPP", " error - " + backendlessFault.getMessage() );
                     }
                 } );
             }
             @Override
             public void handleFault( BackendlessFault fault ) {
-                // an error has occurred, the error code can be retrieved with fault.getCode()
+                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
             }
         });
     }

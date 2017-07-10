@@ -1,7 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp16">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_margin="@dimen/dp4"
+            android:text="@string/ad_edit"
+            android:textSize="@dimen/text_large" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+
+            <EditText
+
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:gravity="center_vertical"
+                android:hint="Новое название..."
+                android:inputType="text"
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+
+            <EditText
+
+                android:id="@+id/edit_price"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:gravity="center_vertical"
+                android:hint="Новая цена..."
+                android:inputType="number"
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp48"
+                android:gravity="center_vertical"
+                android:paddingRight="@dimen/dp4"
+                android:text="Новая коллекция: "
+                android:textSize="@dimen/text_medium" />
+
+            <Spinner
+                android:id="@+id/edit_collection"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp4"
+                android:entries="@+array/collections"
+                android:gravity="center_vertical"
+                android:spinnerMode="dialog"
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <Button
+            android:id="@+id/editSaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp48"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp4"
+            android:height="@dimen/dp40"
+            android:text="@string/save_button_value"
+            android:textSize="@dimen/text_medium" />
+    </LinearLayout>
+</ScrollView>

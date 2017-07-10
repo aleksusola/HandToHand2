@@ -69,4 +69,8 @@
     <string name="new_ad_price">Цена:</string>
     <string name="new_ad_collection">Коллекция</string>
     <string name="new_ad_button">Добавить</string>
+    <string name="ad_edit">Редактирование</string>
+    <string name="ad_edit_price">Цена:</string>
+    <string name="ad_edit_name">Название:</string>
+    <string name="save_button_value">Сохранить</string>
 </resources>

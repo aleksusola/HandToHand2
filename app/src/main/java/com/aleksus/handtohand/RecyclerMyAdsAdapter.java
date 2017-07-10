@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,7 +55,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
             @Override
             public void handleFault( BackendlessFault fault )
             {
-                // an error has occurred, the error code can be retrieved with fault.getCode()
+                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
             }
         });
 
@@ -73,7 +74,9 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                             case R.id.mnu_item_change:
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(holder.itemView.getContext(),  EditActivity.class);
+                                intent.putExtra("title", itemList.getTitle());
                                 mContext.startActivity(intent);
+
                                 break;
                             case R.id.mnu_item_delete:
                                 //Delete item

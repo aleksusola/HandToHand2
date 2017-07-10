@@ -29,6 +29,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private EditText priceSelect;
     private Spinner spinner;
     private HashMap<String,Object> parentObject;
+    private HashMap<String,Object> userParentObject;
 
     private Button newAdButton;
 
@@ -36,6 +37,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private String priceSelected;
     private String collectionSelected;
     private String relationColumnName;
+    private String userRelationColumnName;
 
 
     @Override
@@ -60,51 +62,52 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         String whereClause = "type = '" +collectionSelected+ "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
-        Backendless.Data.of( "collection" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
-            @Override
-            public void handleResponse(final List<Map> myCollection ) {
-                HashMap newAd = new HashMap();
-                BackendlessUser user = Backendless.UserService.CurrentUser();
-                newAd.put( "___class", "ads_users");
-                newAd.put("name", nameSelected);
-                newAd.put("price", priceSelected);
-                newAd.put("collection", myCollection.get(0));
+        final List<Map>  myCollection = Backendless.Data.of( "collection" ).find( queryBuilder);
 
-                Backendless.Persistence.of( "ads_users" ).save( newAd, new AsyncCallback<Map>() {
-                    public void handleResponse( Map savedAd )
-                    {
-//                        parentObject.put("objectId", savedAd.get("objectId").toString());
-//                        relationColumnName= "collection:collection:1";
-//                        String whereClause = "type = '"+myCollection.get(0).get("type") +"'";
-//                        Backendless.Data.of( "ads_users" ).addRelation
-//                                (parentObject,relationColumnName, whereClause, new AsyncCallback<Integer>() {
-//                            @Override
-//                            public void handleResponse( Integer response )
-//                            {
-//                                Log.i( "MYAPP", "related objects have been added" );
-//                            }
-//
-//                            @Override
-//                            public void handleFault( BackendlessFault fault )
-//                            {
-//                                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
-//                            }
-//                        } );
+        HashMap newAd = new HashMap();
+        newAd.put( "___class", "ads_users");
+        newAd.put("name", nameSelected);
+        newAd.put("price", priceSelected);
+
+        Backendless.Persistence.of( "ads_users" ).save( newAd, new AsyncCallback<Map>() {
+            @Override
+            public void handleResponse( Map savedAd ) {
+                parentObject.put("objectId", savedAd.get("objectId").toString());
+                relationColumnName= "collection:collection:1";
+                String whereClause = "type = '"+myCollection.get(0).get("type") +"'";
+                Backendless.Data.of( "ads_users" ).addRelation(parentObject,relationColumnName, whereClause, new AsyncCallback<Integer>() {
+
+                    @Override public void handleResponse( Integer colNum ) {
+                        Log.i( "MYAPP", "related objects have been added" + colNum );
                     }
 
-                    public void handleFault( BackendlessFault fault )
-                    {
-                        // an error has occurred, the error code can be retrieved with fault.getCode()
+                    @Override public void handleFault( BackendlessFault fault ) {
+                        Log.e( "MYAPP", "server reported an error - " + fault.getMessage());
                     }
                 });
-                Toast.makeText(NewAdActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(NewAdActivity.this, ProfileActivity.class));
+                BackendlessUser user = Backendless.UserService.CurrentUser();
+                userParentObject.put("objectId", user.getProperty("objectId").toString());
+                userRelationColumnName= "MyAds:ads_users:n";
+                String whereClauseUser = "name = '"+savedAd.get("name").toString() +"'";
+                Backendless.Data.of( "Users" ).addRelation(userParentObject,userRelationColumnName, whereClauseUser, new AsyncCallback<Integer>() {
+                    @Override
+                    public void handleResponse( Integer adsNum ) {
+                        Log.i( "MYAPP", "related objects have been added" + adsNum);
+                    }
+                    @Override
+                    public void handleFault( BackendlessFault fault ) {
+                        Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
+                    }
+                } );
+
             }
             @Override
             public void handleFault( BackendlessFault fault ) {
-                Log.i( "MYAPP", "error - " + fault.getMessage() );
+                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
             }
         });
+        Toast.makeText(NewAdActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(NewAdActivity.this, ProfileActivity.class));
 
     }
 }
