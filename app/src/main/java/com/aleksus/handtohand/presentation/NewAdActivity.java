@@ -59,22 +59,20 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         priceSelected = priceSelect.getText().toString().trim();
         collectionSelected = spinner.getSelectedItem().toString().trim();
 
-        String whereClause = "type = '" +collectionSelected+ "'";
-        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-        queryBuilder.setWhereClause( whereClause );
-        final List<Map>  myCollection = Backendless.Data.of( "collection" ).find( queryBuilder);
-
         HashMap newAd = new HashMap();
-        newAd.put( "___class", "ads_users");
+//        newAd.put( "___class", "ads_users");
         newAd.put("name", nameSelected);
         newAd.put("price", priceSelected);
 
         Backendless.Persistence.of( "ads_users" ).save( newAd, new AsyncCallback<Map>() {
             @Override
             public void handleResponse( Map savedAd ) {
+                String whereClause = "type = '" +collectionSelected+ "'";
+                DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                queryBuilder.setWhereClause( whereClause );
+                List<Map>  myCollection = Backendless.Data.of( "collection" ).find( queryBuilder);
                 parentObject.put("objectId", savedAd.get("objectId").toString());
                 relationColumnName= "collection:collection:1";
-                String whereClause = "type = '"+myCollection.get(0).get("type") +"'";
                 Backendless.Data.of( "ads_users" ).addRelation(parentObject,relationColumnName, whereClause, new AsyncCallback<Integer>() {
 
                     @Override public void handleResponse( Integer colNum ) {

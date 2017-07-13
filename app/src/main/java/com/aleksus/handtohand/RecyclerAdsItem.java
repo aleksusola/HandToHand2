@@ -1,17 +1,22 @@
 package com.aleksus.handtohand;
 
+import java.net.URI;
+import java.util.Objects;
+
 public class RecyclerAdsItem {
 
     private String title;
     private String author;
     private String collection;
     private String price;
+    private String photo;
 
-    public RecyclerAdsItem(String title, String author, String collection, String price) {
+    public RecyclerAdsItem(String title, String author, String collection, String price, String photo) {
         this.title = title;
         this.author = author;
         this.collection = collection;
         this.price = price;
+        this.photo = photo;
     }
 
     public String getTitle() {
@@ -42,5 +47,13 @@ public class RecyclerAdsItem {
 
     public void setPrice(String price) {
         this.title = price;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

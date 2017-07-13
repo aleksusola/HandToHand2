@@ -87,7 +87,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     public void handleResponse( Integer cnt ) {
 
                         for (int i = 0; i<cnt; i++) {
-                            listItems.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString() ));
+                            listItems.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
                         }
                         //Set adapter
                         adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
@@ -170,8 +170,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         if (id == R.id.nav_myads) {
             Toast.makeText(ProfileActivity.this, "Мои объявления", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, MyAdsActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, MyAdsActivity.class));
+
         } else if (id == R.id.nav_new_ad) {
             Toast.makeText(ProfileActivity.this, "Новое объявление", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, NewAdActivity.class));
@@ -179,14 +179,12 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 //            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_manage) {
             Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_share) {
             Toast.makeText(ProfileActivity.this, "Поделиться", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_about) {
             Toast.makeText(ProfileActivity.this, getString(R.string.action_about), Toast.LENGTH_SHORT).show();
-            Intent intent1 = new Intent(this, AboutActivity.class);
-            startActivity(intent1);
+            startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_exit) {
             Backendless.UserService.logout( new DefaultCallback<Void>( this ) {
                 @Override

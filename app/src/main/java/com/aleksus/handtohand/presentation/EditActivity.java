@@ -64,12 +64,12 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         priceSelected = priceEdit.getText().toString().trim();
         collectionSelected = spinner.getSelectedItem().toString().trim();
 
-        String whereClause = "name = '" +adTitle+ "'";
+        String whereClause = "name = '"+ adTitle +"'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
         List<Map> editAd = Backendless.Data.of( "ads_users" ).find( queryBuilder);
 
-        editAd.get(0).put("___class", "ads_users");
+//        editAd.get(0).put("___class", "ads_users");
         editAd.get(0).put("name", nameSelected);
         editAd.get(0).put("price", priceSelected);
         Map savedAd = Backendless.Persistence.of( "ads_users" ).save( editAd.get(0));

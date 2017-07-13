@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aleksus.handtohand.presentation.EditActivity;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
@@ -44,10 +46,16 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         final RecyclerAdsItem itemList = listItems.get(position);
+        final BackendlessUser user = Backendless.UserService.CurrentUser();
         Backendless.UserService.findById(itemList.getAuthor(), new AsyncCallback<BackendlessUser>() {
-            public void handleResponse( BackendlessUser adsOwner ) {
-                ownerName = adsOwner.getProperty( "name" ).toString();;
-                holder.txtAuthor.setText(ownerName);
+            public void handleResponse(BackendlessUser adsOwner ) {
+                if (user.getObjectId().equals(adsOwner.getObjectId())) {
+                    ownerName = "Вы";
+                    holder.txtAuthor.setText(ownerName);
+                } else {
+                    ownerName = adsOwner.getProperty( "name" ).toString();;
+                    holder.txtAuthor.setText(ownerName);
+                }
             }
 
             public void handleFault( BackendlessFault fault ) {
@@ -75,11 +83,11 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         });
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtPrice.setText(itemList.getPrice());
+//        holder.photoIcon.setImageURI();
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Display option menu
-
                 PopupMenu popupMenu = new PopupMenu(mContext, holder.txtOptionDigit);
                 popupMenu.inflate(R.menu.menu_option);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -131,6 +139,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         public TextView txtCollection;
         public TextView txtPrice;
         public TextView txtOptionDigit;
+        public ImageView photoIcon;
         public ViewHolder(View itemView) {
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
@@ -138,6 +147,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             txtCollection = (TextView) itemView.findViewById(R.id.txtCollection);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
+            photoIcon = (ImageView)itemView.findViewById(R.id.photoIcon);
         }
     }
 }
