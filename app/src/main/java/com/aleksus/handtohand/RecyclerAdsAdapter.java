@@ -2,7 +2,12 @@ package com.aleksus.handtohand;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,8 +26,15 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
+
+import static weborb.util.ThreadContext.context;
 
 public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.ViewHolder> {
 
@@ -47,6 +59,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
 
         final RecyclerAdsItem itemList = listItems.get(position);
         final BackendlessUser user = Backendless.UserService.CurrentUser();
+
         Backendless.UserService.findById(itemList.getAuthor(), new AsyncCallback<BackendlessUser>() {
             public void handleResponse(BackendlessUser adsOwner ) {
                 if (user.getObjectId().equals(adsOwner.getObjectId())) {
@@ -83,7 +96,15 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         });
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtPrice.setText(itemList.getPrice());
-//        holder.photoIcon.setImageURI();
+        try {
+            AssetManager assetManager = mContext.getAssets();
+            InputStream istream = assetManager.open(itemList.getPhoto());
+            Drawable d = Drawable.createFromStream(istream, null);
+            holder.photoIcon.setImageDrawable(d);
+        } catch (IOException ex) {
+            return;
+        }
+
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

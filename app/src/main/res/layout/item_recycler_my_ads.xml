@@ -14,17 +14,27 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/activity_horizontal_margin">
 
+            <ImageView
+                android:layout_width="@dimen/dp96"
+                android:layout_height="@dimen/dp96"
+                android:id="@+id/photoIcon"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:scaleType="fitXY"
+                android:layout_marginRight="@dimen/dp16" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtTitle"
                 android:text="Title"
+                android:layout_toRightOf="@+id/photoIcon"
                 android:textAppearance="?android:textAppearanceLarge"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtCollection"
                 android:text="Collection"
+                android:layout_toRightOf="@+id/photoIcon"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:layout_below="@id/txtTitle"/>
             <TextView
@@ -32,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtPrice"
                 android:text="Price"
+                android:layout_toRightOf="@+id/photoIcon"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:layout_below="@id/txtCollection"/>
             <TextView

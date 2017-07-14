@@ -3,6 +3,8 @@ package com.aleksus.handtohand;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,8 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +49,14 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
         final RecyclerMyAdsItem itemList = listItemsMy.get(position);
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtPrice.setText(itemList.getPrice());
+        try {
+            AssetManager assetManager = mContext.getAssets();
+            InputStream istream = assetManager.open(itemList.getPhoto());
+            Drawable d = Drawable.createFromStream(istream, null);
+            holder.photoIcon.setImageDrawable(d);
+        } catch (IOException ex) {
+            return;
+        }
         String whereClause = "ads_users[collection].name = '"+ itemList.getTitle() +"'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
@@ -106,11 +119,13 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
         public TextView txtCollection;
         public TextView txtPrice;
         public TextView txtOptionDigit;
+        public ImageView photoIcon;
         public ViewHolder(View itemView) {
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
             txtCollection = (TextView) itemView.findViewById(R.id.txtCollection);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
+            photoIcon = (ImageView) itemView.findViewById(R.id.photoIcon);
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
         }
     }
