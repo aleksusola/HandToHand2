@@ -20,7 +20,7 @@
                 android:id="@+id/photoIcon"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:scaleType="fitXY"
+                android:scaleType="centerInside"
                 android:layout_marginRight="@dimen/dp16" />
             <TextView
                 android:layout_width="match_parent"

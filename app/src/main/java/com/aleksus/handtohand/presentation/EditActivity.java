@@ -39,6 +39,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private String relationColumnName;
     private String userRelationColumnName;
     private String adTitle;
+    private static final String TAG = "MYAPP";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,39 +68,58 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         String whereClause = "name = '"+ adTitle +"'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
-        List<Map> editAd = Backendless.Data.of( "ads_users" ).find( queryBuilder);
+        Backendless.Data.of( "ads_users" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
+            @Override
+            public void handleResponse( List<Map> editAd ) {
 
-//        editAd.get(0).put("___class", "ads_users");
-        editAd.get(0).put("name", nameSelected);
-        editAd.get(0).put("price", priceSelected);
-        Map savedAd = Backendless.Persistence.of( "ads_users" ).save( editAd.get(0));
-        parentObject.put("objectId", savedAd.get("objectId").toString());
-        relationColumnName= "collection:collection:1";
-        String whereClause1 = "type = '"+ collectionSelected +"'";
-        Backendless.Data.of( "ads_users" ).addRelation(parentObject,relationColumnName, whereClause1, new AsyncCallback<Integer>() {
-            @Override
-            public void handleResponse( Integer colNum ) {
-                Log.i( "MYAPP", "related objects have been added" + colNum );
+                editAd.get(0).put("___class", "ads_users");
+                editAd.get(0).put("name", nameSelected);
+                editAd.get(0).put("price", priceSelected);
+//                Map savedAd = Backendless.Persistence.of( "ads_users" ).save( editAd.get(0));
+                Backendless.Persistence.of( "ads_users" ).save( editAd.get(0), new AsyncCallback<Map>() {
+                    public void handleResponse( Map savedAd ) {
+                        parentObject.put("objectId", savedAd.get("objectId").toString());
+                        relationColumnName= "collection:collection:1";
+                        String whereClause1 = "type = '"+ collectionSelected +"'";
+                        Backendless.Data.of( "ads_users" ).addRelation(parentObject,relationColumnName, whereClause1, new AsyncCallback<Integer>() {
+                            @Override
+                            public void handleResponse( Integer colNum ) {
+                                Log.i( TAG, "related objects have been added" + colNum );
+                            }
+                            @Override
+                            public void handleFault( BackendlessFault fault ) {
+                                Log.e( TAG, "server reported an error - " + fault.getMessage() );
+                            }
+                        } );
+                        BackendlessUser user = Backendless.UserService.CurrentUser();
+                        userParentObject.put("objectId", user.getProperty("objectId").toString());
+                        userRelationColumnName= "MyAds:ads_users:n";
+                        String whereClauseUser = "name = '"+savedAd.get("name").toString() +"'";
+                        Backendless.Data.of( "Users" ).addRelation(userParentObject,userRelationColumnName, whereClauseUser, new AsyncCallback<Integer>() {
+                            @Override
+                            public void handleResponse( Integer adsNum ) {
+                                Log.i( TAG, "related objects have been added" + adsNum);
+                            }
+                            @Override
+                            public void handleFault( BackendlessFault fault ) {
+                                Log.e( TAG, "server reported an error - " + fault.getMessage() );
+                            }
+                        } );
+                    }
+
+                    public void handleFault( BackendlessFault fault ) {
+                        Log.e( TAG, "server reported an error - " + fault.getMessage() );
+                    }
+                });
             }
             @Override
             public void handleFault( BackendlessFault fault ) {
-                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
+                Log.e( TAG, "server reported an error - " + fault.getMessage() );
             }
-        } );
-        BackendlessUser user = Backendless.UserService.CurrentUser();
-        userParentObject.put("objectId", user.getProperty("objectId").toString());
-        userRelationColumnName= "MyAds:ads_users:n";
-        String whereClauseUser = "name = '"+savedAd.get("name").toString() +"'";
-        Backendless.Data.of( "Users" ).addRelation(userParentObject,userRelationColumnName, whereClauseUser, new AsyncCallback<Integer>() {
-            @Override
-            public void handleResponse( Integer adsNum ) {
-                Log.i( "MYAPP", "related objects have been added" + adsNum);
-            }
-            @Override
-            public void handleFault( BackendlessFault fault ) {
-                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
-            }
-        } );
+        });
+//        List<Map> editAd = Backendless.Data.of( "ads_users" ).find( queryBuilder );
+
+
         Toast.makeText(EditActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(EditActivity.this, ProfileActivity.class));
 
