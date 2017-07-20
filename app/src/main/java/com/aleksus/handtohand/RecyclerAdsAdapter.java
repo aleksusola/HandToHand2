@@ -25,6 +25,7 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +35,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import static com.aleksus.handtohand.R.id.photoIcon;
 import static weborb.util.ThreadContext.context;
 
 public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.ViewHolder> {
@@ -42,6 +44,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     private Context mContext;
     public String userPhone;
     public String ownerName;
+    public String urls;
 
     public RecyclerAdsAdapter(List<RecyclerAdsItem> listItems, Context mContext) {
         this.listItems = listItems;
@@ -96,19 +99,10 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         });
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtPrice.setText(itemList.getPrice());
-        try {
-            AssetManager assetManager = mContext.getAssets();
-            InputStream istream = assetManager.open(itemList.getPhoto());
-            Drawable d = Drawable.createFromStream(istream, null);
-            holder.photoIcon.setImageDrawable(d);
-        } catch (IOException ex) {
-            return;
-        }
-
+        Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Display option menu
                 PopupMenu popupMenu = new PopupMenu(mContext, holder.txtOptionDigit);
                 popupMenu.inflate(R.menu.menu_option);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -168,7 +162,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             txtCollection = (TextView) itemView.findViewById(R.id.txtCollection);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
-            photoIcon = (ImageView)itemView.findViewById(R.id.photoIcon);
+            photoIcon = (ImageView) itemView.findViewById(R.id.photoIcon);
         }
     }
 }

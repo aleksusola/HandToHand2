@@ -21,6 +21,7 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,14 +50,6 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
         final RecyclerMyAdsItem itemList = listItemsMy.get(position);
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtPrice.setText(itemList.getPrice());
-        try {
-            AssetManager assetManager = mContext.getAssets();
-            InputStream istream = assetManager.open(itemList.getPhoto());
-            Drawable d = Drawable.createFromStream(istream, null);
-            holder.photoIcon.setImageDrawable(d);
-        } catch (IOException ex) {
-            return;
-        }
         String whereClause = "ads_users[collection].name = '"+ itemList.getTitle() +"'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
@@ -71,12 +64,10 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                 Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
             }
         });
-
+        Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Display option menu
-
                 PopupMenu popupMenu = new PopupMenu(mContext, holder.txtOptionDigit);
                 popupMenu.inflate(R.menu.menu_option_myads);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
