@@ -51,7 +51,6 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private String priceSelected;
     private String collectionSelected;
     private String relationColumnName;
-    private String userRelationColumnName;
 
     private static final String TAG = "MYAPP";
     static final int GALLERY_REQUEST = 1;
@@ -65,11 +64,11 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
 
         nameSelect = (EditText) findViewById(R.id.name_select);
         priceSelect = (EditText) findViewById(R.id.price_select);
+        newAdButton = (Button) findViewById(R.id.new_add_button);
+        newAdButton.setOnClickListener(this);
         photoGallery = (ImageView) findViewById(R.id.photoSelect);
         selImage = null;
-        newAdButton = (Button) findViewById(R.id.new_add_button);
         photoSelectButton = (Button) findViewById(R.id.photo_select_button);
-        newAdButton.setOnClickListener(this);
         photoSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,10 +122,10 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                 Backendless.Persistence.of( "ads_users" ).save( newAd, new AsyncCallback<Map>() {
                     @Override
                     public void handleResponse(final Map savedAd ) {
-                        String whereClause = "type = '" +collectionSelected+ "'";
                         HashMap<String, Object> parentObject = new HashMap<String, Object>();
                         parentObject.put("objectId", savedAd.get("objectId"));
                         relationColumnName= "collection:collection:1";
+                        String whereClause = "type = '" +collectionSelected+ "'";
                         Backendless.Data.of( "ads_users" ).setRelation(parentObject,relationColumnName, whereClause, new AsyncCallback<Integer>() {
 
                             @Override public void handleResponse( Integer colNum ) {
@@ -137,23 +136,9 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                                 Log.e( TAG, "server reported an error - " + fault.getMessage());
                             }
                         });
-                        BackendlessUser user = Backendless.UserService.CurrentUser();
-                        HashMap<String, Object> userParentObject = new HashMap<String, Object>();
-                        userParentObject.put("objectId", user.getProperty("objectId"));
-                        userRelationColumnName= "MyAds:ads_users:n";
-                        String whereClauseUser = "name = '"+savedAd.get("name") +"'";
-                        Backendless.Data.of( "Users" ).addRelation(userParentObject,userRelationColumnName, whereClauseUser, new AsyncCallback<Integer>() {
-                            @Override
-                            public void handleResponse( Integer adsNum ) {
-                                Log.i( TAG, "related objects have been added" + adsNum);
-                            }
-                            @Override
-                            public void handleFault( BackendlessFault fault ) {
-                                Log.e( TAG, "server reported an error - " + fault.getMessage() );
-                            }
-                        } );
                         Toast.makeText(NewAdActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
-
+                        startActivity(new Intent(NewAdActivity.this, ProfileActivity.class));
+                        finish();
                     }
                     @Override
                     public void handleFault( BackendlessFault fault ) {

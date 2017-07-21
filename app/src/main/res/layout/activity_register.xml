@@ -119,6 +119,30 @@
 
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+            <ImageView
+                android:layout_width="@dimen/dp96"
+                android:layout_height="@dimen/dp96"
+                android:id="@+id/iconSelect"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerInside"
+                android:layout_marginRight="@dimen/dp16" />
+
+            <Button
+                android:id="@+id/icon_select_button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp40"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp4"
+                android:height="@dimen/dp40"
+                android:text="Выбрать аватар"
+                android:textSize="@dimen/text_micro" />
+        </TableRow>
+
         <Button
             android:id="@+id/registerButton"
             android:layout_width="wrap_content"

@@ -1,6 +1,9 @@
 package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +17,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.DefaultCallback;
+import com.aleksus.handtohand.DownloadImageTask;
 import com.aleksus.handtohand.R;
 import com.aleksus.handtohand.RecyclerAdsAdapter;
 import com.aleksus.handtohand.RecyclerAdsItem;
@@ -25,7 +30,10 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +63,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         BackendlessUser user = Backendless.UserService.CurrentUser();
         if( user != null ) {
-            View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_profile); // инфлейтим разметку нашего хедера во время выполнения
-            TextView textView = (TextView) headerLayout.findViewById(R.id.userName); // и теперь имеем доступ к любому компоненту в headerLayout
+            View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_profile);
+            TextView textView = (TextView) headerLayout.findViewById(R.id.userName);
             String name = (String) user.getProperty( "name" );
             textView.setText("Добро пожаловать, " + name);
             TextView textView1 = (TextView) headerLayout.findViewById(R.id.userMail);
@@ -65,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             TextView textView2 = (TextView) headerLayout.findViewById(R.id.userPhone);
             String phone = (String) user.getProperty( "phone" );
             textView2.setText("+7" + phone);
+            new DownloadImageTask((ImageView) headerLayout.findViewById(R.id.userIcon)).execute(user.getProperty( "avatar" ).toString());
         }
         else {
             Toast.makeText( ProfileActivity.this,
@@ -87,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     public void handleResponse( Integer cnt ) {
 
                         for (int i = 0; i<cnt; i++) {
-                            listItems.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
+                            listItems.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get( "description" ).toString(),  foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
                         }
                         //Set adapter
                         adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);

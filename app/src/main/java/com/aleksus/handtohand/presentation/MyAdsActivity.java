@@ -26,7 +26,6 @@ public class MyAdsActivity extends AppCompatActivity {
     private RecyclerView recyclerViewMyAds;
     private RecyclerMyAdsAdapter adapterMy;
     private List<RecyclerMyAdsItem> listItemsMy;
-    private List<ObjectProperty> MyAds;
     private String parentObjectId;
 
     @Override
@@ -41,7 +40,7 @@ public class MyAdsActivity extends AppCompatActivity {
         listItemsMy = new ArrayList<>();
         BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
         parentObjectId = AdsOwner.getObjectId();
-        final String whereClause = "Users[MyAds].ownerId = '" + parentObjectId + "'";
+        final String whereClause = "ownerId = '" + parentObjectId + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
         Backendless.Data.of( "ads_users" ).find( queryBuilder, new AsyncCallback<List<Map>>(){

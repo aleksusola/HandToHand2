@@ -6,17 +6,21 @@ import java.util.Objects;
 public class RecyclerAdsItem {
 
     private String title;
+    private String desc;
     private String author;
     private String collection;
     private String price;
     private String photo;
+//    private String hide;
 
-    public RecyclerAdsItem(String title, String author, String collection, String price, String photo) {
+    public RecyclerAdsItem(String title, String desc, String author, String collection, String price, String photo) {
         this.title = title;
+        this.desc = desc;
         this.author = author;
         this.collection = collection;
         this.price = price;
         this.photo = photo;
+//        this.hide = hide;
     }
 
     public String getTitle() {
@@ -25,6 +29,14 @@ public class RecyclerAdsItem {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getAuthor() { return author; }
@@ -56,4 +68,12 @@ public class RecyclerAdsItem {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
+//    public String getHide() {
+//        return hide;
+//    }
+//
+//    public void setHide(String hide) {
+//        this.hide = hide;
+//    }
 }

@@ -73,4 +73,5 @@
     <string name="ad_edit_price">Цена:</string>
     <string name="ad_edit_name">Название:</string>
     <string name="save_button_value">Сохранить</string>
+    <string name="item_full">Подробно</string>
 </resources>

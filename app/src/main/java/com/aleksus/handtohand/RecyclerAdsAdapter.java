@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.aleksus.handtohand.R.id.photoIcon;
+import static com.aleksus.handtohand.R.id.right;
+import static com.aleksus.handtohand.R.id.txtDesc;
 import static weborb.util.ThreadContext.context;
 
 public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.ViewHolder> {
@@ -98,8 +100,16 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             }
         });
         holder.txtTitle.setText(itemList.getTitle());
+        holder.txtDesc.setText(itemList.getDesc());
         holder.txtPrice.setText(itemList.getPrice());
         Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
+        holder.txtHide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.txtDesc.setVisibility(View.GONE);
+                holder.txtHide.setVisibility(View.GONE);
+            }
+        });
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,6 +134,11 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                         Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
                                     }
                                 });
+                                break;
+                            case R.id.mnu_item_full:
+                                Toast.makeText(mContext, "Подробнее", Toast.LENGTH_LONG).show();
+                                holder.txtDesc.setVisibility(View.VISIBLE);
+                                holder.txtHide.setVisibility(View.VISIBLE);
                                 break;
                             case R.id.mnu_item_delete:
                                 //Delete item
@@ -150,19 +165,23 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView txtTitle;
+        public TextView txtDesc;
         public TextView txtAuthor;
         public TextView txtCollection;
         public TextView txtPrice;
         public TextView txtOptionDigit;
         public ImageView photoIcon;
+        public TextView txtHide;
         public ViewHolder(View itemView) {
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
+            txtDesc = (TextView) itemView.findViewById(R.id.txtDesc);
             txtAuthor = (TextView) itemView.findViewById(R.id.txtAuthor);
             txtCollection = (TextView) itemView.findViewById(R.id.txtCollection);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
             photoIcon = (ImageView) itemView.findViewById(R.id.photoIcon);
+            txtHide = (TextView) itemView.findViewById(R.id.txtHide);
         }
     }
 }

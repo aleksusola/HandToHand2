@@ -4,7 +4,9 @@ package com.aleksus.handtohand;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -77,8 +79,13 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                         switch (item.getItemId()) {
                             case R.id.mnu_item_change:
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
+                                holder.photoIcon.buildDrawingCache();
+                                Bitmap image = holder.photoIcon.getDrawingCache();
+                                Bundle extras = new Bundle();
+                                extras.putParcelable("imagebitmap", image);
                                 Intent intent = new Intent(holder.itemView.getContext(),  EditActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
+                                intent.putExtras(extras);
                                 mContext.startActivity(intent);
 
                                 break;

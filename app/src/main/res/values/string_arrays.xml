@@ -6,7 +6,12 @@
         <item>false</item>
     </string-array>
     <string-array name="collections">
-        <item>car</item>
-        <item>house</item>
+        <item>Автомобили</item>
+        <item>Аксессуары</item>
+        <item>Бытовая техника</item>
+        <item>Квартиры</item>
+        <item>Одежда</item>
+        <item>Телефоны</item>
+        <item>Услуги</item>
     </string-array>
 </resources>
