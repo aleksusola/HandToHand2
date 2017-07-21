@@ -52,7 +52,7 @@ public class MyAdsActivity extends AppCompatActivity {
                     @Override
                     public void handleResponse( Integer acnt ) {
                         for (int i = 0; i<acnt; i++) {
-                            listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("collection").toString() , "Цена: " + foundMyAds.get(i).get("price"), foundMyAds.get(i).get("ads_icon").toString() ));
+                            listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get( "description" ).toString(), foundMyAds.get(i).get("collection").toString() , "Цена: " + foundMyAds.get(i).get("price"), foundMyAds.get(i).get("ads_icon").toString() ));
                         }
                         adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
                         recyclerViewMyAds.setAdapter(adapterMy);

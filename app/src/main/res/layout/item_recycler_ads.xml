@@ -83,6 +83,7 @@
                 android:textAppearance="?android:textAppearanceSmall"
                 android:layout_below="@id/txtPrice"
                 android:gravity="center_horizontal"
+                android:textColor="@android:color/holo_blue_light"
                 android:visibility="gone" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>

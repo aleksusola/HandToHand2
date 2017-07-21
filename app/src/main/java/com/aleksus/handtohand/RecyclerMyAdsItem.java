@@ -3,12 +3,14 @@ package com.aleksus.handtohand;
 public class RecyclerMyAdsItem {
 
     private String title;
+    private String desc;
     private String collection;
     private String price;
     private String photo;
 
-    public RecyclerMyAdsItem(String title, String collection, String price, String photo) {
+    public RecyclerMyAdsItem(String title,  String desc, String collection, String price, String photo) {
         this.title = title;
+        this.desc = desc;
         this.collection = collection;
         this.price = price;
         this.photo = photo;
@@ -21,6 +23,14 @@ public class RecyclerMyAdsItem {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public String getCollection() {

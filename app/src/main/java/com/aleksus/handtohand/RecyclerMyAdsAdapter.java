@@ -51,6 +51,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
 
         final RecyclerMyAdsItem itemList = listItemsMy.get(position);
         holder.txtTitle.setText(itemList.getTitle());
+        holder.txtDesc.setText(itemList.getDesc());
         holder.txtPrice.setText(itemList.getPrice());
         String whereClause = "ads_users[collection].name = '"+ itemList.getTitle() +"'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -67,6 +68,13 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
             }
         });
         Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
+        holder.txtHide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.txtDesc.setVisibility(View.GONE);
+                holder.txtHide.setVisibility(View.GONE);
+            }
+        });
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +95,11 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 intent.putExtra("title", itemList.getTitle());
                                 intent.putExtras(extras);
                                 mContext.startActivity(intent);
-
+                                break;
+                            case R.id.mnu_item_full:
+                                Toast.makeText(mContext, "Подробнее", Toast.LENGTH_LONG).show();
+                                holder.txtDesc.setVisibility(View.VISIBLE);
+                                holder.txtHide.setVisibility(View.VISIBLE);
                                 break;
                             case R.id.mnu_item_delete:
                                 //Delete item
@@ -114,17 +126,21 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView txtTitle;
+        public TextView txtDesc;
         public TextView txtCollection;
         public TextView txtPrice;
         public TextView txtOptionDigit;
         public ImageView photoIcon;
+        public TextView txtHide;
         public ViewHolder(View itemView) {
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
+            txtDesc = (TextView) itemView.findViewById(R.id.txtDesc);
             txtCollection = (TextView) itemView.findViewById(R.id.txtCollection);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
             photoIcon = (ImageView) itemView.findViewById(R.id.photoIcon);
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
+            txtHide = (TextView) itemView.findViewById(R.id.txtHide);
         }
     }
 

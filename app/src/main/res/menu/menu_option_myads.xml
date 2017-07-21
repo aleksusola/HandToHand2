@@ -2,10 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
         <item
             android:id="@+id/mnu_item_change"
-            android:icon="@drawable/ic_menu_manage"
             android:title="@string/item_change"/>
         <item
+            android:id="@+id/mnu_item_full"
+            android:title="@string/item_full"/>
+        <item
             android:id="@+id/mnu_item_delete"
-            android:icon="@drawable/ic_power_settings_new_black_48dp"
             android:title="@string/item_delete"/>
 </menu>

@@ -11,7 +11,6 @@ public class RecyclerAdsItem {
     private String collection;
     private String price;
     private String photo;
-//    private String hide;
 
     public RecyclerAdsItem(String title, String desc, String author, String collection, String price, String photo) {
         this.title = title;
@@ -20,7 +19,6 @@ public class RecyclerAdsItem {
         this.collection = collection;
         this.price = price;
         this.photo = photo;
-//        this.hide = hide;
     }
 
     public String getTitle() {
@@ -69,11 +67,4 @@ public class RecyclerAdsItem {
         this.photo = photo;
     }
 
-//    public String getHide() {
-//        return hide;
-//    }
-//
-//    public void setHide(String hide) {
-//        this.hide = hide;
-//    }
 }
