@@ -1,9 +1,6 @@
 package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,10 +27,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +59,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         if( user != null ) {
             View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_profile);
             TextView textView = (TextView) headerLayout.findViewById(R.id.userName);
-            String name = (String) user.getProperty( "name" );
-            textView.setText("Добро пожаловать, " + name);
+            String fname = (String) user.getProperty( "firstName" );
+            textView.setText("Добро пожаловать, " + fname);
             TextView textView1 = (TextView) headerLayout.findViewById(R.id.userMail);
             String email = (String) user.getProperty( "email" );
             textView1.setText(email);
@@ -141,22 +135,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 startActivity(intent1);
                 break;
             case R.id.action_exit:
-                Backendless.UserService.logout( new DefaultCallback<Void>( this ) {
-                    @Override
-                    public void handleResponse( Void response ) {
-                        super.handleResponse( response );
-                        startActivity( new Intent( ProfileActivity.this, LoginActivity.class ) );
-                        finish();
-                    }
-
-                    @Override
-                    public void handleFault( BackendlessFault fault ) {
-                        if( fault.getCode().equals( "3023" ) ) // Unable to logout: not logged in (session expired, etc.)
-                            handleResponse( null );
-                        else
-                            super.handleFault( fault );
-                    }
-                } );
                 finish();
         }
         return super.onOptionsItemSelected(item);
@@ -180,13 +158,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         if (id == R.id.nav_myads) {
             Toast.makeText(ProfileActivity.this, "Мои объявления", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MyAdsActivity.class));
-
         } else if (id == R.id.nav_new_ad) {
             Toast.makeText(ProfileActivity.this, "Новое объявление", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, NewAdActivity.class));
-//        } else if (id == R.id.nav_slideshow) {
-//            Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_settings) {
             Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_share) {
@@ -194,7 +169,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         } else if (id == R.id.nav_about) {
             Toast.makeText(ProfileActivity.this, getString(R.string.action_about), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, AboutActivity.class));
-        } else if (id == R.id.nav_exit) {
+        } else if (id == R.id.nav_user_change) {
+            Toast.makeText(ProfileActivity.this, "Смена пользователя", Toast.LENGTH_SHORT).show();
             Backendless.UserService.logout( new DefaultCallback<Void>( this ) {
                 @Override
                 public void handleResponse( Void response ) {
@@ -211,6 +187,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                         super.handleFault( fault );
                 }
             } );
+        } else if (id == R.id.nav_exit) {
             finish();
         }
 

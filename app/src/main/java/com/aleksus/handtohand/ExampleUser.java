@@ -26,11 +26,11 @@ public class ExampleUser extends BackendlessUser {
     super.setProperty( "created", created );
   }
 
-  public String getName() { return (String) super.getProperty( "name" ); }
+  public String getLogin() { return (String) super.getProperty( "login" ); }
 
-  public void setName( String name )
+  public void setLogin( String login )
   {
-    super.setProperty( "name", name );
+    super.setProperty( "login", login );
   }
 
   public String getOwnerId()
@@ -61,5 +61,19 @@ public class ExampleUser extends BackendlessUser {
   public void setUpdated( java.util.Date updated )
   {
     super.setProperty( "updated", updated );
+  }
+
+  public String getFirstName() { return (String) super.getProperty( "firstName" ); }
+
+  public void setFirstName( String firstName )
+  {
+    super.setProperty( "firstName", firstName );
+  }
+
+  public String getSecondName() { return (String) super.getProperty( "secondName" ); }
+
+  public void setSecondName( String secondName )
+  {
+    super.setProperty( "secondName", secondName );
   }
 }

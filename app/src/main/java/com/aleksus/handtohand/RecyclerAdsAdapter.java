@@ -46,7 +46,6 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     private Context mContext;
     public String userPhone;
     public String ownerName;
-    public String urls;
 
     public RecyclerAdsAdapter(List<RecyclerAdsItem> listItems, Context mContext) {
         this.listItems = listItems;
@@ -71,7 +70,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                     ownerName = "Вы";
                     holder.txtAuthor.setText(ownerName);
                 } else {
-                    ownerName = adsOwner.getProperty( "name" ).toString();;
+                    ownerName = adsOwner.getProperty( "login" ).toString();;
                     holder.txtAuthor.setText(ownerName);
                 }
             }

@@ -107,7 +107,15 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         nameSelected = nameEdit.getText().toString().trim();
         priceSelected = priceEdit.getText().toString().trim();
         collectionSelected = spinner.getSelectedItem().toString().trim();
-//        Backendless.Files.remove( "icons/"+ adTitle +".png");
+        Backendless.Files.remove( "icons/" +adTitle+ ".png", new AsyncCallback<Void>() {
+            @Override
+            public void handleResponse(Void response) {
+            }
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.e( TAG, "server reported an error - " + fault.getMessage() );
+            }
+        });
 
         Backendless.Files.Android.upload( selImage, Bitmap.CompressFormat.PNG, 10, nameSelected +".png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override

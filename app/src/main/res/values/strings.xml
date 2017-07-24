@@ -59,7 +59,7 @@
     <string name="user_email">user email</string>
     <string name="user_phone">user phone</string>
     <string name="item_change">Редактировать</string>
-    <string name="item_settings">Настройки</string>
+    <string name="item_settings">Настройка профиля</string>
     <string name="item_share">Поделиться</string>
     <string name="item_about">О программе</string>
     <string name="item_exit">Выйти</string>
@@ -74,4 +74,5 @@
     <string name="ad_edit_name">Название:</string>
     <string name="save_button_value">Сохранить</string>
     <string name="item_full">Подробно</string>
+    <string name="item_user_change">Сменить пользователя</string>
 </resources>

@@ -14,7 +14,6 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
-import com.backendless.property.ObjectProperty;
 
 import java.util.ArrayList;
 import java.util.List;

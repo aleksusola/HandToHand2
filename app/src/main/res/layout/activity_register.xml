@@ -34,7 +34,7 @@
 
             <EditText
 
-                android:id="@+id/nameField"
+                android:id="@+id/loginField"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -129,6 +129,7 @@
                 android:id="@+id/iconSelect"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:src="@drawable/ic_account_circle_black_48dp"
                 android:scaleType="centerInside"
                 android:layout_marginRight="@dimen/dp16" />
 

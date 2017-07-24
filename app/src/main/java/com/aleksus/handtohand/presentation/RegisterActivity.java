@@ -27,7 +27,7 @@ import java.io.IOException;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText passwordField;
-    private EditText nameField;
+    private EditText loginField;
     private EditText emailField;
     private EditText phoneField;
     private ImageView iconGallery;
@@ -37,7 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Bitmap selImage;
 
     private String password;
-    private String name;
+    private String login;
     private String email;
     private String phone;
     private Bitmap avatar;
@@ -53,9 +53,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initUI() {
         passwordField = (EditText) findViewById(R.id.passwordField);
-        nameField = (EditText) findViewById(R.id.nameField);
+        loginField = (EditText) findViewById(R.id.loginField);
         emailField = (EditText) findViewById(R.id.emailField);
         phoneField = (EditText) findViewById(R.id.phoneField);
+        iconGallery = (ImageView) findViewById(R.id.iconSelect);
+        iconGallery.buildDrawingCache();
+        selImage = iconGallery.getDrawingCache();
         registerButton = (Button) findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,8 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
                 onRegisterButtonClicked();
             }
         });
-        iconGallery = (ImageView) findViewById(R.id.iconSelect);
-        selImage = null;
         iconSelectButton = (Button) findViewById(R.id.icon_select_button);
         iconSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,11 +102,11 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void onRegisterButtonClicked() {
         String passwordText = passwordField.getText().toString().trim();
-        String nameText = nameField.getText().toString().trim();
+        String loginText = loginField.getText().toString().trim();
         String emailText = emailField.getText().toString().trim();
         String phoneText = phoneField.getText().toString().trim();
 
-        if (nameText.isEmpty()) {
+        if (loginText.isEmpty()) {
             showToast("Поле 'Логин' не может быть пустым.");
             return;
         }
@@ -130,48 +131,24 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        if (!passwordText.isEmpty()) {
+        if (!passwordText.isEmpty() && !loginText.isEmpty() && !emailText.isEmpty() && !phoneText.isEmpty() && selImage != null) {
             password = passwordText;
-        }
-
-        if (!nameText.isEmpty()) {
-            name = nameText;
-        }
-
-        if (!emailText.isEmpty()) {
+            login = loginText;
             email = emailText;
-        }
-
-        if (!phoneText.isEmpty()) {
             phone = phoneText;
-        }
-
-        if (selImage != null) {
             avatar = selImage;
         }
 
-        Backendless.Files.Android.upload( selImage, Bitmap.CompressFormat.PNG, 10, name +"_user.png", "icons", new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.Android.upload( selImage, Bitmap.CompressFormat.PNG, 10, login +"_user.png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
                 ExampleUser user = new ExampleUser();
 
-                if (password != null) {
+                if (password != null && login != null && email != null && phone != null && avatar != null) {
                     user.setPassword(password);
-                }
-
-                if (name != null) {
-                    user.setName(name);
-                }
-
-                if (email != null) {
+                    user.setLogin(login);
                     user.setEmail(email);
-                }
-
-                if (phone != null) {
                     user.setProperty( "phone", phone );
-                }
-
-                if (avatar != null) {
                     user.setProperty( "avatar", backendlessFile.getFileURL() );
                 }
 
