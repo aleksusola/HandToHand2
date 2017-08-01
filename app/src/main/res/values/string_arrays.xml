@@ -9,10 +9,28 @@
         <item>Автомобили</item>
         <item>Аксессуары</item>
         <item>Бытовая техника</item>
-        <item>Гаджеты</item>
-        <item>Квартиры</item>
+        <item>Недвижимость</item>
         <item>Одежда</item>
         <item>Телефоны</item>
         <item>Услуги</item>
+        <item>Электроника</item>
+    </string-array>
+    <string-array name="collections_filter">
+        <item>Все коллекции</item>
+        <item>Автомобили</item>
+        <item>Аксессуары</item>
+        <item>Бытовая техника</item>
+        <item>Недвижимость</item>
+        <item>Одежда</item>
+        <item>Телефоны</item>
+        <item>Услуги</item>
+        <item>Электроника</item>
+    </string-array>
+    <string-array name="users_filter">
+        <item>Все авторы</item>
+        <item>aleks</item>
+        <item>lexus</item>
+        <item>pizza</item>
+        <item>test</item>
     </string-array>
 </resources>

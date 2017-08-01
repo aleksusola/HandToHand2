@@ -100,16 +100,13 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
             user.setProperty( "avatar", backendlessFile.getFileURL() );
-            Backendless.UserService.update( user, new AsyncCallback<BackendlessUser>()
-            {
-                public void handleResponse( BackendlessUser user )
-                {
-                    // user has been updated
+            Backendless.UserService.update( user, new AsyncCallback<BackendlessUser>() {
+                public void handleResponse( BackendlessUser user ) {
+                    finish();
                 }
 
-                public void handleFault( BackendlessFault fault )
-                {
-                    // user update failed, to get the error code call fault.getCode()
+                public void handleFault( BackendlessFault fault ) {
+                    Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
                 }
             });
             }

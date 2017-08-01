@@ -75,4 +75,11 @@
     <string name="save_button_value">Сохранить</string>
     <string name="item_full">Подробно</string>
     <string name="item_user_change">Сменить пользователя</string>
+    <string name="action_sort_by_date">Сортировать по дате</string>
+    <string name="action_sort_by_price">Сортировать по цене</string>
+    <string name="action_filter">Фильтр</string>
+    <string name="new_filter">Фильтровать по:</string>
+    <string name="collection_filter">Коллекция</string>
+    <string name="author_filter">Автор</string>
+    <string name="filter_btn">Фильтровать</string>
 </resources>

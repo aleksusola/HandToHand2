@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp16">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_margin="@dimen/dp4"
+            android:text="@string/new_filter"
+            android:textSize="@dimen/text_large" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginRight="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:paddingRight="@dimen/dp4"
+                android:text="@string/collection_filter"
+                android:textSize="@dimen/text_medium" />
+
+            <Spinner
+                android:id="@+id/collection_filter_select"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp4"
+                android:entries="@+array/collections_filter"
+                android:gravity="center_vertical"
+                android:spinnerMode="dialog"
+
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginRight="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:paddingRight="@dimen/dp4"
+                android:text="@string/author_filter"
+                android:textSize="@dimen/text_medium" />
+
+            <Spinner
+                android:id="@+id/author_filter_select"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp4"
+                android:entries="@+array/users_filter"
+                android:gravity="center_vertical"
+                android:spinnerMode="dialog"
+
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <Button
+            android:id="@+id/filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp48"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp4"
+            android:height="@dimen/dp40"
+            android:text="@string/filter_btn"
+            android:textSize="@dimen/text_medium" />
+
+    </LinearLayout>
+</ScrollView>

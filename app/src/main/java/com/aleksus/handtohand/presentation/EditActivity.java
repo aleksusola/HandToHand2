@@ -41,7 +41,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private Bitmap selImage;
 
     private String nameSelected;
-    private String priceSelected;
+    private int priceSelected;
     private String collectionSelected;
     private String relationColumnName;
     private String adTitle;
@@ -105,7 +105,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         nameSelected = nameEdit.getText().toString().trim();
-        priceSelected = priceEdit.getText().toString().trim();
+        priceSelected = Integer.parseInt(priceEdit.getText().toString());
         collectionSelected = spinner.getSelectedItem().toString().trim();
         Backendless.Files.remove( "icons/" +adTitle+ ".png", new AsyncCallback<Void>() {
             @Override

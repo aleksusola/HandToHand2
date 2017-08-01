@@ -48,7 +48,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private Bitmap selImage;
 
     private String nameSelected;
-    private String priceSelected;
+    private int priceSelected;
     private String collectionSelected;
     private String relationColumnName;
 
@@ -108,7 +108,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
 
         nameSelected = nameSelect.getText().toString();
-        priceSelected = priceSelect.getText().toString();
+        priceSelected = Integer.parseInt(priceSelect.getText().toString());
         collectionSelected = spinner.getSelectedItem().toString();
 
         Backendless.Files.Android.upload( selImage, Bitmap.CompressFormat.PNG, 10, nameSelected +".png", "icons", new AsyncCallback<BackendlessFile>() {

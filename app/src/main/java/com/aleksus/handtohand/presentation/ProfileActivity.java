@@ -27,6 +27,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private RecyclerView recyclerViewAds;
     private RecyclerAdsAdapter adapter;
     private List<RecyclerAdsItem> listItems;
+    private List<RecyclerAdsItem> listItemsPrice;
+    private List<RecyclerAdsItem> listItemsDate;
 
     @Override
     public void onCreate( Bundle savedInstanceState ) {
@@ -133,6 +136,81 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Toast.makeText(ProfileActivity.this, getString(R.string.action_about), Toast.LENGTH_SHORT).show();
                 Intent intent1 = new Intent(this, AboutActivity.class);
                 startActivity(intent1);
+                break;
+            case R.id.action_sort_by_price:
+                Toast.makeText(ProfileActivity.this, getString(R.string.action_sort_by_price), Toast.LENGTH_SHORT).show();
+                listItemsPrice = new ArrayList<>();
+                DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                queryBuilder.setSortBy( "price" );
+                Backendless.Persistence.of( "ads_users" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
+                    @Override
+                    public void handleResponse(final List<Map> foundAds ) {
+
+                        Backendless.Data.of( "ads_users" ).getObjectCount( new AsyncCallback<Integer>() {
+                            @Override
+                            public void handleResponse( Integer cnt ) {
+
+                                for (int i = 0; i<cnt; i++) {
+                                    listItemsPrice.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get( "description" ).toString(),  foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
+                                }
+                                //Set adapter
+                                adapter = new RecyclerAdsAdapter(listItemsPrice, ProfileActivity.this);
+                                recyclerViewAds.setAdapter(adapter);
+                            }
+
+                            @Override
+                            public void handleFault( BackendlessFault backendlessFault )
+                            {
+                                Log.i( "MYAPP", "error - " + backendlessFault.getMessage() );
+                            }
+                        } );
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Log.i( "MYAPP", "error");
+                    }
+                });
+                break;
+            case R.id.action_sort_by_date:
+                Toast.makeText(ProfileActivity.this, getString(R.string.action_sort_by_date), Toast.LENGTH_SHORT).show();
+                listItemsDate = new ArrayList<>();
+                DataQueryBuilder queryBuilder1 = DataQueryBuilder.create();
+                queryBuilder1.setSortBy( "created" );
+                Backendless.Persistence.of( "ads_users" ).find( queryBuilder1, new AsyncCallback<List<Map>>(){
+                    @Override
+                    public void handleResponse(final List<Map> foundAds ) {
+
+                        Backendless.Data.of( "ads_users" ).getObjectCount( new AsyncCallback<Integer>() {
+                            @Override
+                            public void handleResponse( Integer cnt ) {
+
+                                for (int i = 0; i<cnt; i++) {
+                                    listItemsDate.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get( "description" ).toString(),  foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
+                                }
+                                //Set adapter
+                                adapter = new RecyclerAdsAdapter(listItemsDate, ProfileActivity.this);
+                                recyclerViewAds.setAdapter(adapter);
+                            }
+
+                            @Override
+                            public void handleFault( BackendlessFault backendlessFault )
+                            {
+                                Log.i( "MYAPP", "error - " + backendlessFault.getMessage() );
+                            }
+                        } );
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Log.i( "MYAPP", "error");
+                    }
+                });
+                break;
+            case R.id.action_filter:
+                Toast.makeText(ProfileActivity.this, getString(R.string.action_filter), Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(this, FilterActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.action_exit:
                 finish();
