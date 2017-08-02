@@ -10,15 +10,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <TextView
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp40"
-            android:layout_margin="@dimen/dp4"
-            android:text="@string/new_filter"
-            android:textSize="@dimen/text_large" />
-
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,7 +32,6 @@
                 android:entries="@+array/collections_filter"
                 android:gravity="center_vertical"
                 android:spinnerMode="dialog"
-
                 android:textSize="@dimen/text_medium" />
 
         </TableRow>
@@ -83,5 +73,10 @@
             android:text="@string/filter_btn"
             android:textSize="@dimen/text_medium" />
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="380dp"
+            android:id="@+id/recyclerViewFilterAds">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 </ScrollView>

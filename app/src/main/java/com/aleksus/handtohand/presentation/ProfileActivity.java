@@ -82,8 +82,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         recyclerViewAds.setHasFixedSize(true);
         recyclerViewAds.setLayoutManager(new LinearLayoutManager(this));
 
-        listItems = new ArrayList<>();
-
         Backendless.Persistence.of( "ads_users" ).find( new AsyncCallback<List<Map>>(){
             @Override
             public void handleResponse(final List<Map> foundAds ) {
@@ -91,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Backendless.Data.of( "ads_users" ).getObjectCount( new AsyncCallback<Integer>() {
                     @Override
                     public void handleResponse( Integer cnt ) {
-
+                        listItems = new ArrayList<>();
                         for (int i = 0; i<cnt; i++) {
                             listItems.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get( "description" ).toString(),  foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
                         }
@@ -101,8 +99,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     }
 
                     @Override
-                    public void handleFault( BackendlessFault backendlessFault )
-                    {
+                    public void handleFault( BackendlessFault backendlessFault ) {
                         Log.i( "MYAPP", "error - " + backendlessFault.getMessage() );
                     }
                 } );
@@ -211,6 +208,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Toast.makeText(ProfileActivity.this, getString(R.string.action_filter), Toast.LENGTH_SHORT).show();
                 Intent intent2 = new Intent(this, FilterActivity.class);
                 startActivity(intent2);
+                finish();
                 break;
             case R.id.action_exit:
                 finish();

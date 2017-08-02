@@ -36,21 +36,19 @@ public class MyAdsActivity extends AppCompatActivity {
         recyclerViewMyAds.setHasFixedSize(true);
         recyclerViewMyAds.setLayoutManager(new LinearLayoutManager(this));
 
-        listItemsMy = new ArrayList<>();
         BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
         parentObjectId = AdsOwner.getObjectId();
         final String whereClause = "ownerId = '" + parentObjectId + "'";
-        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause( whereClause );
         Backendless.Data.of( "ads_users" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
             @Override
             public void handleResponse(final List<Map> foundMyAds ) {
-                DataQueryBuilder queryBuilderCount = DataQueryBuilder.create();
-                queryBuilderCount.setWhereClause( whereClause );
-                Backendless.Data.of( "ads_users" ).getObjectCount( queryBuilderCount, new AsyncCallback<Integer>() {
+                Backendless.Data.of( "ads_users" ).getObjectCount( queryBuilder, new AsyncCallback<Integer>() {
                     @Override
-                    public void handleResponse( Integer acnt ) {
-                        for (int i = 0; i<acnt; i++) {
+                    public void handleResponse( Integer adsCnt ) {
+                        listItemsMy = new ArrayList<>();
+                        for (int i = 0; i<adsCnt; i++) {
                             listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get( "description" ).toString(), foundMyAds.get(i).get("collection").toString() , "Цена: " + foundMyAds.get(i).get("price"), foundMyAds.get(i).get("ads_icon").toString() ));
                         }
                         adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
