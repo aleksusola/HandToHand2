@@ -6,13 +6,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp40"
+            android:layout_gravity="center"
             android:layout_margin="@dimen/dp4"
             android:text="@string/ad_edit"
             android:textSize="@dimen/text_large" />
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:gravity="center_vertical"
-                android:hint="Новое название..."
+                android:hint="@string/hint_name"
                 android:inputType="text"
                 android:textSize="@dimen/text_medium" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:gravity="center_vertical"
-                android:hint="Новая цена..."
+                android:hint="@string/hint_price"
                 android:inputType="number"
                 android:textSize="@dimen/text_medium" />
 
@@ -64,7 +64,7 @@
                 android:layout_height="@dimen/dp48"
                 android:gravity="center_vertical"
                 android:paddingRight="@dimen/dp4"
-                android:text="Новая коллекция: "
+                android:text="@string/new_collection"
                 android:textSize="@dimen/text_medium" />
 
             <Spinner
@@ -83,14 +83,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
+
             <ImageView
+                android:id="@+id/photoSelect"
                 android:layout_width="@dimen/dp96"
                 android:layout_height="@dimen/dp96"
-                android:id="@+id/photoSelect"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:scaleType="centerInside"
-                android:layout_marginRight="@dimen/dp16" />
+                android:layout_marginRight="@dimen/dp16"
+                android:scaleType="centerInside" />
 
             <Button
                 android:id="@+id/photo_select_button"
@@ -99,7 +98,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/dp4"
                 android:height="@dimen/dp40"
-                android:text="Выбрать изображение"
+                android:text="@string/button_select_image"
                 android:textSize="@dimen/text_micro" />
         </TableRow>
 
@@ -110,7 +109,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp4"
             android:height="@dimen/dp40"
-            android:text="@string/save_button_value"
+            android:text="@string/button_save"
             android:textSize="@dimen/text_medium" />
     </LinearLayout>
 </ScrollView>

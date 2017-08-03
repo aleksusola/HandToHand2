@@ -2,6 +2,7 @@ package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -42,10 +43,12 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private List<RecyclerAdsItem> listItemsPrice;
     private List<RecyclerAdsItem> listItemsDate;
 
+    private static final String TAG = "MYAPP";
+
     @Override
-    public void onCreate( Bundle savedInstanceState ) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_profile);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,55 +62,42 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
         BackendlessUser user = Backendless.UserService.CurrentUser();
-        if( user != null ) {
+        if (user != null) {
             View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_profile);
             TextView textView = (TextView) headerLayout.findViewById(R.id.userName);
-            String fname = (String) user.getProperty( "firstName" );
-            textView.setText("Добро пожаловать, " + fname);
+            String name = (String) user.getProperty("firstName");
+            textView.setText("Добро пожаловать, " + name);
             TextView textView1 = (TextView) headerLayout.findViewById(R.id.userMail);
-            String email = (String) user.getProperty( "email" );
+            String email = (String) user.getProperty("email");
             textView1.setText(email);
             TextView textView2 = (TextView) headerLayout.findViewById(R.id.userPhone);
-            String phone = (String) user.getProperty( "phone" );
+            String phone = (String) user.getProperty("phone");
             textView2.setText("+7" + phone);
-            new DownloadImageTask((ImageView) headerLayout.findViewById(R.id.userIcon)).execute(user.getProperty( "avatar" ).toString());
-        }
-        else {
-            Toast.makeText( ProfileActivity.this,
+            new DownloadImageTask((ImageView) headerLayout.findViewById(R.id.userIcon)).execute(user.getProperty("avatar").toString());
+        } else {
+            Toast.makeText(ProfileActivity.this,
                     "User hasn't been logged",
-                    Toast.LENGTH_SHORT ).show();
+                    Toast.LENGTH_SHORT).show();
         }
 
         recyclerViewAds = (RecyclerView) findViewById(R.id.recyclerViewAds);
         recyclerViewAds.setHasFixedSize(true);
         recyclerViewAds.setLayoutManager(new LinearLayoutManager(this));
 
-        Backendless.Persistence.of( "ads_users" ).find( new AsyncCallback<List<Map>>(){
+        Backendless.Persistence.of("ads_users").find(new AsyncCallback<List<Map>>() {
             @Override
-            public void handleResponse(final List<Map> foundAds ) {
-
-                Backendless.Data.of( "ads_users" ).getObjectCount( new AsyncCallback<Integer>() {
-                    @Override
-                    public void handleResponse( Integer cnt ) {
-                        listItems = new ArrayList<>();
-                        for (int i = 0; i<cnt; i++) {
-                            listItems.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get( "description" ).toString(),  foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
-                        }
-                        //Set adapter
-                        adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
-                        recyclerViewAds.setAdapter(adapter);
-                    }
-
-                    @Override
-                    public void handleFault( BackendlessFault backendlessFault ) {
-                        Log.i( "MYAPP", "error - " + backendlessFault.getMessage() );
-                    }
-                } );
+            public void handleResponse(final List<Map> foundAds) {
+                listItems = new ArrayList<>();
+                for (int i = 0; i < foundAds.size(); i++) {
+                    listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString()));
+                }
+                adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
+                recyclerViewAds.setAdapter(adapter);
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.i( "MYAPP", "error");
+                Log.e(TAG, "server reported an error - " + fault.getMessage());
             }
         });
 
@@ -138,34 +128,20 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Toast.makeText(ProfileActivity.this, getString(R.string.action_sort_by_price), Toast.LENGTH_SHORT).show();
                 listItemsPrice = new ArrayList<>();
                 DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                queryBuilder.setSortBy( "price" );
-                Backendless.Persistence.of( "ads_users" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
+                queryBuilder.setSortBy("price");
+                Backendless.Persistence.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                     @Override
-                    public void handleResponse(final List<Map> foundAds ) {
-
-                        Backendless.Data.of( "ads_users" ).getObjectCount( new AsyncCallback<Integer>() {
-                            @Override
-                            public void handleResponse( Integer cnt ) {
-
-                                for (int i = 0; i<cnt; i++) {
-                                    listItemsPrice.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get( "description" ).toString(),  foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
-                                }
-                                //Set adapter
-                                adapter = new RecyclerAdsAdapter(listItemsPrice, ProfileActivity.this);
-                                recyclerViewAds.setAdapter(adapter);
-                            }
-
-                            @Override
-                            public void handleFault( BackendlessFault backendlessFault )
-                            {
-                                Log.i( "MYAPP", "error - " + backendlessFault.getMessage() );
-                            }
-                        } );
+                    public void handleResponse(final List<Map> priceSortingAds) {
+                        for (int i = 0; i < priceSortingAds.size(); i++) {
+                            listItemsPrice.add(new RecyclerAdsItem(priceSortingAds.get(i).get("name").toString(), priceSortingAds.get(i).get("description").toString(), priceSortingAds.get(i).get("ownerId").toString(), "Коллекция: " + priceSortingAds.get(i).get("collection").toString(), "Цена: " + priceSortingAds.get(i).get("price").toString(), priceSortingAds.get(i).get("ads_icon").toString()));
+                        }
+                        adapter = new RecyclerAdsAdapter(listItemsPrice, ProfileActivity.this);
+                        recyclerViewAds.setAdapter(adapter);
                     }
 
                     @Override
                     public void handleFault(BackendlessFault fault) {
-                        Log.i( "MYAPP", "error");
+                        Log.e(TAG, "server reported an error - " + fault.getMessage());
                     }
                 });
                 break;
@@ -173,34 +149,20 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Toast.makeText(ProfileActivity.this, getString(R.string.action_sort_by_date), Toast.LENGTH_SHORT).show();
                 listItemsDate = new ArrayList<>();
                 DataQueryBuilder queryBuilder1 = DataQueryBuilder.create();
-                queryBuilder1.setSortBy( "created" );
-                Backendless.Persistence.of( "ads_users" ).find( queryBuilder1, new AsyncCallback<List<Map>>(){
+                queryBuilder1.setSortBy("created");
+                Backendless.Persistence.of("ads_users").find(queryBuilder1, new AsyncCallback<List<Map>>() {
                     @Override
-                    public void handleResponse(final List<Map> foundAds ) {
-
-                        Backendless.Data.of( "ads_users" ).getObjectCount( new AsyncCallback<Integer>() {
-                            @Override
-                            public void handleResponse( Integer cnt ) {
-
-                                for (int i = 0; i<cnt; i++) {
-                                    listItemsDate.add(new RecyclerAdsItem( foundAds.get(i).get( "name" ).toString(), foundAds.get(i).get( "description" ).toString(),  foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get( "price" ).toString(), foundAds.get(i).get("ads_icon").toString() ));
-                                }
-                                //Set adapter
-                                adapter = new RecyclerAdsAdapter(listItemsDate, ProfileActivity.this);
-                                recyclerViewAds.setAdapter(adapter);
-                            }
-
-                            @Override
-                            public void handleFault( BackendlessFault backendlessFault )
-                            {
-                                Log.i( "MYAPP", "error - " + backendlessFault.getMessage() );
-                            }
-                        } );
+                    public void handleResponse(final List<Map> dateSortingAds) {
+                        for (int i = 0; i < dateSortingAds.size(); i++) {
+                            listItemsDate.add(new RecyclerAdsItem(dateSortingAds.get(i).get("name").toString(), dateSortingAds.get(i).get("description").toString(), dateSortingAds.get(i).get("ownerId").toString(), "Коллекция: " + dateSortingAds.get(i).get("collection").toString(), "Цена: " + dateSortingAds.get(i).get("price").toString(), dateSortingAds.get(i).get("ads_icon").toString()));
+                        }
+                        adapter = new RecyclerAdsAdapter(listItemsDate, ProfileActivity.this);
+                        recyclerViewAds.setAdapter(adapter);
                     }
 
                     @Override
                     public void handleFault(BackendlessFault fault) {
-                        Log.i( "MYAPP", "error");
+                        Log.e(TAG, "server reported an error - " + fault.getMessage());
                     }
                 });
                 break;
@@ -208,7 +170,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Toast.makeText(ProfileActivity.this, getString(R.string.action_filter), Toast.LENGTH_SHORT).show();
                 Intent intent2 = new Intent(this, FilterActivity.class);
                 startActivity(intent2);
-                finish();
                 break;
             case R.id.action_exit:
                 finish();
@@ -228,7 +189,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_myads) {
@@ -247,22 +208,22 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_user_change) {
             Toast.makeText(ProfileActivity.this, "Смена пользователя", Toast.LENGTH_SHORT).show();
-            Backendless.UserService.logout( new DefaultCallback<Void>( this ) {
+            Backendless.UserService.logout(new DefaultCallback<Void>(this) {
                 @Override
-                public void handleResponse( Void response ) {
-                    super.handleResponse( response );
-                    startActivity( new Intent( ProfileActivity.this, LoginActivity.class ) );
+                public void handleResponse(Void response) {
+                    super.handleResponse(response);
+                    startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
                     finish();
                 }
 
                 @Override
-                public void handleFault( BackendlessFault fault ) {
-                    if( fault.getCode().equals( "3023" ) ) // Unable to logout: not logged in (session expired, etc.)
-                        handleResponse( null );
+                public void handleFault(BackendlessFault fault) {
+                    if (fault.getCode().equals("3023")) // Unable to logout: not logged in (session expired, etc.)
+                        handleResponse(null);
                     else
-                        super.handleFault( fault );
+                        super.handleFault(fault);
                 }
-            } );
+            });
         } else if (id == R.id.nav_exit) {
             finish();
         }

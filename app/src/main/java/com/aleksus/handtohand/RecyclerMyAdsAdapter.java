@@ -3,9 +3,7 @@ package com.aleksus.handtohand;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -25,8 +23,6 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -53,18 +49,18 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtDesc.setText(itemList.getDesc());
         holder.txtPrice.setText(itemList.getPrice());
-        String whereClause = "ads_users[collection].name = '"+ itemList.getTitle() +"'";
+        String whereClause = "ads_users[collection].name = '" + itemList.getTitle() + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-        queryBuilder.setWhereClause( whereClause );
-        Backendless.Data.of( "collection" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
+        queryBuilder.setWhereClause(whereClause);
+        Backendless.Data.of("collection").find(queryBuilder, new AsyncCallback<List<Map>>() {
             @Override
-            public void handleResponse(final List<Map> foundCollection ) {
+            public void handleResponse(final List<Map> foundCollection) {
                 holder.txtCollection.setText("Коллекция: " + foundCollection.get(0).get("type").toString());
             }
+
             @Override
-            public void handleFault( BackendlessFault fault )
-            {
-                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
+            public void handleFault(BackendlessFault fault) {
+                Log.e("MYAPP", "server reported an error - " + fault.getMessage());
             }
         });
         Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
@@ -91,7 +87,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 Bitmap image = holder.photoIcon.getDrawingCache();
                                 Bundle extras = new Bundle();
                                 extras.putParcelable("imagebitmap", image);
-                                Intent intent = new Intent(holder.itemView.getContext(),  EditActivity.class);
+                                Intent intent = new Intent(holder.itemView.getContext(), EditActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
                                 intent.putExtras(extras);
                                 mContext.startActivity(intent);
@@ -123,16 +119,17 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
         return listItemsMy.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtTitle;
-        public TextView txtDesc;
-        public TextView txtCollection;
-        public TextView txtPrice;
-        public TextView txtOptionDigit;
-        public ImageView photoIcon;
-        public TextView txtHide;
-        public ViewHolder(View itemView) {
+        TextView txtTitle;
+        TextView txtDesc;
+        TextView txtCollection;
+        TextView txtPrice;
+        TextView txtOptionDigit;
+        ImageView photoIcon;
+        TextView txtHide;
+
+        ViewHolder(View itemView) {
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
             txtDesc = (TextView) itemView.findViewById(R.id.txtDesc);

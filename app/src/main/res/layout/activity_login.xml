@@ -6,64 +6,63 @@
     android:orientation="vertical"
     android:padding="@dimen/dp16">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/dp4"
+        android:text="@string/login_text"
+        android:textSize="@dimen/text_large" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:padding="@dimen/dp4"
-            android:text="@string/login_text"
-            android:textSize="@dimen/text_large" />
+            android:layout_width="100dp"
+            android:layout_height="@dimen/dp48"
+            android:layout_marginRight="@dimen/dp4"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/login_prompt"
+            android:textSize="@dimen/text_medium" />
 
-        <TableRow
+        <EditText
+            android:id="@+id/identityField"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:layout_height="@dimen/dp48"
+            android:layout_marginLeft="@dimen/dp4"
+            android:layout_marginRight="@dimen/dp4"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:textSize="@dimen/text_medium" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp48"
-                android:layout_marginRight="@dimen/dp4"
-                android:gravity="center_vertical"
-                android:text="@string/login_prompt"
-                android:textSize="@dimen/text_medium" />
+    </TableRow>
 
-            <EditText
-                android:id="@+id/identityField"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48"
-                android:layout_marginLeft="@dimen/dp4"
-                android:layout_marginRight="@dimen/dp4"
-                android:gravity="center_vertical"
-                android:inputType="text"
-                android:textSize="@dimen/text_medium" />
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
 
-        </TableRow>
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="@dimen/dp48"
+            android:layout_marginRight="@dimen/dp4"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/password_prompt"
+            android:textSize="@dimen/text_medium" />
 
-        <TableRow
+        <EditText
+            android:id="@+id/passwordField"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:layout_height="@dimen/dp48"
+            android:layout_marginLeft="@dimen/dp4"
+            android:layout_marginRight="@dimen/dp4"
+            android:gravity="center_vertical"
+            android:inputType="textPassword"
+            android:textSize="@dimen/text_medium" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp48"
-                android:layout_marginRight="@dimen/dp4"
-                android:gravity="center_vertical"
-                android:text="@string/password_prompt"
-                android:textSize="@dimen/text_medium"/>
-
-            <EditText
-                android:id="@+id/passwordField"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48"
-                android:layout_marginLeft="@dimen/dp4"
-                android:layout_marginRight="@dimen/dp4"
-                android:gravity="center_vertical"
-                android:inputType="textPassword"
-                android:textSize="@dimen/text_medium"/>
-
-        </TableRow>
-
+    </TableRow>
 
 
     <TextView
@@ -81,7 +80,8 @@
         android:id="@+id/rememberLoginBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/remember_login_text" />
+        android:text="@string/remember_login_text"
+        android:textSize="@dimen/dp16" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -103,9 +103,9 @@
             android:layout_height="@dimen/dp48"
             android:layout_marginLeft="@dimen/dp4"
             android:text="@string/login_text"
-            android:textSize="@dimen/text_medium"/>
+            android:textSize="@dimen/text_medium" />
     </LinearLayout>
-                                    
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

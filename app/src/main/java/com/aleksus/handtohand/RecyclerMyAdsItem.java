@@ -8,7 +8,7 @@ public class RecyclerMyAdsItem {
     private String price;
     private String photo;
 
-    public RecyclerMyAdsItem(String title,  String desc, String collection, String price, String photo) {
+    public RecyclerMyAdsItem(String title, String desc, String collection, String price, String photo) {
         this.title = title;
         this.desc = desc;
         this.collection = collection;
@@ -25,7 +25,7 @@ public class RecyclerMyAdsItem {
         this.title = title;
     }
 
-    public String getDesc() {
+    String getDesc() {
         return desc;
     }
 
@@ -41,7 +41,7 @@ public class RecyclerMyAdsItem {
         this.collection = collection;
     }
 
-    public String getPrice() {
+    String getPrice() {
         return price;
     }
 
@@ -49,7 +49,7 @@ public class RecyclerMyAdsItem {
         this.price = price;
     }
 
-    public String getPhoto() {
+    String getPhoto() {
         return photo;
     }
 

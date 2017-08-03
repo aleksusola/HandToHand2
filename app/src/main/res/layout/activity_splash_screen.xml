@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/frameLayout1"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -24,11 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="HAND TO HAND"
+            android:text="@string/app_name"
             android:textColor="@android:color/black"
             android:textIsSelectable="false"
             android:textSize="50sp"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold" />
 
     </LinearLayout>
 

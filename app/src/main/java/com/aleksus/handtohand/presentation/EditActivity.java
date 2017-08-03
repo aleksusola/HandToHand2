@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
 import com.backendless.Backendless;
-import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.files.BackendlessFile;
@@ -29,15 +28,13 @@ import java.util.List;
 import java.util.Map;
 
 
-public class EditActivity extends AppCompatActivity implements View.OnClickListener{
+public class EditActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText nameEdit;
     private EditText priceEdit;
     private ImageView photoAds;
     private Spinner spinner;
 
-    private Button saveButton;
-    private Button photoChangeButton;
     private Bitmap selImage;
 
     private String nameSelected;
@@ -53,12 +50,12 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        spinner = (Spinner)findViewById(R.id.edit_collection);
+        spinner = (Spinner) findViewById(R.id.edit_collection);
         nameEdit = (EditText) findViewById(R.id.edit_name);
         priceEdit = (EditText) findViewById(R.id.edit_price);
         photoAds = (ImageView) findViewById(R.id.photoSelect);
-        photoChangeButton = (Button) findViewById(R.id.photo_select_button);
-        saveButton = (Button) findViewById(R.id.editSaveButton);
+        Button photoChangeButton = (Button) findViewById(R.id.photo_select_button);
+        Button saveButton = (Button) findViewById(R.id.editSaveButton);
         saveButton.setOnClickListener(this);
 
         photoChangeButton.setOnClickListener(new View.OnClickListener() {
@@ -86,9 +83,9 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         selImage = null;
-        switch(requestCode) {
+        switch (requestCode) {
             case GALLERY_REQUEST:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
                         selImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
@@ -107,64 +104,69 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         nameSelected = nameEdit.getText().toString().trim();
         priceSelected = Integer.parseInt(priceEdit.getText().toString());
         collectionSelected = spinner.getSelectedItem().toString().trim();
-        Backendless.Files.remove( "icons/" +adTitle+ ".png", new AsyncCallback<Void>() {
+        Backendless.Files.remove("icons/" + adTitle + ".png", new AsyncCallback<Void>() {
             @Override
             public void handleResponse(Void response) {
             }
+
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.e( TAG, "server reported an error - " + fault.getMessage() );
+                Log.e(TAG, "server reported an error - " + fault.getMessage());
             }
         });
 
-        Backendless.Files.Android.upload( selImage, Bitmap.CompressFormat.PNG, 10, nameSelected +".png", "icons", new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
 
-                String whereClause = "name = '"+ adTitle +"'";
+                String whereClause = "name = '" + adTitle + "'";
                 DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                queryBuilder.setWhereClause( whereClause );
-                Backendless.Data.of( "ads_users" ).find( queryBuilder, new AsyncCallback<List<Map>>(){
+                queryBuilder.setWhereClause(whereClause);
+                Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                     @Override
-                    public void handleResponse( List<Map> editAd ) {
+                    public void handleResponse(List<Map> editAd) {
                         editAd.get(0).put("___class", "ads_users");
                         editAd.get(0).put("name", nameSelected);
                         editAd.get(0).put("price", priceSelected);
                         editAd.get(0).put("ads_icon", backendlessFile.getFileURL());
-                        Backendless.Persistence.of( "ads_users" ).save( editAd.get(0), new AsyncCallback<Map>() {
-                            public void handleResponse( Map savedAd ) {
-                                HashMap<String, Object> parentObject = new HashMap<String, Object>();
+                        Backendless.Persistence.of("ads_users").save(editAd.get(0), new AsyncCallback<Map>() {
+                            public void handleResponse(Map savedAd) {
+                                HashMap<String, Object> parentObject = new HashMap<>();
                                 parentObject.put("objectId", savedAd.get("objectId"));
-                                relationColumnName= "collection:collection:1";
-                                String whereClause1 = "type = '"+ collectionSelected +"'";
-                                Backendless.Data.of( "ads_users" ).setRelation(parentObject,relationColumnName, whereClause1, new AsyncCallback<Integer>() {
+                                relationColumnName = "collection:collection:1";
+                                String whereClause1 = "type = '" + collectionSelected + "'";
+                                Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause1, new AsyncCallback<Integer>() {
                                     @Override
-                                    public void handleResponse( Integer colNum ) {
-                                        Log.i( TAG, "related objects have been added" + colNum );
+                                    public void handleResponse(Integer colNum) {
+                                        Log.i(TAG, "related objects have been added" + colNum);
                                     }
+
                                     @Override
-                                    public void handleFault( BackendlessFault fault ) {
-                                        Log.e( TAG, "server reported an error - " + fault.getMessage() );
+                                    public void handleFault(BackendlessFault fault) {
+                                        Log.e(TAG, "server reported an error - " + fault.getMessage());
                                     }
                                 });
                             }
-                            public void handleFault( BackendlessFault fault ) {
-                                Log.e( TAG, "server reported an error - " + fault.getMessage() );
+
+                            public void handleFault(BackendlessFault fault) {
+                                Log.e(TAG, "server reported an error - " + fault.getMessage());
                             }
                         });
                         Toast.makeText(EditActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(EditActivity.this, MyAdsActivity.class));
                         finish();
                     }
+
                     @Override
-                    public void handleFault( BackendlessFault fault ) {
-                        Log.e( TAG, "server reported an error - " + fault.getMessage() );
+                    public void handleFault(BackendlessFault fault) {
+                        Log.e(TAG, "server reported an error - " + fault.getMessage());
                     }
                 });
             }
+
             @Override
-            public void handleFault( BackendlessFault fault ) {
-                Log.e( TAG, "server reported an error - " + fault.getMessage() );
+            public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "server reported an error - " + fault.getMessage());
             }
         });
     }

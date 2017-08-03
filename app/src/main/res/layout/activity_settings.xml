@@ -6,29 +6,30 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp40"
+            android:layout_gravity="center"
             android:layout_margin="@dimen/dp4"
-            android:text="Настройка профиля"
+            android:text="@string/profile_settings"
             android:textSize="@dimen/text_large" />
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
+
             <ImageView
+                android:id="@+id/iconChange"
                 android:layout_width="@dimen/dp96"
                 android:layout_height="@dimen/dp96"
-                android:id="@+id/iconChange"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:scaleType="centerInside"
-                android:layout_marginRight="@dimen/dp16" />
+                android:layout_marginRight="@dimen/dp16"
+                android:scaleType="centerInside" />
 
             <Button
                 android:id="@+id/icon_change_button"
@@ -37,7 +38,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/dp4"
                 android:height="@dimen/dp40"
-                android:text="Сменить аватар"
+                android:text="@string/button_change_avatar"
                 android:textSize="@dimen/text_micro" />
         </TableRow>
 
@@ -49,7 +50,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp4"
             android:height="@dimen/dp40"
-            android:text="Сохранить"
+            android:text="@string/button_save"
             android:textSize="@dimen/text_medium" />
     </LinearLayout>
 </ScrollView>

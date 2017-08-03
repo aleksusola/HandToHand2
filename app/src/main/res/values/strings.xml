@@ -3,58 +3,42 @@
     <string name="login_success_message">Добро пожаловать!</string>
     <string name="login_text">Войти</string>
     <string name="logout_text">Выйти</string>
-
     <string name="facebook_button_text">Facebook</string>
 
     <string name="register_text">Регистрация</string>
     <string name="restore_link">Забыли пароль?</string>
-    <string name="password_recovered_message">На вашу почту пришло письмо с новым паролем. Следуйте инструкциям и не теряйте свой пароль.</string>
+    <string name="password_recovered_message">На вашу почту пришло письмо с новым паролем. Следуйте инструкциям и старайтесь не терять свой пароль.</string>
     <string name="restore_password_page_name">Восстановление пароля</string>
-    <string name="registration_page_name">Регистрация</string>
     <string name="login_prompt">Логин:</string>
     <string name="password_prompt">Пароль:</string>
-    <string name="password_recovery_page_name">Восстановление пароля</string>
     <string name="warning_icon_description">Внимание</string>
     <string name="remember_login_text">Запомнить меня</string>
+    <string name="button_restore">Восстановить</string>
+    <string name="default_registered_text">Вы успешно зарегестрированы!</string>
+    <string name="registration_success_message">Спасибо за регистрацию на %1$s. Нажмите кнопку, чтобы войти.</string>
+    <string name="reg_button">Зарегистрироваться</string>
 
-    <string name="created_field_prompt">Created:</string>
 
+    <string name="created_field_prompt">Создан:</string>
     <string name="password_field_prompt">Пароль:</string>
-
     <string name="name_field_prompt">Логин:</string>
-
     <string name="ownerId_field_prompt">OwnerId:</string>
-
     <string name="objectId_field_prompt">ObjectId:</string>
-
-    <string name="updated_field_prompt">Updated:</string>
-
+    <string name="updated_field_prompt">Обновлен:</string>
     <string name="email_field_prompt">Email:</string>
-
     <string name="phone_field_prompt">Телефон: +7</string>
 
-    <string name="default_registered_text">Вы успешно зарегестрированы!</string>
-
-    <string name="registration_success_message">Спасибо за регистрацию на %1$s. Нажмите кнопку, чтобы войти.</string>
     <string name="action_settings">Настройки</string>
     <string name="action_about">О программе</string>
-    <string name="action_exit">Выйти</string>
-    <string name="reg_button">Зарегистрироваться</string>
     <string name="item_delete">Скрыть</string>
     <string name="item_connect">Откликнуться</string>
 
+    <string name="app_description">Программа предназначена для поиска и подачи объявлений через сервис HandToHand</string>
+    <string name="developer_contact">Написать разработчику</string>
+    <string name="app_version">Версия программы:</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="import_item">Import</string>
-    <string name="gallery_item">Gallery</string>
-    <string name="slideshow_item">Slideshow</string>
-    <string name="tools_item">Tools</string>
-    <string name="communicate_item">Communicate</string>
-    <string name="share_item">Share</string>
-    <string name="send_item">Send</string>
     <string name="user_name">User name</string>
     <string name="user_email">user email</string>
     <string name="user_phone">user phone</string>
@@ -62,24 +46,40 @@
     <string name="item_settings">Настройка профиля</string>
     <string name="item_share">Поделиться</string>
     <string name="item_about">О программе</string>
-    <string name="item_exit">Выйти</string>
     <string name="item_myads">Мои объявления</string>
-    <string name="new_add">Новое объявление</string>
-    <string name="new_ad_name">Название:</string>
-    <string name="new_ad_price">Цена:</string>
+    <string name="item_user_change">Сменить пользователя</string>
+    <string name="profile_settings">Настройка профиля</string>
+
+    <string name="new_ad">Новое объявление</string>
     <string name="new_ad_collection">Коллекция</string>
     <string name="new_ad_button">Добавить</string>
+    <string name="hint_name">Новое название…</string>
+    <string name="hint_price">Новая цена…</string>
+    <string name="new_collection">Новая коллекция:</string>
+    <string name="button_select_image">Выбрать изображение</string>
+    <string name="select_ad_name">Введите название</string>
+    <string name="select_ad_price">Выберите цену</string>
     <string name="ad_edit">Редактирование</string>
     <string name="ad_edit_price">Цена:</string>
     <string name="ad_edit_name">Название:</string>
-    <string name="save_button_value">Сохранить</string>
+    <string name="button_save">Сохранить</string>
+
     <string name="item_full">Подробно</string>
-    <string name="item_user_change">Сменить пользователя</string>
-    <string name="action_sort_by_date">Сортировать по дате</string>
-    <string name="action_sort_by_price">Сортировать по цене</string>
+    <string name="action_sort_by_date">Сортировка по дате</string>
+    <string name="action_sort_by_price">Сортировка по цене</string>
     <string name="action_filter">Фильтр</string>
-    <string name="new_filter">Фильтровать по:</string>
+    <string name="filter_btn">Фильтровать</string>
     <string name="collection_filter">Коллекция</string>
     <string name="author_filter">Автор</string>
-    <string name="filter_btn">Фильтровать</string>
+
+
+    <string name="new_user_name">Имя</string>
+    <string name="new_user_family">Фамилия</string>
+    <string name="button_select_avatar">Выбрать аватар</string>
+    <string name="button_change_avatar">Сменить аватар</string>
+    <string name="ad_title">Title</string>
+    <string name="ad_desc">Description</string>
+    <string name="ad_author">Author</string>
+    <string name="ad_col">Collection</string>
+    <string name="ad_price">Price</string>
 </resources>

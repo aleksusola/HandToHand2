@@ -12,12 +12,13 @@ import com.aleksus.handtohand.R;
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btn_mail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        btn_mail= (Button) findViewById(R.id.btn_mail);
+        btn_mail = (Button) findViewById(R.id.btn_mail);
         btn_mail.setOnClickListener(this);
     }
 

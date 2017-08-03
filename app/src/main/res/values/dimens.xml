@@ -1,8 +1,8 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="dp4">4dp</dimen>
     <dimen name="dp8">8dp</dimen>
     <dimen name="dp16">16dp</dimen>
+    <dimen name="dp24">24dp</dimen>
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp48">48dp</dimen>
     <dimen name="dp64">64dp</dimen>

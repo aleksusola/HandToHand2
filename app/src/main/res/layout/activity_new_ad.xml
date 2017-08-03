@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/dp16">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp40"
+            android:layout_gravity="center"
             android:layout_margin="@dimen/dp4"
-            android:text="@string/new_add"
+            android:text="@string/new_ad"
             android:textSize="@dimen/text_large" />
 
         <TableRow
@@ -24,14 +23,13 @@
             android:gravity="center_horizontal">
 
 
-
             <EditText
 
                 android:id="@+id/name_select"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:gravity="center_vertical"
-                android:hint="Введите название"
+                android:hint="@string/select_ad_name"
                 android:inputType="text"
                 android:textSize="@dimen/text_medium" />
 
@@ -49,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:gravity="center_vertical"
-                android:hint="Выберите цену"
+                android:hint="@string/select_ad_price"
                 android:inputType="number"
                 android:textSize="@dimen/text_medium" />
 
@@ -86,25 +84,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
-        <ImageView
-            android:layout_width="@dimen/dp96"
-            android:layout_height="@dimen/dp96"
-            android:id="@+id/photoSelect"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:scaleType="centerInside"
-            android:src="@mipmap/ic_record_voice_over_black"
-            android:layout_marginRight="@dimen/dp16" />
 
-        <Button
-            android:id="@+id/photo_select_button"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp40"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp4"
-            android:height="@dimen/dp40"
-            android:text="Выбрать изображение"
-            android:textSize="@dimen/text_micro" />
+            <ImageView
+                android:id="@+id/photoSelect"
+                android:layout_width="@dimen/dp96"
+                android:layout_height="@dimen/dp96"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="@dimen/dp16"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_record_voice_over_black" />
+
+            <Button
+                android:id="@+id/photo_select_button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp40"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp4"
+                android:height="@dimen/dp40"
+                android:text="@string/button_select_image"
+                android:textSize="@dimen/text_micro" />
         </TableRow>
 
         <Button

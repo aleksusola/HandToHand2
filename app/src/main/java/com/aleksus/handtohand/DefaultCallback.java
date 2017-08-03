@@ -12,25 +12,24 @@ public class DefaultCallback<T> extends BackendlessCallback<T> {
     private Context context;
     private ProgressDialog progressDialog;
 
-    public DefaultCallback( Context context ) {
+    protected DefaultCallback(Context context) {
         this.context = context;
-        progressDialog = ProgressDialog.show( context, "", "Подождите...", true );
+        progressDialog = ProgressDialog.show(context, "", "Подождите...", true);
     }
 
-    public DefaultCallback(Context context, String message ) {
+    protected DefaultCallback(Context context, String message) {
         this.context = context;
-        progressDialog = ProgressDialog.show( context, "", message, true );
+        progressDialog = ProgressDialog.show(context, "", message, true);
     }
 
     @Override
-    public void handleResponse( T response )
-    {
+    public void handleResponse(T response) {
         progressDialog.cancel();
     }
 
     @Override
-    public void handleFault( BackendlessFault fault ) {
+    public void handleFault(BackendlessFault fault) {
         progressDialog.cancel();
-        Toast.makeText( context, fault.getMessage(), Toast.LENGTH_LONG ).show();
+        Toast.makeText(context, fault.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

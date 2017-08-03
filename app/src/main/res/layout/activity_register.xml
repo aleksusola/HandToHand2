@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/dp16">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp16">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-            <TextView
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp40"
-                android:layout_margin="@dimen/dp4"
-                android:text="@string/registration_page_name"
-                android:textSize="@dimen/text_large" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp4"
+            android:text="@string/register_text"
+            android:textSize="@dimen/text_large" />
 
         <TableRow
             android:layout_width="match_parent"
@@ -24,10 +24,10 @@
             android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginRight="@dimen/dp4"
-                android:gravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
                 android:paddingRight="@dimen/dp4"
                 android:text="@string/name_field_prompt"
                 android:textSize="@dimen/text_medium" />
@@ -50,10 +50,10 @@
             android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginRight="@dimen/dp4"
-                android:gravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
                 android:paddingRight="@dimen/dp4"
                 android:text="@string/email_field_prompt"
                 android:textSize="@dimen/text_medium" />
@@ -76,10 +76,10 @@
             android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginRight="@dimen/dp4"
-                android:gravity="center_vertical"
+                android:gravity="center_horizontal|center_vertical"
                 android:paddingRight="@dimen/dp4"
                 android:text="@string/password_field_prompt"
                 android:textSize="@dimen/text_medium" />
@@ -101,10 +101,9 @@
             android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="@dimen/dp48"
-                android:gravity="center_vertical"
-                android:paddingRight="@dimen/dp4"
+                android:gravity="center_horizontal|center_vertical"
                 android:text="@string/phone_field_prompt"
                 android:textSize="@dimen/text_medium" />
 
@@ -123,15 +122,66 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="100dp"
+                android:layout_height="@dimen/dp48"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingRight="@dimen/dp4"
+                android:text="@string/new_user_name"
+                android:textSize="@dimen/text_medium" />
+
+            <EditText
+
+                android:id="@+id/nameField"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:gravity="center_vertical"
+                android:inputType="text"
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="100dp"
+                android:layout_height="@dimen/dp48"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingRight="@dimen/dp4"
+                android:text="@string/new_user_family"
+                android:textSize="@dimen/text_medium" />
+
+            <EditText
+
+                android:id="@+id/familyField"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:gravity="center_vertical"
+                android:inputType="phone"
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
             <ImageView
+                android:id="@+id/iconSelect"
                 android:layout_width="@dimen/dp96"
                 android:layout_height="@dimen/dp96"
-                android:id="@+id/iconSelect"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/ic_account_circle_black_48dp"
+                android:layout_marginRight="@dimen/dp16"
                 android:scaleType="centerInside"
-                android:layout_marginRight="@dimen/dp16" />
+                android:src="@drawable/ic_account_circle_black_48dp" />
 
             <Button
                 android:id="@+id/icon_select_button"
@@ -140,7 +190,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/dp4"
                 android:height="@dimen/dp40"
-                android:text="Выбрать аватар"
+                android:text="@string/button_select_avatar"
                 android:textSize="@dimen/text_micro" />
         </TableRow>
 

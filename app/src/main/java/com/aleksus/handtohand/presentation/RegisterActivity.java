@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,16 +31,18 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText loginField;
     private EditText emailField;
     private EditText phoneField;
+    private EditText nameField;
+    private EditText familyField;
     private ImageView iconGallery;
 
-    private Button registerButton;
-    private Button iconSelectButton;
     private Bitmap selImage;
 
     private String password;
     private String login;
     private String email;
     private String phone;
+    private String name;
+    private String family;
     private Bitmap avatar;
 
     static final int GALLERY_REQUEST = 1;
@@ -56,17 +59,19 @@ public class RegisterActivity extends AppCompatActivity {
         loginField = (EditText) findViewById(R.id.loginField);
         emailField = (EditText) findViewById(R.id.emailField);
         phoneField = (EditText) findViewById(R.id.phoneField);
+        nameField = (EditText) findViewById(R.id.nameField);
+        familyField = (EditText) findViewById(R.id.familyField);
         iconGallery = (ImageView) findViewById(R.id.iconSelect);
         iconGallery.buildDrawingCache();
         selImage = iconGallery.getDrawingCache();
-        registerButton = (Button) findViewById(R.id.registerButton);
+        Button registerButton = (Button) findViewById(R.id.registerButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onRegisterButtonClicked();
             }
         });
-        iconSelectButton = (Button) findViewById(R.id.icon_select_button);
+        Button iconSelectButton = (Button) findViewById(R.id.icon_select_button);
         iconSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,9 +91,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         selImage = null;
-        switch(requestCode) {
+        switch (requestCode) {
             case GALLERY_REQUEST:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
                         selImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
@@ -105,6 +110,8 @@ public class RegisterActivity extends AppCompatActivity {
         String loginText = loginField.getText().toString().trim();
         String emailText = emailField.getText().toString().trim();
         String phoneText = phoneField.getText().toString().trim();
+        String nameText = nameField.getText().toString().trim();
+        String familyText = familyField.getText().toString().trim();
 
         if (loginText.isEmpty()) {
             showToast("Поле 'Логин' не может быть пустым.");
@@ -126,30 +133,44 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if (nameText.isEmpty()) {
+            showToast("Поле 'Имя' не может быть пустым.");
+            return;
+        }
+
+        if (familyText.isEmpty()) {
+            showToast("Поле 'Фамилия' не может быть пустым.");
+            return;
+        }
+
         if (selImage == null) {
             showToast("Загрузите ваш аватар");
             return;
         }
 
-        if (!passwordText.isEmpty() && !loginText.isEmpty() && !emailText.isEmpty() && !phoneText.isEmpty() && selImage != null) {
+        if (!passwordText.isEmpty() && !loginText.isEmpty() && !emailText.isEmpty() && !phoneText.isEmpty() && !nameText.isEmpty() && !familyText.isEmpty() && selImage != null) {
             password = passwordText;
             login = loginText;
             email = emailText;
             phone = phoneText;
+            name = nameText;
+            family = familyText;
             avatar = selImage;
         }
 
-        Backendless.Files.Android.upload( selImage, Bitmap.CompressFormat.PNG, 10, login +"_user.png", "icons", new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, login + "_user.png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
                 ExampleUser user = new ExampleUser();
 
-                if (password != null && login != null && email != null && phone != null && avatar != null) {
+                if (password != null && login != null && email != null && phone != null && name != null && family != null && avatar != null) {
                     user.setPassword(password);
                     user.setLogin(login);
                     user.setEmail(email);
-                    user.setProperty( "phone", phone );
-                    user.setProperty( "avatar", backendlessFile.getFileURL() );
+                    user.setPhone(phone);
+                    user.setFirstName(name);
+                    user.setSecondName(family);
+                    user.setProperty("avatar", backendlessFile.getFileURL());
                 }
 
                 Backendless.UserService.register(user, new DefaultCallback<BackendlessUser>(RegisterActivity.this) {
@@ -161,9 +182,10 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
             }
+
             @Override
-            public void handleFault(BackendlessFault backendlessFault) {
-                Toast.makeText(RegisterActivity.this, backendlessFault.toString(), Toast.LENGTH_SHORT).show();
+            public void handleFault(BackendlessFault fault) {
+                Log.e("MYAPP", "server reported an error - " + fault.getMessage());
             }
         });
 

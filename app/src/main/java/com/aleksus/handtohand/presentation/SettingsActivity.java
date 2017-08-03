@@ -26,9 +26,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private ImageView iconChange;
 
-    private Button saveButton;
-    private Button iconChangeButton;
-
     private Bitmap avatar;
     static final int GALLERY_REQUEST = 1;
 
@@ -38,14 +35,14 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         iconChange = (ImageView) findViewById(R.id.iconChange);
-        saveButton = (Button) findViewById(R.id.saveButton);
+        Button saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onSaveButtonClicked();
             }
         });
-        iconChangeButton = (Button) findViewById(R.id.icon_change_button);
+        Button iconChangeButton = (Button) findViewById(R.id.icon_change_button);
         iconChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,8 +50,8 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         BackendlessUser user = Backendless.UserService.CurrentUser();
-        if( user != null ) {
-            new DownloadImageTask(iconChange).execute(user.getProperty( "avatar" ).toString());
+        if (user != null) {
+            new DownloadImageTask(iconChange).execute(user.getProperty("avatar").toString());
         }
     }
 
@@ -68,9 +65,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         avatar = null;
-        switch(requestCode) {
+        switch (requestCode) {
             case GALLERY_REQUEST:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
                         avatar = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
@@ -83,36 +80,37 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-
     private void onSaveButtonClicked() {
 
         final BackendlessUser user = Backendless.UserService.CurrentUser();
-        Backendless.Files.remove( "icons/" +user.getProperty("login")+ "_user.png", new AsyncCallback<Void>() {
+        Backendless.Files.remove("icons/" + user.getProperty("login") + "_user.png", new AsyncCallback<Void>() {
             @Override
             public void handleResponse(Void response) {
             }
+
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
+                Log.e("MYAPP", "server reported an error - " + fault.getMessage());
             }
         });
-        Backendless.Files.Android.upload( avatar, Bitmap.CompressFormat.PNG, 10, user.getProperty("login") +"_user.png", "icons", new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.Android.upload(avatar, Bitmap.CompressFormat.PNG, 10, user.getProperty("login") + "_user.png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
-            user.setProperty( "avatar", backendlessFile.getFileURL() );
-            Backendless.UserService.update( user, new AsyncCallback<BackendlessUser>() {
-                public void handleResponse( BackendlessUser user ) {
-                    finish();
-                }
+                user.setProperty("avatar", backendlessFile.getFileURL());
+                Backendless.UserService.update(user, new AsyncCallback<BackendlessUser>() {
+                    public void handleResponse(BackendlessUser user) {
+                        finish();
+                    }
 
-                public void handleFault( BackendlessFault fault ) {
-                    Log.e( "MYAPP", "server reported an error - " + fault.getMessage() );
-                }
-            });
+                    public void handleFault(BackendlessFault fault) {
+                        Log.e("MYAPP", "server reported an error - " + fault.getMessage());
+                    }
+                });
             }
+
             @Override
-            public void handleFault(BackendlessFault backendlessFault) {
-                Toast.makeText(SettingsActivity.this, backendlessFault.toString(), Toast.LENGTH_SHORT).show();
+            public void handleFault(BackendlessFault fault) {
+                Log.e("MYAPP", "server reported an error - " + fault.getMessage());
             }
         });
     }

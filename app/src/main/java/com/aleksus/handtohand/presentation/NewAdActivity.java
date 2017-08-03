@@ -1,9 +1,7 @@
 package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,21 +17,14 @@ import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
 import com.backendless.Backendless;
-import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.files.BackendlessFile;
-import com.backendless.persistence.DataQueryBuilder;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static android.R.attr.data;
 
 
 public class NewAdActivity extends AppCompatActivity implements View.OnClickListener {
@@ -43,8 +34,6 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private ImageView photoGallery;
     private Spinner spinner;
 
-    private Button newAdButton;
-    private Button photoSelectButton;
     private Bitmap selImage;
 
     private String nameSelected;
@@ -60,15 +49,15 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_ad);
-        spinner = (Spinner)findViewById(R.id.collection_select);
+        spinner = (Spinner) findViewById(R.id.collection_select);
 
         nameSelect = (EditText) findViewById(R.id.name_select);
         priceSelect = (EditText) findViewById(R.id.price_select);
-        newAdButton = (Button) findViewById(R.id.new_add_button);
+        Button newAdButton = (Button) findViewById(R.id.new_add_button);
         newAdButton.setOnClickListener(this);
         photoGallery = (ImageView) findViewById(R.id.photoSelect);
         selImage = null;
-        photoSelectButton = (Button) findViewById(R.id.photo_select_button);
+        Button photoSelectButton = (Button) findViewById(R.id.photo_select_button);
         photoSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,9 +78,9 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         selImage = null;
 
-        switch(requestCode) {
+        switch (requestCode) {
             case GALLERY_REQUEST:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
                         selImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
@@ -111,47 +100,50 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         priceSelected = Integer.parseInt(priceSelect.getText().toString());
         collectionSelected = spinner.getSelectedItem().toString();
 
-        Backendless.Files.Android.upload( selImage, Bitmap.CompressFormat.PNG, 10, nameSelected +".png", "icons", new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
-                HashMap newAd = new HashMap();
-                newAd.put( "___class", "ads_users");
+                HashMap<String, java.io.Serializable> newAd = new HashMap<>();
+                newAd.put("___class", "ads_users");
                 newAd.put("name", nameSelected);
                 newAd.put("price", priceSelected);
                 newAd.put("ads_icon", backendlessFile.getFileURL());
-                Backendless.Persistence.of( "ads_users" ).save( newAd, new AsyncCallback<Map>() {
+                Backendless.Persistence.of("ads_users").save(newAd, new AsyncCallback<Map>() {
                     @Override
-                    public void handleResponse(final Map savedAd ) {
-                        HashMap<String, Object> parentObject = new HashMap<String, Object>();
+                    public void handleResponse(final Map savedAd) {
+                        HashMap<String, Object> parentObject = new HashMap<>();
                         parentObject.put("objectId", savedAd.get("objectId"));
-                        relationColumnName= "collection:collection:1";
-                        String whereClause = "type = '" +collectionSelected+ "'";
-                        Backendless.Data.of( "ads_users" ).setRelation(parentObject,relationColumnName, whereClause, new AsyncCallback<Integer>() {
+                        relationColumnName = "collection:collection:1";
+                        String whereClause = "type = '" + collectionSelected + "'";
+                        Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause, new AsyncCallback<Integer>() {
 
-                            @Override public void handleResponse( Integer colNum ) {
-                                Log.i( TAG, "related objects have been added" + colNum );
+                            @Override
+                            public void handleResponse(Integer colNum) {
+                                Log.i(TAG, "related objects have been added" + colNum);
                             }
 
-                            @Override public void handleFault( BackendlessFault fault ) {
-                                Log.e( TAG, "server reported an error - " + fault.getMessage());
+                            @Override
+                            public void handleFault(BackendlessFault fault) {
+                                Log.e(TAG, "server reported an error - " + fault.getMessage());
                             }
                         });
                         Toast.makeText(NewAdActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(NewAdActivity.this, ProfileActivity.class));
                         finish();
                     }
+
                     @Override
-                    public void handleFault( BackendlessFault fault ) {
-                        Log.e( TAG, "server reported an error - " + fault.getMessage() );
+                    public void handleFault(BackendlessFault fault) {
+                        Log.e(TAG, "server reported an error - " + fault.getMessage());
                     }
                 });
             }
+
             @Override
-            public void handleFault(BackendlessFault backendlessFault) {
-                Toast.makeText(NewAdActivity.this, backendlessFault.toString(), Toast.LENGTH_SHORT).show();
+            public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "server reported an error - " + fault.getMessage());
             }
         });
-
 
 
     }

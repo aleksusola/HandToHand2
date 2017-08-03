@@ -11,9 +11,9 @@
             android:icon="@drawable/ic_insert_drive_file_black_48dp"
             android:title="Новое объявление" />
         <!--<item-->
-            <!--android:id="@+id/nav_slideshow"-->
-            <!--android:icon="@drawable/ic_menu_slideshow"-->
-            <!--android:title="Slideshow" />-->
+        <!--android:id="@+id/nav_slideshow"-->
+        <!--android:icon="@drawable/ic_menu_slideshow"-->
+        <!--android:title="Slideshow" />-->
 
     </group>
 
@@ -38,7 +38,7 @@
             <item
                 android:id="@+id/nav_exit"
                 android:icon="@drawable/ic_power_settings_new_black_48dp"
-                android:title="@string/item_exit" />
+                android:title="@string/logout_text" />
         </menu>
     </item>
 

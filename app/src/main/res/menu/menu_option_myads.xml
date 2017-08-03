@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item
-            android:id="@+id/mnu_item_change"
-            android:title="@string/item_change"/>
-        <item
-            android:id="@+id/mnu_item_full"
-            android:title="@string/item_full"/>
-        <item
-            android:id="@+id/mnu_item_delete"
-            android:title="@string/item_delete"/>
+    <item
+        android:id="@+id/mnu_item_change"
+        android:title="@string/item_change" />
+    <item
+        android:id="@+id/mnu_item_full"
+        android:title="@string/item_full" />
+    <item
+        android:id="@+id/mnu_item_delete"
+        android:title="@string/item_delete" />
 </menu>
