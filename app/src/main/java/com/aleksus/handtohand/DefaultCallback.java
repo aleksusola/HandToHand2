@@ -17,6 +17,12 @@ public class DefaultCallback<T> extends BackendlessCallback<T> {
         progressDialog = ProgressDialog.show(context, "", "Подождите...", true);
     }
 
+/*    public DefaultCallback(IProgressListener listener) {
+
+        listener.showProgress();
+        progressDialog = ProgressDialog.show(context, "", "Подождите...", true);
+    }*/
+
     public DefaultCallback(Context context, String message) {
         this.context = context;
         progressDialog = ProgressDialog.show(context, "", message, true);
