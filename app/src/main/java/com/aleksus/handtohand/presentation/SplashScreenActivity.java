@@ -12,6 +12,8 @@ import com.aleksus.handtohand.Defaults;
 import com.aleksus.handtohand.R;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +21,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash_screen);
 
         Backendless.setUrl(Defaults.SERVER_URL);
