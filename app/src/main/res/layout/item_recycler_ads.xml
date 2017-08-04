@@ -33,20 +33,10 @@
                 android:textAppearance="?android:textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/txtDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtTitle"
-                android:layout_toRightOf="@+id/photoIcon"
-                android:text="@string/ad_desc"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:visibility="gone" />
-
-            <TextView
                 android:id="@+id/txtAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtDesc"
+                android:layout_below="@id/txtTitle"
                 android:layout_toRightOf="@+id/photoIcon"
                 android:text="@string/ad_author"
                 android:textAppearance="?android:textAppearanceMedium" />
@@ -80,10 +70,19 @@
                 android:textAppearance="?android:textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/txtHide"
+                android:id="@+id/txtDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtPrice"
+                android:text="@string/ad_desc"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txtHide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDesc"
                 android:clickable="true"
                 android:gravity="center_horizontal"
                 android:text="Свернуть"

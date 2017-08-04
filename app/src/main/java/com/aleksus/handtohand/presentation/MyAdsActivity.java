@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
 import com.aleksus.handtohand.RecyclerMyAdsAdapter;
@@ -42,20 +43,26 @@ public class MyAdsActivity extends AppCompatActivity {
         final String whereClause = "ownerId = '" + parentObjectId + "'";
         final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
+        queryBuilder.setPageSize(25).setOffset(0);
         Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
             @Override
             public void handleResponse(final List<Map> foundMyAds) {
-                listItemsMy = new ArrayList<>();
-                for (int i = 0; i < foundMyAds.size(); i++) {
-                    listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("description").toString(), foundMyAds.get(i).get("collection").toString(), "Цена: " + foundMyAds.get(i).get("price"), foundMyAds.get(i).get("ads_icon").toString()));
+                if (foundMyAds.size() == 0) {
+                    Toast.makeText(MyAdsActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MyAdsActivity.this, "Найдено объявлений " + foundMyAds.size(), Toast.LENGTH_LONG).show();
+                    listItemsMy = new ArrayList<>();
+                    for (int i = 0; i < foundMyAds.size(); i++) {
+                        listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("description").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString()));
+                    }
+                    adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
+                    recyclerViewMyAds.setAdapter(adapterMy);
                 }
-                adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
-                recyclerViewMyAds.setAdapter(adapterMy);
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.e("MYAPP", "server reported an error - " + fault.getMessage());
+                Log.e(TAG, "server reported an error - " + fault.getMessage());
             }
         });
     }

@@ -83,16 +83,22 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         recyclerViewAds = (RecyclerView) findViewById(R.id.recyclerViewAds);
         recyclerViewAds.setHasFixedSize(true);
         recyclerViewAds.setLayoutManager(new LinearLayoutManager(this));
-
-        Backendless.Persistence.of("ads_users").find(new AsyncCallback<List<Map>>() {
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setPageSize(25).setOffset(0);
+        Backendless.Persistence.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
             @Override
             public void handleResponse(final List<Map> foundAds) {
-                listItems = new ArrayList<>();
-                for (int i = 0; i < foundAds.size(); i++) {
-                    listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), "Коллекция: " + foundAds.get(i).get("collection").toString(), "Цена: " + foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString()));
+                if (foundAds.size() == 0) {
+                    Toast.makeText(ProfileActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Найдено объявлений " + foundAds.size(), Toast.LENGTH_LONG).show();
+                    listItems = new ArrayList<>();
+                    for (int i = 0; i < foundAds.size(); i++) {
+                        listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), foundAds.get(i).get("collection").toString(), foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString()));
+                    }
+                    adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
+                    recyclerViewAds.setAdapter(adapter);
                 }
-                adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
-                recyclerViewAds.setAdapter(adapter);
             }
 
             @Override
@@ -126,17 +132,23 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 break;
             case R.id.action_sort_by_price:
                 Toast.makeText(ProfileActivity.this, getString(R.string.action_sort_by_price), Toast.LENGTH_SHORT).show();
-                listItemsPrice = new ArrayList<>();
                 DataQueryBuilder queryBuilder = DataQueryBuilder.create();
                 queryBuilder.setSortBy("price");
+                queryBuilder.setPageSize(25).setOffset(0);
                 Backendless.Persistence.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                     @Override
                     public void handleResponse(final List<Map> priceSortingAds) {
-                        for (int i = 0; i < priceSortingAds.size(); i++) {
-                            listItemsPrice.add(new RecyclerAdsItem(priceSortingAds.get(i).get("name").toString(), priceSortingAds.get(i).get("description").toString(), priceSortingAds.get(i).get("ownerId").toString(), "Коллекция: " + priceSortingAds.get(i).get("collection").toString(), "Цена: " + priceSortingAds.get(i).get("price").toString(), priceSortingAds.get(i).get("ads_icon").toString()));
+                        if (priceSortingAds.size() == 0) {
+                            Toast.makeText(ProfileActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Найдено объявлений " + priceSortingAds.size(), Toast.LENGTH_LONG).show();
+                            listItemsPrice = new ArrayList<>();
+                            for (int i = 0; i < priceSortingAds.size(); i++) {
+                                listItemsPrice.add(new RecyclerAdsItem(priceSortingAds.get(i).get("name").toString(), priceSortingAds.get(i).get("description").toString(), priceSortingAds.get(i).get("ownerId").toString(), priceSortingAds.get(i).get("collection").toString(), priceSortingAds.get(i).get("price").toString(), priceSortingAds.get(i).get("ads_icon").toString()));
+                            }
+                            adapter = new RecyclerAdsAdapter(listItemsPrice, ProfileActivity.this);
+                            recyclerViewAds.setAdapter(adapter);
                         }
-                        adapter = new RecyclerAdsAdapter(listItemsPrice, ProfileActivity.this);
-                        recyclerViewAds.setAdapter(adapter);
                     }
 
                     @Override
@@ -147,17 +159,23 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 break;
             case R.id.action_sort_by_date:
                 Toast.makeText(ProfileActivity.this, getString(R.string.action_sort_by_date), Toast.LENGTH_SHORT).show();
-                listItemsDate = new ArrayList<>();
                 DataQueryBuilder queryBuilder1 = DataQueryBuilder.create();
                 queryBuilder1.setSortBy("created");
+                queryBuilder1.setPageSize(25).setOffset(0);
                 Backendless.Persistence.of("ads_users").find(queryBuilder1, new AsyncCallback<List<Map>>() {
                     @Override
                     public void handleResponse(final List<Map> dateSortingAds) {
-                        for (int i = 0; i < dateSortingAds.size(); i++) {
-                            listItemsDate.add(new RecyclerAdsItem(dateSortingAds.get(i).get("name").toString(), dateSortingAds.get(i).get("description").toString(), dateSortingAds.get(i).get("ownerId").toString(), "Коллекция: " + dateSortingAds.get(i).get("collection").toString(), "Цена: " + dateSortingAds.get(i).get("price").toString(), dateSortingAds.get(i).get("ads_icon").toString()));
+                        if (dateSortingAds.size() == 0) {
+                            Toast.makeText(ProfileActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Найдено объявлений " + dateSortingAds.size(), Toast.LENGTH_LONG).show();
+                            listItemsDate = new ArrayList<>();
+                            for (int i = 0; i < dateSortingAds.size(); i++) {
+                                listItemsDate.add(new RecyclerAdsItem(dateSortingAds.get(i).get("name").toString(), dateSortingAds.get(i).get("description").toString(), dateSortingAds.get(i).get("ownerId").toString(), dateSortingAds.get(i).get("collection").toString(), dateSortingAds.get(i).get("price").toString(), dateSortingAds.get(i).get("ads_icon").toString()));
+                            }
+                            adapter = new RecyclerAdsAdapter(listItemsDate, ProfileActivity.this);
+                            recyclerViewAds.setAdapter(adapter);
                         }
-                        adapter = new RecyclerAdsAdapter(listItemsDate, ProfileActivity.this);
-                        recyclerViewAds.setAdapter(adapter);
                     }
 
                     @Override
@@ -192,12 +210,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 
-        if (id == R.id.nav_myads) {
+        if (id == R.id.nav_my_ads) {
             Toast.makeText(ProfileActivity.this, "Мои объявления", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MyAdsActivity.class));
         } else if (id == R.id.nav_new_ad) {
             Toast.makeText(ProfileActivity.this, "Новое объявление", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, NewAdActivity.class));
+        } else if (id == R.id.nav_fav) {
+            Toast.makeText(ProfileActivity.this, "Избранные", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, FavoritesActivity.class));
         } else if (id == R.id.nav_settings) {
             Toast.makeText(ProfileActivity.this, getString(R.string.action_settings), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, SettingsActivity.class));

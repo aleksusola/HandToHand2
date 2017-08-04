@@ -32,6 +32,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText nameEdit;
     private EditText priceEdit;
+    private EditText descEdit;
     private ImageView photoAds;
     private Spinner spinner;
 
@@ -39,9 +40,12 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     private String nameSelected;
     private int priceSelected;
+    private String descSelected;
     private String collectionSelected;
     private String relationColumnName;
     private String adTitle;
+    private String adPrice;
+    private String adDesc;
 
     private static final String TAG = "MYAPP";
     static final int GALLERY_REQUEST = 1;
@@ -53,6 +57,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         spinner = (Spinner) findViewById(R.id.edit_collection);
         nameEdit = (EditText) findViewById(R.id.edit_name);
         priceEdit = (EditText) findViewById(R.id.edit_price);
+        descEdit = (EditText) findViewById(R.id.edit_desc);
         photoAds = (ImageView) findViewById(R.id.photoSelect);
         Button photoChangeButton = (Button) findViewById(R.id.photo_select_button);
         Button saveButton = (Button) findViewById(R.id.editSaveButton);
@@ -65,10 +70,14 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         adTitle = getIntent().getStringExtra("title");
+        adPrice = getIntent().getStringExtra("price");
+        adDesc = getIntent().getStringExtra("desc");
         Bundle extras = getIntent().getExtras();
         selImage = extras.getParcelable("imagebitmap");
         photoAds.setImageBitmap(selImage);
         nameEdit.setText(adTitle);
+        priceEdit.setText(adPrice);
+        descEdit.setText(adDesc);
 
     }
 
@@ -101,9 +110,11 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        nameSelected = nameEdit.getText().toString().trim();
+        nameSelected = nameEdit.getText().toString();
         priceSelected = Integer.parseInt(priceEdit.getText().toString());
-        collectionSelected = spinner.getSelectedItem().toString().trim();
+        descSelected = descEdit.getText().toString().trim();
+        collectionSelected = spinner.getSelectedItem().toString();
+
         Backendless.Files.remove("icons/" + adTitle + ".png", new AsyncCallback<Void>() {
             @Override
             public void handleResponse(Void response) {
@@ -128,6 +139,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         editAd.get(0).put("___class", "ads_users");
                         editAd.get(0).put("name", nameSelected);
                         editAd.get(0).put("price", priceSelected);
+                        editAd.get(0).put("description", descSelected);
                         editAd.get(0).put("ads_icon", backendlessFile.getFileURL());
                         Backendless.Persistence.of("ads_users").save(editAd.get(0), new AsyncCallback<Map>() {
                             public void handleResponse(Map savedAd) {
@@ -152,7 +164,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                                 Log.e(TAG, "server reported an error - " + fault.getMessage());
                             }
                         });
-                        Toast.makeText(EditActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(EditActivity.this, MyAdsActivity.class));
                         finish();
                     }

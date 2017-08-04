@@ -71,7 +71,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             @Override
             public void handleResponse(final List<Map> foundCollection) {
                 if (!foundCollection.isEmpty()) {
-                    holder.txtCollection.setText("Коллекция: " + foundCollection.get(0).get("type").toString());
+                    holder.txtCollection.setText(foundCollection.get(0).get("type").toString());
                 } else {
                     holder.txtCollection.setText("Коллекция: null");
                 }
@@ -84,7 +84,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         });
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtDesc.setText(itemList.getDesc());
-        holder.txtPrice.setText(itemList.getPrice());
+        holder.txtPrice.setText("Цена: " + itemList.getPrice());
         Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
         holder.txtHide.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +95,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         });
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 PopupMenu popupMenu = new PopupMenu(mContext, holder.txtOptionDigit);
                 popupMenu.inflate(R.menu.menu_option);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -122,6 +122,9 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 Toast.makeText(mContext, "Подробнее", Toast.LENGTH_LONG).show();
                                 holder.txtDesc.setVisibility(View.VISIBLE);
                                 holder.txtHide.setVisibility(View.VISIBLE);
+
+
+
                                 break;
                             case R.id.mnu_item_delete:
                                 //Delete item

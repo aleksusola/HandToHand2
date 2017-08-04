@@ -12,12 +12,12 @@ public class DefaultCallback<T> extends BackendlessCallback<T> {
     private Context context;
     private ProgressDialog progressDialog;
 
-    protected DefaultCallback(Context context) {
+    public DefaultCallback(Context context) {
         this.context = context;
         progressDialog = ProgressDialog.show(context, "", "Подождите...", true);
     }
 
-    protected DefaultCallback(Context context, String message) {
+    public DefaultCallback(Context context, String message) {
         this.context = context;
         progressDialog = ProgressDialog.show(context, "", message, true);
     }

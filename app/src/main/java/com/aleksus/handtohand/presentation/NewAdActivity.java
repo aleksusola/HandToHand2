@@ -31,6 +31,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText nameSelect;
     private EditText priceSelect;
+    private EditText descSelect;
     private ImageView photoGallery;
     private Spinner spinner;
 
@@ -39,6 +40,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private String nameSelected;
     private int priceSelected;
     private String collectionSelected;
+    private String descSelected;
     private String relationColumnName;
 
     private static final String TAG = "MYAPP";
@@ -53,6 +55,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
 
         nameSelect = (EditText) findViewById(R.id.name_select);
         priceSelect = (EditText) findViewById(R.id.price_select);
+        descSelect = (EditText) findViewById(R.id.desc_select);
         Button newAdButton = (Button) findViewById(R.id.new_add_button);
         newAdButton.setOnClickListener(this);
         photoGallery = (ImageView) findViewById(R.id.photoSelect);
@@ -98,8 +101,12 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
 
         nameSelected = nameSelect.getText().toString();
         priceSelected = Integer.parseInt(priceSelect.getText().toString());
+        descSelected = descSelect.getText().toString();
         collectionSelected = spinner.getSelectedItem().toString();
 
+        if (descSelected.equals("")){
+            descSelected = "description";
+        }
         Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
@@ -107,6 +114,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                 newAd.put("___class", "ads_users");
                 newAd.put("name", nameSelected);
                 newAd.put("price", priceSelected);
+                newAd.put("description", descSelected);
                 newAd.put("ads_icon", backendlessFile.getFileURL());
                 Backendless.Persistence.of("ads_users").save(newAd, new AsyncCallback<Map>() {
                     @Override

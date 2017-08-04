@@ -81,6 +81,8 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
         recyclerViewFilterAds.removeAllViewsInLayout();
 
         if (collectionSelected.equals("Все коллекции") && authorSelected.equals("Все авторы")) {
+            DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+            queryBuilder.setPageSize(25).setOffset(0);
             Backendless.Data.of("ads_users").find(new AsyncCallback<List<Map>>() {
                 @Override
                 public void handleResponse(final List<Map> noFilter) {
@@ -106,6 +108,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
             String whereClause = "login = '" + authorSelected + "'";
             DataQueryBuilder queryBuilder = DataQueryBuilder.create();
             queryBuilder.setWhereClause(whereClause);
+            queryBuilder.setPageSize(25).setOffset(0);
             Backendless.Data.of(BackendlessUser.class).find(queryBuilder, new AsyncCallback<List<BackendlessUser>>() {
                 @Override
                 public void handleResponse(List<BackendlessUser> author) {
@@ -144,6 +147,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
             String whereClause = "collection.type = '" + collectionSelected + "'";
             final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
             queryBuilder.setWhereClause(whereClause);
+            queryBuilder.setPageSize(25).setOffset(0);
             Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                 @Override
                 public void handleResponse(final List<Map> сollectionFilter) {
@@ -175,6 +179,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
                     String whereClause = "collection.type = '" + collectionSelected + "' and ownerId = '" + author.get(0).getObjectId() + "'";
                     final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
                     queryBuilder.setWhereClause(whereClause);
+                    queryBuilder.setPageSize(25).setOffset(0);
                     Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                         @Override
                         public void handleResponse(final List<Map> fullFilter) {

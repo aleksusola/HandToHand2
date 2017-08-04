@@ -1,10 +1,13 @@
 package com.aleksus.handtohand;
 
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.presentation.EditActivity;
+import com.aleksus.handtohand.presentation.MyAdsActivity;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
@@ -30,6 +34,13 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
 
     private List<RecyclerMyAdsItem> listItemsMy;
     private Context mContext;
+    private AlertDialog.Builder sure;
+
+    private String message;
+    private String buttonYes;
+    private String buttonNo;
+
+    private static final String TAG = "MYAPP";
 
     public RecyclerMyAdsAdapter(List<RecyclerMyAdsItem> listItemsMy, Context mContext) {
         this.listItemsMy = listItemsMy;
@@ -45,17 +56,21 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
+        message = "Вы действительно хотите удалить объявление";
+        buttonYes = "Да";
+        buttonNo = "Нет";
+
         final RecyclerMyAdsItem itemList = listItemsMy.get(position);
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtDesc.setText(itemList.getDesc());
-        holder.txtPrice.setText(itemList.getPrice());
+        holder.txtPrice.setText("Цена: " + itemList.getPrice());
         String whereClause = "ads_users[collection].name = '" + itemList.getTitle() + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
         Backendless.Data.of("collection").find(queryBuilder, new AsyncCallback<List<Map>>() {
             @Override
             public void handleResponse(final List<Map> foundCollection) {
-                holder.txtCollection.setText("Коллекция: " + foundCollection.get(0).get("type").toString());
+                holder.txtCollection.setText(foundCollection.get(0).get("type").toString());
             }
 
             @Override
@@ -89,6 +104,8 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 extras.putParcelable("imagebitmap", image);
                                 Intent intent = new Intent(holder.itemView.getContext(), EditActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
+                                intent.putExtra("price", itemList.getPrice());
+                                intent.putExtra("desc", itemList.getDesc());
                                 intent.putExtras(extras);
                                 mContext.startActivity(intent);
                                 break;
@@ -99,9 +116,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 break;
                             case R.id.mnu_item_delete:
                                 //Delete item
-                                listItemsMy.remove(position);
-                                notifyDataSetChanged();
-                                Toast.makeText(mContext, "Скрываем", Toast.LENGTH_LONG).show();
+                                sure.show();
                                 break;
                             default:
                                 break;
@@ -112,7 +127,46 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                 popupMenu.show();
             }
         });
+
+        sure = new AlertDialog.Builder(mContext);
+        sure.setMessage(message);
+        sure.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                String whereClause = "name = '" + itemList.getTitle() + "'";
+                DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                queryBuilder.setWhereClause(whereClause);
+                Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
+                    @Override
+                    public void handleResponse(List<Map> delete) {
+                        Backendless.Persistence.of( "ads_users" ).remove(delete.get(0), new AsyncCallback<Long>() {
+                            @Override
+                            public void handleResponse(Long response) {
+                                Intent intent = new Intent(holder.itemView.getContext(), MyAdsActivity.class);
+                                mContext.startActivity(intent);
+                                Toast.makeText(mContext, "Объявление удалено", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void handleFault(BackendlessFault fault) {
+                                Log.e(TAG, "server reported an error - " + fault.getMessage());
+                            }
+                        });
+                    }
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Log.e(TAG, "server reported an error - " + fault.getMessage());
+                    }
+                });
+            }
+        });
+        sure.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                Toast.makeText(mContext, "Отменено", Toast.LENGTH_LONG).show();
+            }
+        });
+        sure.setCancelable(false);
     }
+
 
     @Override
     public int getItemCount() {

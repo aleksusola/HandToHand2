@@ -9,5 +9,5 @@
         android:title="@string/item_full" />
     <item
         android:id="@+id/mnu_item_delete"
-        android:title="@string/item_delete" />
+        android:title="@string/item_hide" />
 </menu>

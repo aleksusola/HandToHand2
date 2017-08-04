@@ -118,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
             public void handleResponse(BackendlessUser backendlessUser) {
                 super.handleResponse(backendlessUser);
                 startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+                finish();
             }
         }, rememberLogin);
     }
