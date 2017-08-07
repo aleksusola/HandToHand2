@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aleksus.handtohand.DefaultCallback;
 import com.aleksus.handtohand.Defaults;
@@ -17,6 +18,7 @@ import com.aleksus.handtohand.R;
 import com.aleksus.handtohand.SocialCallback;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
+import com.backendless.exceptions.BackendlessFault;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Backendless.setUrl(Defaults.SERVER_URL);
         Backendless.initApp(getApplicationContext(), Defaults.APPLICATION_ID, Defaults.API_KEY);
-        Backendless.UserService.isValidLogin(new DefaultCallback<Boolean>(this) {
+        Backendless.UserService.isValidLogin(new DefaultCallback<Boolean>(LoginActivity.this) {
             @Override
             public void handleResponse(Boolean isValidLogin) {
                 if (isValidLogin && Backendless.UserService.CurrentUser() == null) {
@@ -51,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                                 super.handleResponse(currentUser);
                                 Backendless.UserService.setCurrentUser(currentUser);
                                 startActivity(new Intent(getBaseContext(), ProfileActivity.class));
-                                finish();
+//                                finish();
                             }
                         });
                     }

@@ -201,8 +201,26 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Toast.makeText(ProfileActivity.this,"Выход...",Toast.LENGTH_SHORT).
+                    show();
+            Backendless.UserService.logout(new DefaultCallback<Void>(this)
+            {
+                @Override
+                public void handleResponse (Void response){
+                    super.handleResponse(response);
+                    startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                    finish();
+                }
+                @Override
+                public void handleFault (BackendlessFault fault){
+                    if (fault.getCode().equals("3023")) // Unable to logout: not logged in (session expired, etc.)
+                        handleResponse(null);
+                    else
+                        super.handleFault(fault);
+                }
+            });
         }
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
