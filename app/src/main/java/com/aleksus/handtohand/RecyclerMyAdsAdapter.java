@@ -1,7 +1,6 @@
 package com.aleksus.handtohand;
 
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +26,8 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +65,9 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtDesc.setText(itemList.getDesc());
         holder.txtPrice.setText("Цена: " + itemList.getPrice());
+        Date date = new Date(itemList.getCreated());
+        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
+        holder.txtCreated.setText("Создан: " + dateFormat.format(date));
         String whereClause = "ads_users[collection].name = '" + itemList.getTitle() + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
@@ -114,7 +118,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 holder.txtDesc.setVisibility(View.VISIBLE);
                                 holder.txtHide.setVisibility(View.VISIBLE);
                                 break;
-                            case R.id.mnu_item_delete:
+                            case R.id.mnu_item_hide:
                                 //Delete item
                                 sure.show();
                                 break;
@@ -182,6 +186,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
         TextView txtOptionDigit;
         ImageView photoIcon;
         TextView txtHide;
+        TextView txtCreated;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -192,6 +197,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
             photoIcon = (ImageView) itemView.findViewById(R.id.photoIcon);
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
             txtHide = (TextView) itemView.findViewById(R.id.txtHide);
+            txtCreated = (TextView) itemView.findViewById(R.id.txtCreated);
         }
     }
 

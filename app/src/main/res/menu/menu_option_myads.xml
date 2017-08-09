@@ -7,6 +7,6 @@
         android:id="@+id/mnu_item_full"
         android:title="@string/item_full" />
     <item
-        android:id="@+id/mnu_item_delete"
+        android:id="@+id/mnu_item_hide"
         android:title="@string/item_delete" />
 </menu>

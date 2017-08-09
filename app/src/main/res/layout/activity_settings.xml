@@ -42,6 +42,24 @@
                 android:textSize="@dimen/text_micro" />
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/passwordFieldNew"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp4"
+                android:layout_marginRight="@dimen/dp4"
+                android:gravity="center_vertical"
+                android:hint="Новый пароль…"
+                android:inputType="textPassword"
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
 
         <Button
             android:id="@+id/saveButton"

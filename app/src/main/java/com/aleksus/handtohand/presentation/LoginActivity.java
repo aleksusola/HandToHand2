@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                                 super.handleResponse(currentUser);
                                 Backendless.UserService.setCurrentUser(currentUser);
                                 startActivity(new Intent(getBaseContext(), ProfileActivity.class));
-//                                finish();
+                                finish();
                             }
                         });
                     }

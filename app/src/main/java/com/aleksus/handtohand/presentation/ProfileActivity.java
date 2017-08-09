@@ -2,10 +2,12 @@ package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +39,7 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView recyclerViewAds;
     private RecyclerAdsAdapter adapter;
     private List<RecyclerAdsItem> listItems;
@@ -60,6 +63,23 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
+                        recyclerViewAds.setAdapter(adapter);
+                        //Останавливаем обновление:
+                        mSwipeRefresh.setRefreshing(false)
+                        ;}}, 3000);
+            }
+        });
+        mSwipeRefresh.setColorSchemeResources
+                (R.color.light_blue, R.color.middle_blue,R.color.deep_blue);
+
 
         BackendlessUser user = Backendless.UserService.CurrentUser();
         if (user != null) {
@@ -201,8 +221,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Toast.makeText(ProfileActivity.this,"Выход...",Toast.LENGTH_SHORT).
-                    show();
+            Toast.makeText(ProfileActivity.this,"Выход...",Toast.LENGTH_SHORT).show();
             Backendless.UserService.logout(new DefaultCallback<Void>(this)
             {
                 @Override
@@ -264,7 +283,10 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 }
             });
         } else if (id == R.id.nav_exit) {
-            finish();
+            Intent i = new Intent(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_HOME);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

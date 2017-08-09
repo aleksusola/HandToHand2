@@ -2,6 +2,7 @@ package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -59,7 +60,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         Button newAdButton = (Button) findViewById(R.id.new_add_button);
         newAdButton.setOnClickListener(this);
         photoGallery = (ImageView) findViewById(R.id.photoSelect);
-        selImage = null;
+        selImage = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
         Button photoSelectButton = (Button) findViewById(R.id.photo_select_button);
         photoSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override

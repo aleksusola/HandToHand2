@@ -8,9 +8,6 @@
         android:id="@+id/mnu_item_full"
         android:title="@string/item_full" />
     <item
-        android:id="@+id/mnu_item_hide"
-        android:title="@string/item_hide" />
-    <item
-        android:id="@+id/mnu_item_fav"
-        android:title="@string/item_fav" />
+        android:id="@+id/mnu_item_remove"
+        android:title="@string/item_remove" />
 </menu>

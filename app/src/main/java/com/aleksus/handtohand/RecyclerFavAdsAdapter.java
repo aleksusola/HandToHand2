@@ -14,20 +14,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aleksus.handtohand.presentation.FavoritesActivity;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
-import com.backendless.persistence.LoadRelationsQueryBuilder;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.ViewHolder> {
+public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAdapter.ViewHolder> {
 
     private List<RecyclerAdsItem> listItems;
     private Context mContext;
@@ -36,7 +34,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
 
     private static final String TAG = "MYAPP";
 
-    public RecyclerAdsAdapter(List<RecyclerAdsItem> listItems, Context mContext) {
+    public RecyclerFavAdsAdapter(List<RecyclerAdsItem> listItems, Context mContext) {
         this.listItems = listItems;
         this.mContext = mContext;
     }
@@ -69,7 +67,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             }
         });
 
-        String whereClause = "ads_users[collection].name = '" + itemList.getTitle() + "'";
+        final String whereClause = "ads_users[collection].name = '" + itemList.getTitle() + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
         Backendless.Data.of("collection").find(queryBuilder, new AsyncCallback<List<Map>>() {
@@ -102,7 +100,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
             @Override
             public void onClick(final View v) {
                 PopupMenu popupMenu = new PopupMenu(mContext, holder.txtOptionDigit);
-                popupMenu.inflate(R.menu.menu_option);
+                popupMenu.inflate(R.menu.menu_option_fav);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -128,37 +126,14 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 holder.txtDesc.setVisibility(View.VISIBLE);
                                 holder.txtHide.setVisibility(View.VISIBLE);
                                 break;
-                            case R.id.mnu_item_hide:
-                                listItems.remove(position);
-                                notifyDataSetChanged();
-                                Toast.makeText(mContext, "Скрыто", Toast.LENGTH_LONG).show();
-                                break;
-                            case R.id.mnu_item_fav:
-                                String whereClause = "Users[favorites].objectId='"+ user.getObjectId() +"' and name='"+ itemList.getTitle() +"'";
-                                DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                                queryBuilder.setWhereClause( whereClause );
-                                Backendless.Data.of( "ads_users" ).find(queryBuilder, new AsyncCallback<List<Map>>() {
+                            case R.id.mnu_item_remove:
+                                Backendless.Data.of(BackendlessUser.class ).deleteRelation(user, "favorites", "name = '" + itemList.getTitle() + "'", new AsyncCallback<Integer>() {
                                     @Override
-                                    public void handleResponse(List<Map> relatedAd) {
-                                        if (relatedAd.size() == 0) {
-                                            Backendless.Data.of(BackendlessUser.class).addRelation( user, "favorites:ads_users:n", "name = '" + itemList.getTitle() + "'", new AsyncCallback<Integer>() {
-                                            @Override
-                                            public void handleResponse( Integer response )
-                                            {
-                                                Toast.makeText(mContext, "Добавлено в избранные", Toast.LENGTH_LONG).show();
-                                            }
-
-                                            @Override
-                                            public void handleFault( BackendlessFault fault )
-                                            {
-                                                Log.e( TAG, "server reported an error - " + fault.getMessage() );
-                                            }
-                                        });
-                                        } else {
-                                            Toast.makeText(mContext, "Объявление уже есть в вашем списке избранных", Toast.LENGTH_LONG).show();
-                                        }
+                                    public void handleResponse(Integer response) {
+                                        listItems.remove(position);
+                                        notifyDataSetChanged();
+                                        Toast.makeText(mContext, "Удалено из избранных", Toast.LENGTH_LONG).show();
                                     }
-
                                     @Override
                                     public void handleFault(BackendlessFault fault) {
                                         Log.e(TAG, "server reported an error - " + fault.getMessage());

@@ -83,7 +83,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
         if (collectionSelected.equals("Все коллекции") && authorSelected.equals("Все авторы")) {
             DataQueryBuilder queryBuilder = DataQueryBuilder.create();
             queryBuilder.setPageSize(25).setOffset(0);
-            Backendless.Data.of("ads_users").find(new AsyncCallback<List<Map>>() {
+            Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                 @Override
                 public void handleResponse(final List<Map> noFilter) {
                     if (noFilter.size() == 0) {

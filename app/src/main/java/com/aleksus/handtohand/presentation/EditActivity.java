@@ -112,7 +112,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
         nameSelected = nameEdit.getText().toString();
         priceSelected = Integer.parseInt(priceEdit.getText().toString());
-        descSelected = descEdit.getText().toString().trim();
+        descSelected = descEdit.getText().toString();
         collectionSelected = spinner.getSelectedItem().toString();
 
         Backendless.Files.remove("icons/" + adTitle + ".png", new AsyncCallback<Void>() {
@@ -165,7 +165,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         });
                         Toast.makeText(EditActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(EditActivity.this, MyAdsActivity.class));
                         finish();
                     }
 

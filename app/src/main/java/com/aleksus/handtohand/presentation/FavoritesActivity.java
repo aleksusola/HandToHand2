@@ -11,10 +11,12 @@ import com.aleksus.handtohand.R;
 import com.aleksus.handtohand.RecyclerAdsAdapter;
 import com.aleksus.handtohand.RecyclerAdsItem;
 
+import com.aleksus.handtohand.RecyclerFavAdsAdapter;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.persistence.LoadRelationsQueryBuilder;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import java.util.Map;
 public class FavoritesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewFavorites;
-    private RecyclerAdsAdapter adapter;
+    private RecyclerFavAdsAdapter adapter;
     private List<RecyclerAdsItem> listItems;
 
     private static final String TAG = "MYAPP";
@@ -39,14 +41,13 @@ public class FavoritesActivity extends AppCompatActivity {
         recyclerViewFavorites.setHasFixedSize(true);
         recyclerViewFavorites.setLayoutManager(new LinearLayoutManager(this));
 
-        BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
-        LoadRelationsQueryBuilder<Map<String, Object>> loadRelationsQueryBuilder;
-        loadRelationsQueryBuilder = LoadRelationsQueryBuilder.ofMap();
-        loadRelationsQueryBuilder.setRelationName("favorites");
-        loadRelationsQueryBuilder.setPageSize(25).setOffset(0);
-        Backendless.Data.of(BackendlessUser.class).loadRelations(AdsOwner.getObjectId(), loadRelationsQueryBuilder, new AsyncCallback<List<Map<String, Object>>>() {
+        BackendlessUser adsOwner = Backendless.UserService.CurrentUser();
+        String whereClause = "Users[favorites].objectId='" + adsOwner.getObjectId() + "'";
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause(whereClause);
+        Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
             @Override
-            public void handleResponse(List<Map<String, Object>> favorites) {
+            public void handleResponse(List<Map> favorites) {
                 if (favorites.size() == 0) {
                     Toast.makeText(FavoritesActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
                 } else {
@@ -55,7 +56,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     for (int i = 0; i < favorites.size(); i++) {
                         listItems.add(new RecyclerAdsItem(favorites.get(i).get("name").toString(), favorites.get(i).get("description").toString(), favorites.get(i).get("ownerId").toString(), favorites.get(i).get("collection").toString(), favorites.get(i).get("price").toString(), favorites.get(i).get("ads_icon").toString()));
                     }
-                    adapter = new RecyclerAdsAdapter(listItems, FavoritesActivity.this);
+                    adapter = new RecyclerFavAdsAdapter(listItems, FavoritesActivity.this);
                     recyclerViewFavorites.setAdapter(adapter);
                 }
             }

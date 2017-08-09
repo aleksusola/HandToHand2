@@ -1,6 +1,8 @@
 package com.aleksus.handtohand.presentation;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
+import com.aleksus.handtohand.RecyclerAdsAdapter;
 import com.aleksus.handtohand.RecyclerMyAdsAdapter;
 import com.aleksus.handtohand.RecyclerMyAdsItem;
 import com.backendless.Backendless;
@@ -23,6 +26,8 @@ import java.util.Map;
 
 public class MyAdsActivity extends AppCompatActivity {
 
+
+    private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView recyclerViewMyAds;
     private RecyclerMyAdsAdapter adapterMy;
     private List<RecyclerMyAdsItem> listItemsMy;
@@ -38,6 +43,21 @@ public class MyAdsActivity extends AppCompatActivity {
         recyclerViewMyAds.setHasFixedSize(true);
         recyclerViewMyAds.setLayoutManager(new LinearLayoutManager(this));
 
+        mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_my);
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
+                        recyclerViewMyAds.setAdapter(adapterMy);
+                        mSwipeRefresh.setRefreshing(false)
+                        ;}}, 3000);
+            }
+        });
+        mSwipeRefresh.setColorSchemeResources
+                (R.color.light_blue, R.color.middle_blue,R.color.deep_blue);
+
         BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
         String parentObjectId = AdsOwner.getObjectId();
         final String whereClause = "ownerId = '" + parentObjectId + "'";
@@ -52,9 +72,8 @@ public class MyAdsActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MyAdsActivity.this, "Найдено объявлений " + foundMyAds.size(), Toast.LENGTH_LONG).show();
                     listItemsMy = new ArrayList<>();
-                    for (int i = 0; i < foundMyAds.size(); i++) {
-                        listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("description").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString()));
-                    }
+                    for (int i = 0; i < foundMyAds.size(); i++)
+                        listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("description").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString(), foundMyAds.get(i).get("created").toString()));
                     adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
                     recyclerViewMyAds.setAdapter(adapterMy);
                 }
