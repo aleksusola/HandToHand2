@@ -75,10 +75,8 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         Backendless.Data.of("collection").find(queryBuilder, new AsyncCallback<List<Map>>() {
             @Override
             public void handleResponse(final List<Map> foundCollection) {
-                if (!foundCollection.isEmpty()) {
-                    holder.txtCollection.setText(foundCollection.get(0).get("type").toString());
-                } else {
-                    holder.txtCollection.setText("Коллекция: null");
+                if (!foundCollection.isEmpty()) {holder.txtCollection.setText(foundCollection.get(0).get("type").toString());
+                } else {holder.txtCollection.setText("Коллекция: null");
                 }
             }
 

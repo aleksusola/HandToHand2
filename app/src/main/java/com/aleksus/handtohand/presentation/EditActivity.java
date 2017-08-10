@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,6 +55,18 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditActivity.super.onBackPressed();
+            }
+        });
+
         spinner = (Spinner) findViewById(R.id.edit_collection);
         nameEdit = (EditText) findViewById(R.id.edit_name);
         priceEdit = (EditText) findViewById(R.id.edit_price);
@@ -150,7 +163,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                                 Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause1, new AsyncCallback<Integer>() {
                                     @Override
                                     public void handleResponse(Integer colNum) {
-                                        Log.i(TAG, "related objects have been added" + colNum);
+                                        Toast.makeText(EditActivity.this, "Изменено! Обновите данные на странице", Toast.LENGTH_SHORT).show();
+                                        EditActivity.super.onBackPressed();
                                     }
 
                                     @Override
@@ -164,8 +178,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                                 Log.e(TAG, "server reported an error - " + fault.getMessage());
                             }
                         });
-                        Toast.makeText(EditActivity.this, "Изменено", Toast.LENGTH_SHORT).show();
-                        finish();
                     }
 
                     @Override

@@ -16,6 +16,7 @@ public class PasswordRecoveryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_recovery_requested);
         initUI();
+
     }
 
     private void initUI() {

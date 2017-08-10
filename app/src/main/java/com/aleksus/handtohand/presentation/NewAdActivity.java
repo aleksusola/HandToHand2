@@ -136,9 +136,8 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                                 Log.e(TAG, "server reported an error - " + fault.getMessage());
                             }
                         });
-                        Toast.makeText(NewAdActivity.this, "Добавлено", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(NewAdActivity.this, ProfileActivity.class));
-                        finish();
+                        Toast.makeText(NewAdActivity.this, "Добавлено! Обновите главную страницу", Toast.LENGTH_SHORT).show();
+                        NewAdActivity.super.onBackPressed();
                     }
 
                     @Override

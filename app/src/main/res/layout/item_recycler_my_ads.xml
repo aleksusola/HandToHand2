@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/photoIcon"
-                android:text="Title"
+                android:text=""
                 android:textAppearance="?android:textAppearanceLarge" />
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTitle"
                 android:layout_toRightOf="@+id/photoIcon"
-                android:text="Collection"
+                android:text=""
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtCollection"
                 android:layout_toRightOf="@+id/photoIcon"
-                android:text="Price"
+                android:text=""
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtPrice"
                 android:layout_toRightOf="@+id/photoIcon"
-                android:text="Created"
+                android:text=""
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView

@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/photoIcon"
-                android:text="@string/ad_title"
+                android:text=""
                 android:textAppearance="?android:textAppearanceLarge" />
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTitle"
                 android:layout_toRightOf="@+id/photoIcon"
-                android:text="@string/ad_author"
+                android:text=""
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtAuthor"
                 android:layout_toRightOf="@+id/photoIcon"
-                android:text="@string/ad_col"
+                android:text=""
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtCollection"
                 android:layout_toRightOf="@+id/photoIcon"
-                android:text="@string/ad_price"
+                android:text=""
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
