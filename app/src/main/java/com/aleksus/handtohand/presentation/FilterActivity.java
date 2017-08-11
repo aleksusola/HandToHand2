@@ -4,9 +4,10 @@ package com.aleksus.handtohand.presentation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,29 +16,19 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
-import com.aleksus.handtohand.RecyclerAdsAdapter;
-import com.aleksus.handtohand.RecyclerAdsItem;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.persistence.DataQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FilterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Spinner spinnerCollection;
     private Spinner spinnerAuthor;
-    private RecyclerView recyclerViewFilterAds;
-    private RecyclerAdsAdapter adapterFilter;
-    private List<RecyclerAdsItem> listItemsFilter;
     private List<Object> authors;
-
-    private String collectionSelected;
-    private String authorSelected;
 
     private static final String TAG = "MYAPP";
 
@@ -45,15 +36,22 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FilterActivity.super.onBackPressed();
+            }
+        });
         spinnerCollection = (Spinner) findViewById(R.id.collection_filter_select);
         spinnerAuthor = (Spinner) findViewById(R.id.author_filter_select);
 
         Button filterButton = (Button) findViewById(R.id.filter_button);
         filterButton.setOnClickListener(this);
-
-        recyclerViewFilterAds = (RecyclerView) findViewById(R.id.recyclerViewFilterAds);
-        recyclerViewFilterAds.setHasFixedSize(true);
-        recyclerViewFilterAds.setLayoutManager(new LinearLayoutManager(this));
 
         Backendless.Persistence.of(BackendlessUser.class).find(new AsyncCallback<List<BackendlessUser>>() {
             @Override
@@ -78,14 +76,18 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
 
-        collectionSelected = spinnerCollection.getSelectedItem().toString();
-        authorSelected = spinnerAuthor.getSelectedItem().toString();
+        String collectionSelected = spinnerCollection.getSelectedItem().toString();
+        String authorSelected = spinnerAuthor.getSelectedItem().toString();
         Intent intent = new Intent(FilterActivity.this, ProfileActivity.class);
         intent.putExtra("collection", collectionSelected);
         intent.putExtra("author", authorSelected);
         startActivity(intent);
-        recyclerViewFilterAds.removeAllViewsInLayout();
+        finish();
+    }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(FilterActivity.this, ProfileActivity.class));
 
     }
 }

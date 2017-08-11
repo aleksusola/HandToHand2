@@ -3,6 +3,7 @@ package com.aleksus.handtohand.presentation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aleksus.handtohand.DefaultCallback;
 import com.aleksus.handtohand.Defaults;
@@ -18,7 +18,6 @@ import com.aleksus.handtohand.R;
 import com.aleksus.handtohand.SocialCallback;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
-import com.backendless.exceptions.BackendlessFault;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +35,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.super.onBackPressed();
+            }
+        });
         initUI();
 
         Backendless.setUrl(Defaults.SERVER_URL);

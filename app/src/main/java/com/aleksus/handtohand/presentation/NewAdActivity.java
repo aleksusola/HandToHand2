@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +26,6 @@ import com.backendless.files.BackendlessFile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 
 
 public class NewAdActivity extends AppCompatActivity implements View.OnClickListener {
@@ -52,6 +52,17 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_ad);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewAdActivity.super.onBackPressed();
+            }
+        });
         spinner = (Spinner) findViewById(R.id.collection_select);
 
         nameSelect = (EditText) findViewById(R.id.name_select);
@@ -105,7 +116,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         descSelected = descSelect.getText().toString();
         collectionSelected = spinner.getSelectedItem().toString();
 
-        if (descSelected.equals("")){
+        if (descSelected.equals("")) {
             descSelected = "description";
         }
         Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {

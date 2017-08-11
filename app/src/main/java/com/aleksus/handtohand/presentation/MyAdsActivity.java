@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
-import com.aleksus.handtohand.RecyclerAdsAdapter;
 import com.aleksus.handtohand.RecyclerMyAdsAdapter;
 import com.aleksus.handtohand.RecyclerMyAdsItem;
 import com.backendless.Backendless;
@@ -61,15 +60,18 @@ public class MyAdsActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
-                    @Override public void run() {
+                    @Override
+                    public void run() {
                         adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
                         recyclerViewMyAds.setAdapter(adapterMy);
                         mSwipeRefresh.setRefreshing(false)
-                        ;}}, 3000);
+                        ;
+                    }
+                }, 3000);
             }
         });
         mSwipeRefresh.setColorSchemeResources
-                (R.color.light_blue, R.color.middle_blue,R.color.deep_blue);
+                (R.color.light_blue, R.color.middle_blue, R.color.deep_blue);
 
         BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
         String parentObjectId = AdsOwner.getObjectId();

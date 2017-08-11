@@ -1,5 +1,6 @@
 package com.aleksus.handtohand.presentation;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;

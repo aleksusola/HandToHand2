@@ -36,7 +36,7 @@
 
     <string name="app_description">Программа предназначена для поиска и подачи объявлений через сервис HandToHand</string>
     <string name="developer_contact">Написать разработчику</string>
-    <string name="app_version">Версия программы:</string>
+    <string name="app_version">Версия программы: </string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

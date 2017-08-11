@@ -1,9 +1,10 @@
 
 package com.aleksus.handtohand.presentation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +13,7 @@ import com.aleksus.handtohand.DefaultCallback;
 import com.aleksus.handtohand.R;
 import com.backendless.Backendless;
 
-public class RestorePasswordActivity extends Activity {
+public class RestorePasswordActivity extends AppCompatActivity {
     private EditText loginField;
 
     @Override
@@ -20,6 +21,16 @@ public class RestorePasswordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restore_password);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RestorePasswordActivity.super.onBackPressed();
+            }
+        });
         initUI();
     }
 

@@ -15,8 +15,8 @@
 
         <activity
             android:name=".presentation.SplashScreenActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,26 +24,33 @@
         </activity>
         <activity
             android:name=".presentation.LoginActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".presentation.PasswordRecoveryActivity" />
+            android:screenOrientation="portrait" />
+        <activity android:name=".presentation.PasswordRecoveryActivity"/>
         <activity android:name=".presentation.RegisterActivity" />
         <activity android:name=".presentation.RegistrationSuccessActivity" />
         <activity android:name=".presentation.RestorePasswordActivity" />
-        <activity android:name=".presentation.ProfileActivity"
+        <activity
+            android:name=".presentation.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".presentation.SettingsActivity" />
-        <activity android:name=".presentation.AboutActivity" />
-        <activity android:name=".presentation.MyAdsActivity"
+        <activity android:name=".presentation.AboutActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.MyAdsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".presentation.EditActivity" />
         <activity android:name=".presentation.NewAdActivity" />
         <activity android:name=".presentation.FilterActivity" />
         <activity android:name=".presentation.FavoritesActivity" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="6044f3853c755927dc5f0a74f01e96c7e2a22731"
-            />
+            android:value="6044f3853c755927dc5f0a74f01e96c7e2a22731" />
     </application>
 
 </manifest>
