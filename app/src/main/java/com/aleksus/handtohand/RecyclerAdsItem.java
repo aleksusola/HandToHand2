@@ -8,14 +8,16 @@ public class RecyclerAdsItem {
     private String collection;
     private String price;
     private String photo;
+    private String created;
 
-    public RecyclerAdsItem(String title, String desc, String author, String collection, String price, String photo) {
+    public RecyclerAdsItem(String title, String desc, String author, String collection, String price, String photo, String created) {
         this.title = title;
         this.desc = desc;
         this.author = author;
         this.collection = collection;
         this.price = price;
         this.photo = photo;
+        this.created = created;
     }
 
     public String getTitle() {
@@ -64,6 +66,14 @@ public class RecyclerAdsItem {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 
 }

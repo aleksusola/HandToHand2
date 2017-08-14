@@ -54,8 +54,21 @@ public class MyAdsActivity extends AppCompatActivity {
         recyclerViewMyAds = (RecyclerView) findViewById(R.id.recyclerViewMyAds);
         recyclerViewMyAds.setHasFixedSize(true);
         recyclerViewMyAds.setLayoutManager(new LinearLayoutManager(this));
-
         mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_my);
+        recyclerViewMyAds.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                mSwipeRefresh.setEnabled(topRowVerticalPosition >= 0);
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

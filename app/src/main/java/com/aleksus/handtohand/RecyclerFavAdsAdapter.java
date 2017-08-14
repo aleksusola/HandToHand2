@@ -2,7 +2,9 @@ package com.aleksus.handtohand;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aleksus.handtohand.presentation.InfoAdActivity;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
@@ -21,6 +24,8 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,16 +91,11 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
             }
         });
         holder.txtTitle.setText(itemList.getTitle());
-        holder.txtDesc.setText(itemList.getDesc());
         holder.txtPrice.setText("Цена: " + itemList.getPrice());
+        Date date = new Date(itemList.getCreated());
+        DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
+        holder.txtCreated.setText("Создан: " + dateFormat.format(date));
         Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
-        holder.txtHide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                holder.txtDesc.setVisibility(View.GONE);
-                holder.txtHide.setVisibility(View.GONE);
-            }
-        });
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -122,9 +122,20 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
                                 });
                                 break;
                             case R.id.mnu_item_full:
-                                Toast.makeText(mContext, "Подробнее", Toast.LENGTH_LONG).show();
-                                holder.txtDesc.setVisibility(View.VISIBLE);
-                                holder.txtHide.setVisibility(View.VISIBLE);
+                                Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
+                                holder.photoIcon.buildDrawingCache();
+                                Bitmap image = holder.photoIcon.getDrawingCache();
+                                Bundle extras = new Bundle();
+                                extras.putParcelable("imagebitmap", image);
+                                Intent intent = new Intent(holder.itemView.getContext(), InfoAdActivity.class);
+                                intent.putExtra("title", itemList.getTitle());
+                                intent.putExtra("price", itemList.getPrice());
+                                intent.putExtra("author", "Вы");
+                                intent.putExtra("collection", holder.txtCollection.getText());
+                                intent.putExtra("created", holder.txtCreated.getText());
+                                intent.putExtra("desc", itemList.getDesc());
+                                intent.putExtras(extras);
+                                mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_remove:
                                 Backendless.Data.of(BackendlessUser.class ).deleteRelation(user, "favorites", "name = '" + itemList.getTitle() + "'", new AsyncCallback<Integer>() {
@@ -159,24 +170,22 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtTitle;
-        TextView txtDesc;
         TextView txtAuthor;
         TextView txtCollection;
         TextView txtPrice;
         TextView txtOptionDigit;
         ImageView photoIcon;
-        TextView txtHide;
+        TextView txtCreated;
 
         ViewHolder(View itemView) {
             super(itemView);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
-            txtDesc = (TextView) itemView.findViewById(R.id.txtDesc);
             txtAuthor = (TextView) itemView.findViewById(R.id.txtAuthor);
             txtCollection = (TextView) itemView.findViewById(R.id.txtCollection);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
             photoIcon = (ImageView) itemView.findViewById(R.id.photoIcon);
-            txtHide = (TextView) itemView.findViewById(R.id.txtHide);
+            txtCreated = (TextView) itemView.findViewById(R.id.txtCreated);
         }
     }
 }

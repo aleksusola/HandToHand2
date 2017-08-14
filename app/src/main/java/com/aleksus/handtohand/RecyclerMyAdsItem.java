@@ -1,7 +1,5 @@
 package com.aleksus.handtohand;
 
-import java.util.Date;
-
 public class RecyclerMyAdsItem {
 
     private String title;

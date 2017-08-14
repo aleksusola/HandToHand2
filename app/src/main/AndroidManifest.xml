@@ -47,7 +47,7 @@
         <activity android:name=".presentation.NewAdActivity" />
         <activity android:name=".presentation.FilterActivity" />
         <activity android:name=".presentation.FavoritesActivity" />
-
+        <activity android:name=".presentation.InfoAdActivity" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="6044f3853c755927dc5f0a74f01e96c7e2a22731" />

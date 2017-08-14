@@ -60,6 +60,15 @@
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
+                android:id="@+id/txtCreated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtPrice"
+                android:layout_toRightOf="@+id/photoIcon"
+                android:text=""
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
                 android:id="@+id/txtOptionDigit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,26 +78,6 @@
                 android:text="&#8942;"
                 android:textAppearance="?android:textAppearanceLarge" />
 
-            <TextView
-                android:id="@+id/txtDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtPrice"
-                android:text="@string/ad_desc"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/txtHide"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtDesc"
-                android:clickable="true"
-                android:gravity="center_horizontal"
-                android:text="Свернуть"
-                android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="@android:color/holo_blue_light"
-                android:visibility="gone" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

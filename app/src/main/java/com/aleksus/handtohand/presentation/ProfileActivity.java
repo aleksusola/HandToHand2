@@ -32,8 +32,6 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +69,24 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         selectedFilter = (TextView) findViewById(R.id.selectedFilter);
+        recyclerViewAds = (RecyclerView) findViewById(R.id.recyclerViewAds);
+        recyclerViewAds.setHasFixedSize(true);
+        recyclerViewAds.setLayoutManager(new LinearLayoutManager(this));
         mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        recyclerViewAds.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                mSwipeRefresh.setEnabled(topRowVerticalPosition >= 0);
+
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -90,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                                     Toast.makeText(ProfileActivity.this, "Найдено объявлений " + foundAds.size(), Toast.LENGTH_LONG).show();
                                     listItems = new ArrayList<>();
                                     for (int i = 0; i < foundAds.size(); i++) {
-                                        listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), foundAds.get(i).get("collection").toString(), foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString()));
+                                        listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), foundAds.get(i).get("collection").toString(), foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString(), foundAds.get(i).get("created").toString()));
                                     }
                                     adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
                                     recyclerViewAds.setAdapter(adapter);
@@ -131,10 +146,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     Toast.LENGTH_SHORT).show();
         }
 
-        recyclerViewAds = (RecyclerView) findViewById(R.id.recyclerViewAds);
-        recyclerViewAds.setHasFixedSize(true);
-        recyclerViewAds.setLayoutManager(new LinearLayoutManager(this));
-
         adCollection = getIntent().getStringExtra("collection");
         adAuthor = getIntent().getStringExtra("author");
         if (adCollection == null && adAuthor == null || adCollection.equals("Все коллекции") && adAuthor.equals("Все авторы")) {
@@ -149,7 +160,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                         Toast.makeText(ProfileActivity.this, "Найдено объявлений " + foundAds.size(), Toast.LENGTH_LONG).show();
                         listItems = new ArrayList<>();
                         for (int i = 0; i < foundAds.size(); i++) {
-                            listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), foundAds.get(i).get("collection").toString(), foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString()));
+                            listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), foundAds.get(i).get("collection").toString(), foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString(), foundAds.get(i).get("created").toString()));
                         }
                         adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
                         recyclerViewAds.setAdapter(adapter);
@@ -183,7 +194,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                                 Toast.makeText(ProfileActivity.this, "Найдено объявлений " + authorFilter.size(), Toast.LENGTH_LONG).show();
                                 listItemsFilter = new ArrayList<>();
                                 for (int i = 0; i < authorFilter.size(); i++) {
-                                    listItemsFilter.add(new RecyclerAdsItem(authorFilter.get(i).get("name").toString(), authorFilter.get(i).get("description").toString(), authorFilter.get(i).get("ownerId").toString(), authorFilter.get(i).get("collection").toString(), authorFilter.get(i).get("price").toString(), authorFilter.get(i).get("ads_icon").toString()));
+                                    listItemsFilter.add(new RecyclerAdsItem(authorFilter.get(i).get("name").toString(),authorFilter.get(i).get("description").toString(), authorFilter.get(i).get("ownerId").toString(), authorFilter.get(i).get("collection").toString(), authorFilter.get(i).get("price").toString(), authorFilter.get(i).get("ads_icon").toString(), authorFilter.get(i).get("created").toString()));
                                 }
                                 adapter = new RecyclerAdsAdapter(listItemsFilter, ProfileActivity.this);
                                 recyclerViewAds.setAdapter(adapter);
@@ -203,7 +214,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 }
             });
         } else if (!adCollection.equals("Все коллекции") && adAuthor.equals("Все авторы")) {
-            selectedFilter.setText("Фильтр по коллекции " +adCollection+ " и всем авторам");
+            selectedFilter.setText("Фильтр по коллекции " + adCollection + " и всем авторам");
             selectedFilter.setVisibility(View.VISIBLE);
             String whereClause = "collection.type = '" + adCollection + "'";
             final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -218,7 +229,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                         Toast.makeText(ProfileActivity.this, "Найдено объявлений " + сollectionFilter.size(), Toast.LENGTH_LONG).show();
                         listItemsFilter = new ArrayList<>();
                         for (int i = 0; i < сollectionFilter.size(); i++) {
-                            listItemsFilter.add(new RecyclerAdsItem(сollectionFilter.get(i).get("name").toString(), сollectionFilter.get(i).get("description").toString(), сollectionFilter.get(i).get("ownerId").toString(), сollectionFilter.get(i).get("collection").toString(), сollectionFilter.get(i).get("price").toString(), сollectionFilter.get(i).get("ads_icon").toString()));
+                            listItemsFilter.add(new RecyclerAdsItem(сollectionFilter.get(i).get("name").toString(), сollectionFilter.get(i).get("description").toString(), сollectionFilter.get(i).get("ownerId").toString(), сollectionFilter.get(i).get("collection").toString(), сollectionFilter.get(i).get("price").toString(), сollectionFilter.get(i).get("ads_icon").toString(), сollectionFilter.get(i).get("created").toString()));
                         }
                         adapter = new RecyclerAdsAdapter(listItemsFilter, ProfileActivity.this);
                         recyclerViewAds.setAdapter(adapter);
@@ -231,7 +242,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 }
             });
         } else if (!adCollection.equals("Все коллекции") && !adAuthor.equals("Все авторы")) {
-            selectedFilter.setText("Фильтр по коллекции " +adCollection+ " и автору " +adAuthor);
+            selectedFilter.setText("Фильтр по коллекции " + adCollection + " и автору " + adAuthor);
             selectedFilter.setVisibility(View.VISIBLE);
             String whereClause = "login = '" + adAuthor + "'";
             DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -252,7 +263,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                                 Toast.makeText(ProfileActivity.this, "Найдено объявлений " + fullFilter.size(), Toast.LENGTH_LONG).show();
                                 listItemsFilter = new ArrayList<>();
                                 for (int i = 0; i < fullFilter.size(); i++) {
-                                    listItemsFilter.add(new RecyclerAdsItem(fullFilter.get(i).get("name").toString(), fullFilter.get(i).get("description").toString(), fullFilter.get(i).get("ownerId").toString(), fullFilter.get(i).get("collection").toString(), fullFilter.get(i).get("price").toString(), fullFilter.get(i).get("ads_icon").toString()));
+                                    listItemsFilter.add(new RecyclerAdsItem(fullFilter.get(i).get("name").toString(), fullFilter.get(i).get("description").toString(), fullFilter.get(i).get("ownerId").toString(), fullFilter.get(i).get("collection").toString(), fullFilter.get(i).get("price").toString(), fullFilter.get(i).get("ads_icon").toString(), fullFilter.get(i).get("created").toString()));
                                 }
                                 adapter = new RecyclerAdsAdapter(listItemsFilter, ProfileActivity.this);
                                 recyclerViewAds.setAdapter(adapter);
@@ -310,7 +321,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                             Toast.makeText(ProfileActivity.this, "Найдено объявлений " + priceSortingAds.size(), Toast.LENGTH_LONG).show();
                             listItemsPrice = new ArrayList<>();
                             for (int i = 0; i < priceSortingAds.size(); i++) {
-                                listItemsPrice.add(new RecyclerAdsItem(priceSortingAds.get(i).get("name").toString(), priceSortingAds.get(i).get("description").toString(), priceSortingAds.get(i).get("ownerId").toString(), priceSortingAds.get(i).get("collection").toString(), priceSortingAds.get(i).get("price").toString(), priceSortingAds.get(i).get("ads_icon").toString()));
+                                listItemsPrice.add(new RecyclerAdsItem(priceSortingAds.get(i).get("name").toString(), priceSortingAds.get(i).get("description").toString(), priceSortingAds.get(i).get("ownerId").toString(), priceSortingAds.get(i).get("collection").toString(), priceSortingAds.get(i).get("price").toString(), priceSortingAds.get(i).get("ads_icon").toString(), priceSortingAds.get(i).get("created").toString()));
                             }
                             adapter = new RecyclerAdsAdapter(listItemsPrice, ProfileActivity.this);
                             recyclerViewAds.setAdapter(adapter);
@@ -338,7 +349,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                             Toast.makeText(ProfileActivity.this, "Найдено объявлений " + dateSortingAds.size(), Toast.LENGTH_LONG).show();
                             listItemsDate = new ArrayList<>();
                             for (int i = 0; i < dateSortingAds.size(); i++) {
-                                listItemsDate.add(new RecyclerAdsItem(dateSortingAds.get(i).get("name").toString(), dateSortingAds.get(i).get("description").toString(), dateSortingAds.get(i).get("ownerId").toString(), dateSortingAds.get(i).get("collection").toString(), dateSortingAds.get(i).get("price").toString(), dateSortingAds.get(i).get("ads_icon").toString()));
+                                listItemsDate.add(new RecyclerAdsItem(dateSortingAds.get(i).get("name").toString(), dateSortingAds.get(i).get("description").toString(), dateSortingAds.get(i).get("ownerId").toString(), dateSortingAds.get(i).get("collection").toString(), dateSortingAds.get(i).get("price").toString(), dateSortingAds.get(i).get("ads_icon").toString(), dateSortingAds.get(i).get("created").toString()));
                             }
                             adapter = new RecyclerAdsAdapter(listItemsDate, ProfileActivity.this);
                             recyclerViewAds.setAdapter(adapter);
@@ -372,7 +383,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (back_pressed + 2000 > System.currentTimeMillis()){
+            if (back_pressed + 2000 > System.currentTimeMillis()) {
                 Intent i = new Intent(Intent.ACTION_MAIN);
                 i.addCategory(Intent.CATEGORY_HOME);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

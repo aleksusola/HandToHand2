@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
-import com.aleksus.handtohand.RecyclerAdsAdapter;
 import com.aleksus.handtohand.RecyclerAdsItem;
 
 import com.aleksus.handtohand.RecyclerFavAdsAdapter;
@@ -19,7 +18,6 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
-import com.backendless.persistence.LoadRelationsQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +65,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     Toast.makeText(FavoritesActivity.this, "Найдено объявлений " + favorites.size(), Toast.LENGTH_LONG).show();
                     listItems = new ArrayList<>();
                     for (int i = 0; i < favorites.size(); i++) {
-                        listItems.add(new RecyclerAdsItem(favorites.get(i).get("name").toString(), favorites.get(i).get("description").toString(), favorites.get(i).get("ownerId").toString(), favorites.get(i).get("collection").toString(), favorites.get(i).get("price").toString(), favorites.get(i).get("ads_icon").toString()));
+                        listItems.add(new RecyclerAdsItem(favorites.get(i).get("name").toString(), favorites.get(i).get("description").toString(), favorites.get(i).get("ownerId").toString(), favorites.get(i).get("collection").toString(), favorites.get(i).get("price").toString(), favorites.get(i).get("ads_icon").toString(), favorites.get(i).get("created").toString()));
                     }
                     adapter = new RecyclerFavAdsAdapter(listItems, FavoritesActivity.this);
                     recyclerViewFavorites.setAdapter(adapter);

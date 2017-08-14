@@ -112,57 +112,62 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
 
         nameSelected = nameSelect.getText().toString();
-        priceSelected = Integer.parseInt(priceSelect.getText().toString());
-        descSelected = descSelect.getText().toString();
         collectionSelected = spinner.getSelectedItem().toString();
+        descSelected = descSelect.getText().toString();
+        if (descSelected.equals("")) descSelected = "description";
+        if (priceSelect.getText().toString().equals("")) priceSelected = 0;
+        else priceSelected = Integer.parseInt(priceSelect.getText().toString());
 
-        if (descSelected.equals("")) {
-            descSelected = "description";
+        if (nameSelected.equals("") || priceSelected == 0 || descSelected.equals(""))
+            Toast.makeText(NewAdActivity.this, "Не заполнены данные", Toast.LENGTH_SHORT).show();
+        else {
+            Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
+                @Override
+                public void handleResponse(final BackendlessFile backendlessFile) {
+                    HashMap<String, java.io.Serializable> newAd = new HashMap<>();
+                    newAd.put("___class", "ads_users");
+                    newAd.put("name", nameSelected);
+                    newAd.put("price", priceSelected);
+                    newAd.put("description", descSelected);
+                    newAd.put("ads_icon", backendlessFile.getFileURL());
+                    Backendless.Persistence.of("ads_users").save(newAd, new AsyncCallback<Map>() {
+                        @Override
+                        public void handleResponse(final Map savedAd) {
+                            HashMap<String, Object> parentObject = new HashMap<>();
+                            parentObject.put("objectId", savedAd.get("objectId"));
+                            relationColumnName = "collection:collection:1";
+                            String whereClause = "type = '" + collectionSelected + "'";
+                            Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause, new AsyncCallback<Integer>() {
+
+                                @Override
+                                public void handleResponse(Integer colNum) {
+                                    Log.i(TAG, "related objects have been added" + colNum);
+                                }
+
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                }
+                            });
+                            Toast.makeText(NewAdActivity.this, "Добавлено! Обновите главную страницу", Toast.LENGTH_SHORT).show();
+                            NewAdActivity.super.onBackPressed();
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                        }
+                    });
+                }
+
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    Log.e(TAG, "server reported an error - " + fault.getMessage());
+                }
+            });
         }
-        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
-            @Override
-            public void handleResponse(final BackendlessFile backendlessFile) {
-                HashMap<String, java.io.Serializable> newAd = new HashMap<>();
-                newAd.put("___class", "ads_users");
-                newAd.put("name", nameSelected);
-                newAd.put("price", priceSelected);
-                newAd.put("description", descSelected);
-                newAd.put("ads_icon", backendlessFile.getFileURL());
-                Backendless.Persistence.of("ads_users").save(newAd, new AsyncCallback<Map>() {
-                    @Override
-                    public void handleResponse(final Map savedAd) {
-                        HashMap<String, Object> parentObject = new HashMap<>();
-                        parentObject.put("objectId", savedAd.get("objectId"));
-                        relationColumnName = "collection:collection:1";
-                        String whereClause = "type = '" + collectionSelected + "'";
-                        Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause, new AsyncCallback<Integer>() {
 
-                            @Override
-                            public void handleResponse(Integer colNum) {
-                                Log.i(TAG, "related objects have been added" + colNum);
-                            }
 
-                            @Override
-                            public void handleFault(BackendlessFault fault) {
-                                Log.e(TAG, "server reported an error - " + fault.getMessage());
-                            }
-                        });
-                        Toast.makeText(NewAdActivity.this, "Добавлено! Обновите главную страницу", Toast.LENGTH_SHORT).show();
-                        NewAdActivity.super.onBackPressed();
-                    }
-
-                    @Override
-                    public void handleFault(BackendlessFault fault) {
-                        Log.e(TAG, "server reported an error - " + fault.getMessage());
-                    }
-                });
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.e(TAG, "server reported an error - " + fault.getMessage());
-            }
-        });
 
 
     }

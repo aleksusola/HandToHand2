@@ -1,6 +1,5 @@
 package com.aleksus.handtohand.presentation;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -46,8 +45,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private String collectionSelected;
     private String relationColumnName;
     private String adTitle;
-    private String adPrice;
-    private String adDesc;
 
     private static final String TAG = "MYAPP";
     static final int GALLERY_REQUEST = 1;
@@ -84,8 +81,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         adTitle = getIntent().getStringExtra("title");
-        adPrice = getIntent().getStringExtra("price");
-        adDesc = getIntent().getStringExtra("desc");
+        String adPrice = getIntent().getStringExtra("price");
+        String adDesc = getIntent().getStringExtra("desc");
         Bundle extras = getIntent().getExtras();
         selImage = extras.getParcelable("imagebitmap");
         photoAds.setImageBitmap(selImage);
