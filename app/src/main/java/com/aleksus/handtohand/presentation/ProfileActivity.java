@@ -96,28 +96,27 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
                         queryBuilder.setPageSize(25).setOffset(0);
                         Backendless.Persistence.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
-                            @Override
-                            public void handleResponse(final List<Map> foundAds) {
-                                selectedFilter.setVisibility(View.GONE);
-                                if (foundAds.size() == 0) {
-                                    Toast.makeText(ProfileActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(ProfileActivity.this, "Найдено объявлений " + foundAds.size(), Toast.LENGTH_LONG).show();
-                                    listItems = new ArrayList<>();
-                                    for (int i = 0; i < foundAds.size(); i++) {
-                                        listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), foundAds.get(i).get("collection").toString(), foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString(), foundAds.get(i).get("created").toString()));
+                                @Override
+                                public void handleResponse(final List<Map> foundAds) {
+                                    selectedFilter.setVisibility(View.GONE);
+                                    if (foundAds.size() == 0) {
+                                        Toast.makeText(ProfileActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
+                                    } else {
+                                        Toast.makeText(ProfileActivity.this, "Найдено объявлений " + foundAds.size(), Toast.LENGTH_LONG).show();
+                                        listItems = new ArrayList<>();
+                                        for (int i = 0; i < foundAds.size(); i++) {
+                                            listItems.add(new RecyclerAdsItem(foundAds.get(i).get("name").toString(), foundAds.get(i).get("description").toString(), foundAds.get(i).get("ownerId").toString(), foundAds.get(i).get("collection").toString(), foundAds.get(i).get("price").toString(), foundAds.get(i).get("ads_icon").toString(), foundAds.get(i).get("created").toString()));
+                                        }
+                                        adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
+                                        recyclerViewAds.setAdapter(adapter);
                                     }
-                                    adapter = new RecyclerAdsAdapter(listItems, ProfileActivity.this);
-                                    recyclerViewAds.setAdapter(adapter);
                                 }
-                            }
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
                                 Log.e(TAG, "server reported an error - " + fault.getMessage());
                             }
                         });
-                        //Останавливаем обновление:
                         mSwipeRefresh.setRefreshing(false);
                     }
                 }, 3000);

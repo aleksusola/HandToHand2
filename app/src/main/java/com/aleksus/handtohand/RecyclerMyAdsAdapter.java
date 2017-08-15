@@ -54,9 +54,9 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        String message = "Вы действительно хотите удалить объявление";
-        String buttonYes = "Да";
-        String buttonNo = "Нет";
+        final String message = "Вы действительно хотите удалить объявление ";
+        final String buttonYes = "Да";
+        final String buttonNo = "Нет";
 
         final RecyclerMyAdsItem itemList = listItemsMy.get(position);
         holder.txtTitle.setText(itemList.getTitle());
@@ -119,6 +119,44 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_hide:
+                                sure = new AlertDialog.Builder(mContext);
+                                sure.setMessage(message + itemList.getTitle());
+                                sure.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int arg1) {
+                                        String whereClause = "name = '" + itemList.getTitle() + "'";
+                                        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                                        queryBuilder.setWhereClause(whereClause);
+                                        Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
+                                            @Override
+                                            public void handleResponse(List<Map> delete) {
+                                                Backendless.Persistence.of("ads_users").remove(delete.get(0), new AsyncCallback<Long>() {
+                                                    @Override
+                                                    public void handleResponse(Long response) {
+                                                        listItemsMy.remove(position);
+                                                        notifyDataSetChanged();
+                                                        Toast.makeText(mContext, "Объявление удалено", Toast.LENGTH_LONG).show();
+                                                    }
+
+                                                    @Override
+                                                    public void handleFault(BackendlessFault fault) {
+                                                        Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                                    }
+                                                });
+                                            }
+
+                                            @Override
+                                            public void handleFault(BackendlessFault fault) {
+                                                Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                            }
+                                        });
+                                    }
+                                });
+                                sure.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int arg1) {
+                                        Toast.makeText(mContext, "Отменено", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                                sure.setCancelable(false);
                                 sure.show();
                                 break;
                             default:
@@ -130,45 +168,6 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                 popupMenu.show();
             }
         });
-
-        sure = new AlertDialog.Builder(mContext);
-        sure.setMessage(message);
-        sure.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                String whereClause = "name = '" + itemList.getTitle() + "'";
-                DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                queryBuilder.setWhereClause(whereClause);
-                Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
-                    @Override
-                    public void handleResponse(List<Map> delete) {
-                        Backendless.Persistence.of("ads_users").remove(delete.get(0), new AsyncCallback<Long>() {
-                            @Override
-                            public void handleResponse(Long response) {
-                                Intent intent = new Intent(holder.itemView.getContext(), MyAdsActivity.class);
-                                mContext.startActivity(intent);
-                                Toast.makeText(mContext, "Объявление удалено", Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void handleFault(BackendlessFault fault) {
-                                Log.e(TAG, "server reported an error - " + fault.getMessage());
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void handleFault(BackendlessFault fault) {
-                        Log.e(TAG, "server reported an error - " + fault.getMessage());
-                    }
-                });
-            }
-        });
-        sure.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                Toast.makeText(mContext, "Отменено", Toast.LENGTH_LONG).show();
-            }
-        });
-        sure.setCancelable(false);
     }
 
 
@@ -195,10 +194,6 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
             txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
             txtCreated = (TextView) itemView.findViewById(R.id.txtCreated);
         }
-    }
-
-    interface OnClickItemListener {
-        void OnClickItemListener();
     }
 
 }

@@ -137,7 +137,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 2, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
 
