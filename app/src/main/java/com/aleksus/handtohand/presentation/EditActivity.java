@@ -2,6 +2,7 @@ package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +23,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.files.BackendlessFile;
 import com.backendless.persistence.DataQueryBuilder;
+import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -83,17 +85,21 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         adTitle = getIntent().getStringExtra("title");
         String adPrice = getIntent().getStringExtra("price");
         String adDesc = getIntent().getStringExtra("desc");
-        Bundle extras = getIntent().getExtras();
-        selImage = extras.getParcelable("imagebitmap");
-        photoAds.setImageBitmap(selImage);
+        String adImage = getIntent().getStringExtra("image");
+        Glide
+                .with(this)
+                .load(adImage)
+                .placeholder(R.mipmap.ic_record_voice_over_black)
+                .error(R.drawable.ic_error)
+                .override(150, 150)
+                .crossFade(100)
+                .into(photoAds);
         nameEdit.setText(adTitle);
         priceEdit.setText(adPrice);
         descEdit.setText(adDesc);
-
     }
 
     private void onChangeButtonClicked() {
-
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
@@ -137,7 +143,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 2, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
 

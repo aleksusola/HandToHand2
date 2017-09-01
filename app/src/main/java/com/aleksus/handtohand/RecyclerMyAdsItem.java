@@ -26,7 +26,7 @@ public class RecyclerMyAdsItem {
         this.title = title;
     }
 
-    String getDesc() {
+    public String getDesc() {
         return desc;
     }
 
@@ -42,7 +42,7 @@ public class RecyclerMyAdsItem {
         this.collection = collection;
     }
 
-    String getPrice() {
+    public String getPrice() {
         return price;
     }
 
@@ -50,7 +50,7 @@ public class RecyclerMyAdsItem {
         this.price = price;
     }
 
-    String getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
@@ -58,7 +58,7 @@ public class RecyclerMyAdsItem {
         this.photo = photo;
     }
 
-    String getCreated() {
+    public String getCreated() {
         return created;
     }
 

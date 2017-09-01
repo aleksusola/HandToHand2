@@ -1,4 +1,4 @@
-package com.aleksus.handtohand;
+package com.aleksus.handtohand.adapter;
 
 
 import android.content.Context;
@@ -18,14 +18,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aleksus.handtohand.R;
+import com.aleksus.handtohand.RecyclerMyAdsItem;
 import com.aleksus.handtohand.presentation.EditActivity;
 import com.aleksus.handtohand.presentation.InfoAdActivity;
-import com.aleksus.handtohand.presentation.MyAdsActivity;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -78,7 +79,14 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                 Log.e("MYAPP", "server reported an error - " + fault.getMessage());
             }
         });
-        Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
+        Glide
+                .with(mContext)
+                .load(itemList.getPhoto())
+                .placeholder(R.mipmap.ic_record_voice_over_black)
+                .error(R.drawable.ic_error)
+                .override(150, 150)
+                .crossFade(100)
+                .into(holder.photoIcon);
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,23 +99,15 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                         switch (item.getItemId()) {
                             case R.id.mnu_item_change:
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
-                                holder.photoIcon.buildDrawingCache();
-                                Bitmap imageEdit = holder.photoIcon.getDrawingCache();
-                                Bundle extrasEdit = new Bundle();
-                                extrasEdit.putParcelable("imagebitmap", imageEdit);
                                 Intent intentEdit = new Intent(holder.itemView.getContext(), EditActivity.class);
                                 intentEdit.putExtra("title", itemList.getTitle());
                                 intentEdit.putExtra("price", itemList.getPrice());
                                 intentEdit.putExtra("desc", itemList.getDesc());
-                                intentEdit.putExtras(extrasEdit);
+                                intentEdit.putExtra("image", itemList.getPhoto());
                                 mContext.startActivity(intentEdit);
                                 break;
                             case R.id.mnu_item_full:
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
-                                holder.photoIcon.buildDrawingCache();
-                                Bitmap image = holder.photoIcon.getDrawingCache();
-                                Bundle extras = new Bundle();
-                                extras.putParcelable("imagebitmap", image);
                                 Intent intent = new Intent(holder.itemView.getContext(), InfoAdActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
                                 intent.putExtra("price", itemList.getPrice());
@@ -115,7 +115,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 intent.putExtra("collection", holder.txtCollection.getText());
                                 intent.putExtra("created", holder.txtCreated.getText());
                                 intent.putExtra("desc", itemList.getDesc());
-                                intent.putExtras(extras);
+                                intent.putExtra("image", itemList.getPhoto());
                                 mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_hide:

@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.aleksus.handtohand.DefaultCallback;
 import com.aleksus.handtohand.DownloadImageTask;
 import com.aleksus.handtohand.R;
-import com.aleksus.handtohand.RecyclerAdsAdapter;
+import com.aleksus.handtohand.adapter.RecyclerAdsAdapter;
 import com.aleksus.handtohand.RecyclerAdsItem;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
@@ -118,8 +118,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                             }
                         });
                         mSwipeRefresh.setRefreshing(false);
+                        ;
                     }
-                }, 3000);
+                }, 2500);
             }
         });
         mSwipeRefresh.setColorSchemeResources
@@ -365,7 +366,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 Toast.makeText(ProfileActivity.this, getString(R.string.action_filter), Toast.LENGTH_SHORT).show();
                 Intent intent2 = new Intent(this, FilterActivity.class);
                 startActivity(intent2);
-                finish();
                 break;
             case R.id.action_exit:
                 Intent i = new Intent(Intent.ACTION_MAIN);

@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.aleksus.handtohand.R;
 import com.aleksus.handtohand.RecyclerAdsItem;
 
-import com.aleksus.handtohand.RecyclerFavAdsAdapter;
+import com.aleksus.handtohand.adapter.RecyclerFavAdsAdapter;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;

@@ -22,7 +22,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/dp16"
-                android:scaleType="centerInside" />
+                android:scaleType="centerInside"
+                android:layout_alignBottom="@+id/txtCreated" />
 
             <TextView
                 android:id="@+id/txtTitle"

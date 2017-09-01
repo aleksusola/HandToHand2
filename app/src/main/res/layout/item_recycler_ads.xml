@@ -19,6 +19,7 @@
                 android:id="@+id/photoIcon"
                 android:layout_width="@dimen/dp96"
                 android:layout_height="@dimen/dp96"
+                android:layout_alignBottom="@+id/txtCreated"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/dp16"

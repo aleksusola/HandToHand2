@@ -48,6 +48,6 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         mailIntent.setType("text/plain");
         mailIntent.putExtra(Intent.EXTRA_SUBJECT, "Вопрос разработчику");
         mailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "aleksusola@yandex.ru" });
-        startActivity(Intent.createChooser(mailIntent, "Вопрос разработчику"));
+        startActivity(Intent.createChooser(mailIntent, "Обратная связь"));
     }
 }

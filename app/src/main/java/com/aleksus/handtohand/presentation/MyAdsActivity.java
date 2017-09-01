@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
-import com.aleksus.handtohand.RecyclerMyAdsAdapter;
+import com.aleksus.handtohand.adapter.RecyclerMyAdsAdapter;
 import com.aleksus.handtohand.RecyclerMyAdsItem;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
@@ -126,7 +126,7 @@ public class MyAdsActivity extends AppCompatActivity {
                         mSwipeRefresh.setRefreshing(false)
                         ;
                     }
-                }, 3000);
+                }, 2500);
             }
         });
         mSwipeRefresh.setColorSchemeResources

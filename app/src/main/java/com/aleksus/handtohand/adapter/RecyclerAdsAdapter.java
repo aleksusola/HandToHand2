@@ -1,4 +1,4 @@
-package com.aleksus.handtohand;
+package com.aleksus.handtohand.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,13 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aleksus.handtohand.R;
+import com.aleksus.handtohand.RecyclerAdsItem;
 import com.aleksus.handtohand.presentation.InfoAdActivity;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     private Context mContext;
     private String userPhone;
     private String ownerName;
+    private String ownerFamily;
 
     private static final String TAG = "MYAPP";
 
@@ -61,8 +64,9 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                     ownerName = "Вы";
                     holder.txtAuthor.setText(ownerName);
                 } else {
-                    ownerName = adsOwner.getProperty("login").toString();
-                    holder.txtAuthor.setText(ownerName);
+                    ownerName = adsOwner.getProperty("firstName").toString();
+                    ownerFamily = adsOwner.getProperty("secondName").toString();
+                    holder.txtAuthor.setText(ownerName + " " + ownerFamily);
                 }
             }
 
@@ -94,7 +98,14 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
         Date date = new Date(itemList.getCreated());
         DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(mContext);
         holder.txtCreated.setText("Создан: " + dateFormat.format(date));
-        Picasso.with(mContext).load(itemList.getPhoto()).into(holder.photoIcon);
+        Glide
+                .with(mContext)
+                .load(itemList.getPhoto())
+                .placeholder(R.mipmap.ic_record_voice_over_black)
+                .error(R.drawable.ic_error)
+                .override(150, 150)
+                .crossFade(100)
+                .into(holder.photoIcon);
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -122,10 +133,6 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 break;
                             case R.id.mnu_item_full:
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
-                                holder.photoIcon.buildDrawingCache();
-                                Bitmap image = holder.photoIcon.getDrawingCache();
-                                Bundle extras = new Bundle();
-                                extras.putParcelable("imagebitmap", image);
                                 Intent intent = new Intent(holder.itemView.getContext(), InfoAdActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
                                 intent.putExtra("price", itemList.getPrice());
@@ -133,7 +140,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 intent.putExtra("collection", holder.txtCollection.getText());
                                 intent.putExtra("created", holder.txtCreated.getText());
                                 intent.putExtra("desc", itemList.getDesc());
-                                intent.putExtras(extras);
+                                intent.putExtra("image", itemList.getPhoto());
                                 mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_hide:

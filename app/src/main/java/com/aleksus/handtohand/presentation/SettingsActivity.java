@@ -23,6 +23,7 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.files.BackendlessFile;
+import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 

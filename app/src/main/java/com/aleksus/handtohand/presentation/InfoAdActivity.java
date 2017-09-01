@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aleksus.handtohand.R;
+import com.bumptech.glide.Glide;
 
 public class InfoAdActivity extends AppCompatActivity {
 
@@ -51,9 +52,16 @@ public class InfoAdActivity extends AppCompatActivity {
         String adCollection = getIntent().getStringExtra("collection");
         String adCreated = getIntent().getStringExtra("created");
         String adDesc = getIntent().getStringExtra("desc");
-        Bundle extras = getIntent().getExtras();
-        infoImage = extras.getParcelable("imagebitmap");
-        iconInfo.setImageBitmap(infoImage);
+        String adImage = getIntent().getStringExtra("image");
+        Glide
+                .with(this)
+                .load(adImage)
+                .placeholder(R.mipmap.ic_record_voice_over_black)
+                .error(R.drawable.ic_error)
+                .override(300, 300)
+                .crossFade(100)
+                .into(iconInfo);
+//        iconInfo.setImageBitmap(infoImage);
         titleInfo.setText(adTitle);
         priceInfo.setText("Цена: " + adPrice + " руб.");
         authorInfo.setText("Автор: " + adAuthor);
