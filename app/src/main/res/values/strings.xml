@@ -87,4 +87,5 @@
     <string name="hint_desc">Новое описание…</string>
     <string name="item_remove">Убрать из избранных</string>
     <string name="item_fav">В избранные</string>
+    <string name="sorting">Сортировка</string>
 </resources>

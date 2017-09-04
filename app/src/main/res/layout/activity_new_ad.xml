@@ -112,20 +112,35 @@
                 android:layout_height="@dimen/dp96"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="@dimen/dp16"
-                android:scaleType="centerInside"
+
+                android:src="@mipmap/ic_record_voice_over_black" />
+            <ImageView
+                android:id="@+id/photoSelect"
+                android:layout_width="@dimen/dp96"
+                android:layout_height="@dimen/dp96"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+
+                android:src="@mipmap/ic_record_voice_over_black" />
+            <ImageView
+                android:id="@+id/photoSelect"
+                android:layout_width="@dimen/dp96"
+                android:layout_height="@dimen/dp96"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+
                 android:src="@mipmap/ic_record_voice_over_black" />
 
-            <Button
-                android:id="@+id/photo_select_button"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp40"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="@dimen/dp4"
-                android:height="@dimen/dp40"
-                android:text="@string/button_select_image"
-                android:textSize="@dimen/text_micro" />
         </TableRow>
+        <Button
+            android:id="@+id/photo_select_button"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp40"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp4"
+            android:height="@dimen/dp40"
+            android:text="@string/button_select_image"
+            android:textSize="@dimen/text_micro" />
 
         <Button
             android:id="@+id/new_add_button"

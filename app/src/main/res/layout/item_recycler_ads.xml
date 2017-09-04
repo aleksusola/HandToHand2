@@ -13,23 +13,22 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:padding="@dimen/dp8">
 
             <ImageView
                 android:id="@+id/photoIcon"
-                android:layout_width="@dimen/dp96"
-                android:layout_height="@dimen/dp96"
-                android:layout_alignBottom="@+id/txtCreated"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="@dimen/dp16"
-                android:scaleType="centerInside" />
+                android:layout_width="150dp"
+                android:layout_height="120dp"
+                android:layout_marginRight="@dimen/dp8"
+                android:layout_centerVertical="true" />
 
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/photoIcon"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/photoIcon"
                 android:text=""
                 android:textAppearance="?android:textAppearanceLarge" />
 
@@ -40,6 +39,7 @@
                 android:layout_below="@id/txtTitle"
                 android:layout_toRightOf="@+id/photoIcon"
                 android:text=""
+                android:textAlignment="textEnd"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
@@ -49,6 +49,7 @@
                 android:layout_below="@id/txtAuthor"
                 android:layout_toRightOf="@+id/photoIcon"
                 android:text=""
+                android:textAlignment="textEnd"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
@@ -58,6 +59,7 @@
                 android:layout_below="@id/txtCollection"
                 android:layout_toRightOf="@+id/photoIcon"
                 android:text=""
+                android:textAlignment="textEnd"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
@@ -67,6 +69,7 @@
                 android:layout_below="@id/txtPrice"
                 android:layout_toRightOf="@+id/photoIcon"
                 android:text=""
+                android:textAlignment="textEnd"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView

@@ -27,4 +27,12 @@
         <item>Услуги</item>
         <item>Электроника</item>
     </string-array>
+    <string-array name="order_filter">
+        <item>По дате &#8595;</item>
+        <item>По дате &#8593;</item>
+        <item>По цене &#8595;</item>
+        <item>По цене &#8593;</item>
+        <item>По имени &#8595;</item>
+        <item>По имени &#8593;</item>
+    </string-array>
 </resources>

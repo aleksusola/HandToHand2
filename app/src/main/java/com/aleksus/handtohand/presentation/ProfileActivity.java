@@ -50,6 +50,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     private String adCollection;
     private String adAuthor;
+    private String adOrder;
+    private String order;
     private static final String TAG = "MYAPP";
     private static long back_pressed;
 
@@ -94,6 +96,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     @Override
                     public void run() {
                         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                        queryBuilder.setSortBy("created");
                         queryBuilder.setPageSize(25).setOffset(0);
                         Backendless.Persistence.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                                 @Override
@@ -118,7 +121,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                             }
                         });
                         mSwipeRefresh.setRefreshing(false);
-                        ;
                     }
                 }, 2500);
             }
@@ -148,8 +150,26 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         adCollection = getIntent().getStringExtra("collection");
         adAuthor = getIntent().getStringExtra("author");
-        if (adCollection == null && adAuthor == null || adCollection.equals("Все коллекции") && adAuthor.equals("Все авторы")) {
+        adOrder = getIntent().getStringExtra("order");
+        if (adOrder == null) {
+            order = "created DESC";
+        } else if (adOrder.equals("По имени &#8595;")) {
+            order = "title DESC";
+        } else if (adOrder.equals("По имени &#8593;")) {
+            order = "title";
+        } else if (adOrder.equals("По цене &#8595;")) {
+            order = "price DESC";
+        } else if (adOrder.equals("По цене &#8593;")) {
+            order = "price";
+        } else if (adOrder.equals("По дате &#8593;")) {
+            order = "created";
+        } else {
+            order = "created DESC";
+        }
+
+        if (adCollection == null && adAuthor == null && adOrder == null || adCollection.equals("Все коллекции") && adAuthor.equals("Все авторы")) {
             DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+            queryBuilder.setSortBy(order);
             queryBuilder.setPageSize(25).setOffset(0);
             Backendless.Persistence.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                 @Override
@@ -178,6 +198,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             String whereClause = "login = '" + adAuthor + "'";
             DataQueryBuilder queryBuilder = DataQueryBuilder.create();
             queryBuilder.setWhereClause(whereClause);
+            queryBuilder.setSortBy(order);
             queryBuilder.setPageSize(25).setOffset(0);
             Backendless.Data.of(BackendlessUser.class).find(queryBuilder, new AsyncCallback<List<BackendlessUser>>() {
                 @Override
@@ -219,6 +240,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             String whereClause = "collection.type = '" + adCollection + "'";
             final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
             queryBuilder.setWhereClause(whereClause);
+            queryBuilder.setSortBy(order);
             queryBuilder.setPageSize(25).setOffset(0);
             Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                 @Override
@@ -253,6 +275,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     String whereClause = "collection.type = '" + adCollection + "' and ownerId = '" + author.get(0).getObjectId() + "'";
                     final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
                     queryBuilder.setWhereClause(whereClause);
+                    queryBuilder.setSortBy(order);
                     queryBuilder.setPageSize(25).setOffset(0);
                     Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                         @Override

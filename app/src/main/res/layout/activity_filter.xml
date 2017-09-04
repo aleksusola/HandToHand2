@@ -65,6 +65,33 @@
 
         </TableRow>
 
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginRight="@dimen/dp4"
+                android:gravity="center_vertical|center_horizontal"
+                android:paddingRight="@dimen/dp4"
+                android:text="@string/sorting"
+                android:textSize="@dimen/text_medium" />
+
+            <Spinner
+                android:id="@+id/order_select"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp48"
+                android:layout_marginLeft="@dimen/dp4"
+                android:entries="@+array/order_filter"
+                android:gravity="center_vertical"
+                android:spinnerMode="dialog"
+
+                android:textSize="@dimen/text_medium" />
+
+        </TableRow>
+
         <Button
             android:id="@+id/filter_button"
             android:layout_width="wrap_content"

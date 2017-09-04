@@ -28,6 +28,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
 
     private Spinner spinnerCollection;
     private Spinner spinnerAuthor;
+    private Spinner spinnerOrder;
     private List<Object> authors;
 
     private static final String TAG = "MYAPP";
@@ -49,6 +50,7 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
         });
         spinnerCollection = (Spinner) findViewById(R.id.collection_filter_select);
         spinnerAuthor = (Spinner) findViewById(R.id.author_filter_select);
+        spinnerOrder = (Spinner) findViewById(R.id.order_select);
 
         Button filterButton = (Button) findViewById(R.id.filter_button);
         filterButton.setOnClickListener(this);
@@ -78,16 +80,12 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
 
         String collectionSelected = spinnerCollection.getSelectedItem().toString();
         String authorSelected = spinnerAuthor.getSelectedItem().toString();
+        String orderSelected = spinnerOrder.getSelectedItem().toString();
         Intent intent = new Intent(FilterActivity.this, ProfileActivity.class);
         intent.putExtra("collection", collectionSelected);
         intent.putExtra("author", authorSelected);
+        intent.putExtra("order", orderSelected);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(FilterActivity.this, ProfileActivity.class));
-
     }
 }
