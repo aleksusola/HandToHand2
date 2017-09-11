@@ -153,15 +153,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         adOrder = getIntent().getStringExtra("order");
         if (adOrder == null) {
             order = "created DESC";
-        } else if (adOrder.equals("По имени &#8595;")) {
-            order = "title DESC";
-        } else if (adOrder.equals("По имени &#8593;")) {
-            order = "title";
-        } else if (adOrder.equals("По цене &#8595;")) {
-            order = "price DESC";
-        } else if (adOrder.equals("По цене &#8593;")) {
+        } else if (adOrder.equals("По имени ↑")) {
+            order = "name";
+        } else if (adOrder.equals("По имени ↓")) {
+            order = "name DESC";
+        } else if (adOrder.equals("По цене ↑")) {
             order = "price";
-        } else if (adOrder.equals("По дате &#8593;")) {
+        } else if (adOrder.equals("По цене ↓")) {
+            order = "price DESC";
+        } else if (adOrder.equals("По дате ↑")) {
             order = "created";
         } else {
             order = "created DESC";
