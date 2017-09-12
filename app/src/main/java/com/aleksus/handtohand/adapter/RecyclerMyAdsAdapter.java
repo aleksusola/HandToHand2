@@ -101,9 +101,6 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
                                 Intent intentEdit = new Intent(holder.itemView.getContext(), EditActivity.class);
                                 intentEdit.putExtra("title", itemList.getTitle());
-                                intentEdit.putExtra("price", itemList.getPrice());
-                                intentEdit.putExtra("desc", itemList.getDesc());
-                                intentEdit.putExtra("image", itemList.getPhoto());
                                 mContext.startActivity(intentEdit);
                                 break;
                             case R.id.mnu_item_full:

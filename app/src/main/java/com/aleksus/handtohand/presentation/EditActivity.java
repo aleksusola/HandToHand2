@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.files.BackendlessFile;
@@ -37,9 +38,14 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private EditText priceEdit;
     private EditText descEdit;
     private ImageView photoAds;
+    private ImageView photoAds2;
+    private ImageView photoAds3;
+
     private Spinner spinner;
 
     private Bitmap selImage;
+    private Bitmap selImage2;
+    private Bitmap selImage3;
 
     private String nameSelected;
     private int priceSelected;
@@ -49,7 +55,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private String adTitle;
 
     private static final String TAG = "MYAPP";
-    static final int GALLERY_REQUEST = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +77,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         priceEdit = (EditText) findViewById(R.id.edit_price);
         descEdit = (EditText) findViewById(R.id.edit_desc);
         photoAds = (ImageView) findViewById(R.id.photoSelect);
+        photoAds2 = (ImageView) findViewById(R.id.photoSelect2);
+        photoAds3 = (ImageView) findViewById(R.id.photoSelect3);
         Button photoChangeButton = (Button) findViewById(R.id.photo_select_button);
         Button saveButton = (Button) findViewById(R.id.editSaveButton);
         saveButton.setOnClickListener(this);
@@ -83,34 +90,65 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         adTitle = getIntent().getStringExtra("title");
-        String adPrice = getIntent().getStringExtra("price");
-        String adDesc = getIntent().getStringExtra("desc");
-        String adImage = getIntent().getStringExtra("image");
-        Glide
-                .with(this)
-                .load(adImage)
-                .placeholder(R.mipmap.ic_record_voice_over_black)
-                .error(R.drawable.ic_error)
-                .override(150, 150)
-                .crossFade(100)
-                .into(photoAds);
-        nameEdit.setText(adTitle);
-        priceEdit.setText(adPrice);
-        descEdit.setText(adDesc);
+        BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
+        String whereClause = "ownerId = '" + AdsOwner.getObjectId() + "' and name = '" + adTitle + "'"; ;
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause(whereClause);
+        Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
+            @Override
+            public void handleResponse(List<Map> ad) {
+                String adPrice = ad.get(0).get("price").toString();
+                String adDesc = ad.get(0).get("description").toString();
+                String adImage = ad.get(0).get("ads_icon").toString();
+                String adImage2 = ad.get(0).get("ads_icon2").toString();
+                String adImage3 = ad.get(0).get("ads_icon3").toString();
+                Glide
+                        .with(EditActivity.this)
+                        .load(adImage)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(150, 150)
+                        .crossFade(100)
+                        .into(photoAds);
+                Glide
+                        .with(EditActivity.this)
+                        .load(adImage2)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(150, 150)
+                        .crossFade(100)
+                        .into(photoAds2);
+                Glide
+                        .with(EditActivity.this)
+                        .load(adImage3)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(150, 150)
+                        .crossFade(100)
+                        .into(photoAds3);
+                nameEdit.setText(adTitle);
+                priceEdit.setText(adPrice);
+                descEdit.setText(adDesc);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {}
+
+        });
     }
 
     private void onChangeButtonClicked() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+        startActivityForResult(photoPickerIntent, 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        selImage = null;
+
         switch (requestCode) {
-            case GALLERY_REQUEST:
+            case 1:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
@@ -120,6 +158,29 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     photoAds.setImageBitmap(selImage);
                 }
+                break;
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    try {
+                        selImage2 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    photoAds2.setImageBitmap(selImage2);
+                }
+                break;
+            case 3:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    try {
+                        selImage3 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    photoAds3.setImageBitmap(selImage3);
+                }
+                break;
         }
     }
 

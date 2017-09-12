@@ -34,9 +34,13 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private EditText priceSelect;
     private EditText descSelect;
     private ImageView photoGallery;
+    private ImageView photoGallery2;
+    private ImageView photoGallery3;
     private Spinner spinner;
 
     private Bitmap selImage;
+    private Bitmap selImage2;
+    private Bitmap selImage3;
 
     private String nameSelected;
     private int priceSelected;
@@ -45,7 +49,6 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private String relationColumnName;
 
     private static final String TAG = "MYAPP";
-    static final int GALLERY_REQUEST = 1;
 
 
     @Override
@@ -71,30 +74,60 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         Button newAdButton = (Button) findViewById(R.id.new_add_button);
         newAdButton.setOnClickListener(this);
         photoGallery = (ImageView) findViewById(R.id.photoSelect);
+        photoGallery2 = (ImageView) findViewById(R.id.photoSelect2);
+        photoGallery3 = (ImageView) findViewById(R.id.photoSelect3);
         selImage = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
+        selImage2 = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
+        selImage3 = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
         Button photoSelectButton = (Button) findViewById(R.id.photo_select_button);
+        Button photoSelectButton2 = (Button) findViewById(R.id.photo_select_button2);
+        Button photoSelectButton3 = (Button) findViewById(R.id.photo_select_button3);
         photoSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSelectButtonClicked();
+                onFirstButtonClicked();
+            }
+        });
+        photoSelectButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSecondButtonClicked();
+            }
+        });
+        photoSelectButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onThirdButtonClicked();
             }
         });
     }
 
-    private void onSelectButtonClicked() {
+    private void onFirstButtonClicked() {
 
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+        startActivityForResult(photoPickerIntent, 1);
+    }
+
+    private void onSecondButtonClicked() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, 2);
+    }
+
+    private void onThirdButtonClicked() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, 3);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        selImage = null;
+
 
         switch (requestCode) {
-            case GALLERY_REQUEST:
+            case 1:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
@@ -104,9 +137,31 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                     }
                     photoGallery.setImageBitmap(selImage);
                 }
+                break;
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    try {
+                        selImage2 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    photoGallery2.setImageBitmap(selImage2);
+                }
+                break;
+            case 3:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    try {
+                        selImage3 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    photoGallery3.setImageBitmap(selImage3);
+                }
+                break;
         }
     }
-
 
     @Override
     public void onClick(View v) {
@@ -121,54 +176,57 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         if (nameSelected.equals("") || priceSelected == 0 || descSelected.equals(""))
             Toast.makeText(NewAdActivity.this, "Не заполнены данные", Toast.LENGTH_SHORT).show();
         else {
-            Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
+            Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, Backendless.UserService.CurrentUser().getProperty("login") + "_" + nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
                 @Override
-                public void handleResponse(final BackendlessFile backendlessFile) {
-                    HashMap<String, java.io.Serializable> newAd = new HashMap<>();
-                    newAd.put("___class", "ads_users");
-                    newAd.put("name", nameSelected);
-                    newAd.put("price", priceSelected);
-                    newAd.put("description", descSelected);
-                    newAd.put("ads_icon", backendlessFile.getFileURL());
-                    Backendless.Persistence.of("ads_users").save(newAd, new AsyncCallback<Map>() {
+                public void handleResponse(final BackendlessFile firstFile) {
+                    Backendless.Files.Android.upload(selImage2, Bitmap.CompressFormat.PNG, 100, Backendless.UserService.CurrentUser().getProperty("login") + "_" + nameSelected + "2" + ".png", "icons", new AsyncCallback<BackendlessFile>() {
                         @Override
-                        public void handleResponse(final Map savedAd) {
-                            HashMap<String, Object> parentObject = new HashMap<>();
-                            parentObject.put("objectId", savedAd.get("objectId"));
-                            relationColumnName = "collection:collection:1";
-                            String whereClause = "type = '" + collectionSelected + "'";
-                            Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause, new AsyncCallback<Integer>() {
-
+                        public void handleResponse(final BackendlessFile secondFile) {
+                            Backendless.Files.Android.upload(selImage3, Bitmap.CompressFormat.PNG, 100, Backendless.UserService.CurrentUser().getProperty("login") + "_" + nameSelected + "3" + ".png", "icons", new AsyncCallback<BackendlessFile>() {
                                 @Override
-                                public void handleResponse(Integer colNum) {
-                                    Log.i(TAG, "related objects have been added" + colNum);
-                                }
+                                public void handleResponse(BackendlessFile thirdFile) {
+                                    HashMap < String, java.io.Serializable > newAd = new HashMap<>();
+                                    newAd.put("___class", "ads_users");
+                                    newAd.put("name", nameSelected);
+                                    newAd.put("price", priceSelected);
+                                    newAd.put("description", descSelected);
+                                    newAd.put("ads_icon", firstFile.getFileURL());
+                                    newAd.put("ads_icon2", secondFile.getFileURL());
+                                    newAd.put("ads_icon3", thirdFile.getFileURL());
+                                    Backendless.Persistence.of("ads_users").save(newAd, new AsyncCallback<Map>() {
+                                        @Override
+                                        public void handleResponse(final Map savedAd) {
+                                            HashMap<String, Object> parentObject = new HashMap<>();
+                                            parentObject.put("objectId", savedAd.get("objectId"));
+                                            relationColumnName = "collection:collection:1";
+                                            String whereClause = "type = '" + collectionSelected + "'";
+                                            Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause, new AsyncCallback<Integer>() {
 
-                                @Override
-                                public void handleFault(BackendlessFault fault) {
-                                    Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                                @Override
+                                                public void handleResponse(Integer colNum) {Log.i(TAG, "related objects have been added" + colNum);}
+
+                                                @Override
+                                                public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
+                                            });
+                                            Toast.makeText(NewAdActivity.this, "Добавлено! Обновите главную страницу", Toast.LENGTH_SHORT).show();
+                                            NewAdActivity.super.onBackPressed();
+                                        }
+
+                                        @Override
+                                        public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
+                                    });
                                 }
+                                @Override
+                                public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
                             });
-                            Toast.makeText(NewAdActivity.this, "Добавлено! Обновите главную страницу", Toast.LENGTH_SHORT).show();
-                            NewAdActivity.super.onBackPressed();
                         }
-
                         @Override
-                        public void handleFault(BackendlessFault fault) {
-                            Log.e(TAG, "server reported an error - " + fault.getMessage());
-                        }
+                        public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
                     });
                 }
-
                 @Override
-                public void handleFault(BackendlessFault fault) {
-                    Log.e(TAG, "server reported an error - " + fault.getMessage());
-                }
+                public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
             });
         }
-
-
-
-
     }
 }
