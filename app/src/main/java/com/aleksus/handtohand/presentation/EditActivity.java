@@ -43,6 +43,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
     private Spinner spinner;
 
+    private Bitmap myImage;
     private Bitmap selImage;
     private Bitmap selImage2;
     private Bitmap selImage3;
@@ -82,16 +83,12 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         Button photoChangeButton = (Button) findViewById(R.id.photo_select_button);
         Button saveButton = (Button) findViewById(R.id.editSaveButton);
         saveButton.setOnClickListener(this);
-
-        photoChangeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onChangeButtonClicked();
-            }
-        });
         adTitle = getIntent().getStringExtra("title");
+        Bundle extras = getIntent().getExtras();
+        myImage = extras.getParcelable("imagebitmap");
+        photoAds.setImageBitmap(myImage);
         BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
-        String whereClause = "ownerId = '" + AdsOwner.getObjectId() + "' and name = '" + adTitle + "'"; ;
+        String whereClause = "ownerId = '" + AdsOwner.getObjectId() + "' and name = '" + adTitle + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
         Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
@@ -99,48 +96,53 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             public void handleResponse(List<Map> ad) {
                 String adPrice = ad.get(0).get("price").toString();
                 String adDesc = ad.get(0).get("description").toString();
-                String adImage = ad.get(0).get("ads_icon").toString();
                 String adImage2 = ad.get(0).get("ads_icon2").toString();
                 String adImage3 = ad.get(0).get("ads_icon3").toString();
-                Glide
-                        .with(EditActivity.this)
-                        .load(adImage)
-                        .placeholder(R.mipmap.ic_record_voice_over_black)
-                        .error(R.drawable.ic_error)
-                        .override(150, 150)
-                        .crossFade(100)
-                        .into(photoAds);
-                Glide
-                        .with(EditActivity.this)
-                        .load(adImage2)
-                        .placeholder(R.mipmap.ic_record_voice_over_black)
-                        .error(R.drawable.ic_error)
-                        .override(150, 150)
-                        .crossFade(100)
-                        .into(photoAds2);
-                Glide
-                        .with(EditActivity.this)
-                        .load(adImage3)
-                        .placeholder(R.mipmap.ic_record_voice_over_black)
-                        .error(R.drawable.ic_error)
-                        .override(150, 150)
-                        .crossFade(100)
-                        .into(photoAds3);
+
+                if (photoAds2.getDrawable() == null && photoAds3.getDrawable() == null) {
+                    Glide
+                            .with(EditActivity.this)
+                            .load(adImage2)
+                            .placeholder(R.mipmap.ic_record_voice_over_black)
+                            .error(R.drawable.ic_error)
+                            .override(150, 150)
+                            .crossFade(100)
+                            .into(photoAds2);
+                    Glide
+                            .with(EditActivity.this)
+                            .load(adImage3)
+                            .placeholder(R.mipmap.ic_record_voice_over_black)
+                            .error(R.drawable.ic_error)
+                            .override(150, 150)
+                            .crossFade(100)
+                            .into(photoAds3);
+                } else {
+                    Toast.makeText(EditActivity.this, "бла бла", Toast.LENGTH_SHORT).show();
+
+                }
                 nameEdit.setText(adTitle);
                 priceEdit.setText(adPrice);
                 descEdit.setText(adDesc);
             }
 
             @Override
-            public void handleFault(BackendlessFault fault) {}
+            public void handleFault(BackendlessFault fault) {
+            }
 
+        });
+        photoChangeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onChangeButtonClicked();
+            }
         });
     }
 
     private void onChangeButtonClicked() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, 1);
+        for (int i = 3; i > 0; i--)
+            startActivityForResult(photoPickerIntent, i);
     }
 
     @Override
@@ -189,13 +191,109 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         nameSelected = nameEdit.getText().toString();
-        priceSelected = Integer.parseInt(priceEdit.getText().toString());
         descSelected = descEdit.getText().toString();
         collectionSelected = spinner.getSelectedItem().toString();
+        if (descSelected.equals("")) descSelected = "description";
+        if (priceEdit.getText().toString().equals("")) priceSelected = 0;
+        else priceSelected = Integer.parseInt(priceEdit.getText().toString());
 
-        Backendless.Files.remove("icons/" + adTitle + ".png", new AsyncCallback<Void>() {
+        final BackendlessUser user = Backendless.UserService.CurrentUser();
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause("name != '" + adTitle + "' and name= '" + nameSelected + "' and ownerId = '" + Backendless.UserService.CurrentUser().getObjectId() + "'");
+        Backendless.Data.of("ads_users").getObjectCount(queryBuilder, new AsyncCallback<Integer>() {
             @Override
-            public void handleResponse(Void response) {
+            public void handleResponse(Integer count) {
+                if (nameSelected.equals(""))
+                    Toast.makeText(EditActivity.this, "Не заполнены все данные", Toast.LENGTH_SHORT).show();
+                else if (count != 0)
+                    Toast.makeText(EditActivity.this, "У вас уже есть другое объявление с таким названием, измените его", Toast.LENGTH_SHORT).show();
+                else {
+                    Backendless.Files.removeDirectory("icons/" + user.getProperty("login") + "/" + adTitle, new AsyncCallback<Void>() {
+                        @Override
+                        public void handleResponse(Void response) {
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                        }
+                    });
+
+                    Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, "1.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                        @Override
+                        public void handleResponse(final BackendlessFile firstFile) {
+                            Backendless.Files.Android.upload(selImage2, Bitmap.CompressFormat.PNG, 100, "2.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                                @Override
+                                public void handleResponse(final BackendlessFile secondFile) {
+                                    Backendless.Files.Android.upload(selImage3, Bitmap.CompressFormat.PNG, 100, "3.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                                        @Override
+                                        public void handleResponse(final BackendlessFile thirdFile) {
+                                            String whereClause = "name = '" + adTitle + "'";
+                                            DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                                            queryBuilder.setWhereClause(whereClause);
+                                            Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
+                                                @Override
+                                                public void handleResponse(List<Map> editAd) {
+                                                    editAd.get(0).put("___class", "ads_users");
+                                                    editAd.get(0).put("name", nameSelected);
+                                                    editAd.get(0).put("price", priceSelected);
+                                                    editAd.get(0).put("description", descSelected);
+                                                    editAd.get(0).put("ads_icon", firstFile.getFileURL());
+                                                    editAd.get(0).put("ads_icon2", secondFile.getFileURL());
+                                                    editAd.get(0).put("ads_icon3", thirdFile.getFileURL());
+                                                    Backendless.Persistence.of("ads_users").save(editAd.get(0), new AsyncCallback<Map>() {
+                                                        public void handleResponse(Map savedAd) {
+                                                            HashMap<String, Object> parentObject = new HashMap<>();
+                                                            parentObject.put("objectId", savedAd.get("objectId"));
+                                                            relationColumnName = "collection:collection:1";
+                                                            String whereClause1 = "type = '" + collectionSelected + "'";
+                                                            Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause1, new AsyncCallback<Integer>() {
+                                                                @Override
+                                                                public void handleResponse(Integer colNum) {
+                                                                    Toast.makeText(EditActivity.this, "Изменено! Обновите данные на странице", Toast.LENGTH_SHORT).show();
+                                                                    EditActivity.super.onBackPressed();
+                                                                }
+
+                                                                @Override
+                                                                public void handleFault(BackendlessFault fault) {
+                                                                    Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                                                }
+                                                            });
+                                                        }
+
+                                                        public void handleFault(BackendlessFault fault) {
+                                                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                                        }
+                                                    });
+                                                }
+
+                                                @Override
+                                                public void handleFault(BackendlessFault fault) {
+                                                    Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void handleFault(BackendlessFault fault) {
+                                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                        }
+                    });
+                }
             }
 
             @Override
@@ -204,58 +302,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, nameSelected + ".png", "icons", new AsyncCallback<BackendlessFile>() {
-            @Override
-            public void handleResponse(final BackendlessFile backendlessFile) {
 
-                String whereClause = "name = '" + adTitle + "'";
-                DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                queryBuilder.setWhereClause(whereClause);
-                Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
-                    @Override
-                    public void handleResponse(List<Map> editAd) {
-                        editAd.get(0).put("___class", "ads_users");
-                        editAd.get(0).put("name", nameSelected);
-                        editAd.get(0).put("price", priceSelected);
-                        editAd.get(0).put("description", descSelected);
-                        editAd.get(0).put("ads_icon", backendlessFile.getFileURL());
-                        Backendless.Persistence.of("ads_users").save(editAd.get(0), new AsyncCallback<Map>() {
-                            public void handleResponse(Map savedAd) {
-                                HashMap<String, Object> parentObject = new HashMap<>();
-                                parentObject.put("objectId", savedAd.get("objectId"));
-                                relationColumnName = "collection:collection:1";
-                                String whereClause1 = "type = '" + collectionSelected + "'";
-                                Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause1, new AsyncCallback<Integer>() {
-                                    @Override
-                                    public void handleResponse(Integer colNum) {
-                                        Toast.makeText(EditActivity.this, "Изменено! Обновите данные на странице", Toast.LENGTH_SHORT).show();
-                                        EditActivity.super.onBackPressed();
-                                    }
-
-                                    @Override
-                                    public void handleFault(BackendlessFault fault) {
-                                        Log.e(TAG, "server reported an error - " + fault.getMessage());
-                                    }
-                                });
-                            }
-
-                            public void handleFault(BackendlessFault fault) {
-                                Log.e(TAG, "server reported an error - " + fault.getMessage());
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void handleFault(BackendlessFault fault) {
-                        Log.e(TAG, "server reported an error - " + fault.getMessage());
-                    }
-                });
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.e(TAG, "server reported an error - " + fault.getMessage());
-            }
-        });
     }
 }

@@ -61,7 +61,6 @@ public class InfoAdActivity extends AppCompatActivity {
                 .override(300, 300)
                 .crossFade(100)
                 .into(iconInfo);
-//        iconInfo.setImageBitmap(infoImage);
         titleInfo.setText(adTitle);
         priceInfo.setText("Цена: " + adPrice + " руб.");
         authorInfo.setText("Автор: " + adAuthor);

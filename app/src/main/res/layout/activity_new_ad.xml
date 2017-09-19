@@ -1,179 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-    <include layout="@layout/toolbar" />
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/dp16">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp40"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/dp4"
-            android:text="@string/new_ad"
-            android:textSize="@dimen/text_large" />
+        <include layout="@layout/toolbar" />
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal">
-
-
-            <EditText
-
-                android:id="@+id/name_select"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48"
-                android:gravity="center_vertical"
-                android:hint="@string/select_ad_name"
-                android:inputType="text"
-                android:textSize="@dimen/text_medium" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal">
-
-
-            <EditText
-
-                android:id="@+id/price_select"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48"
-                android:gravity="center_vertical"
-                android:hint="@string/select_ad_price"
-                android:inputType="number"
-                android:textSize="@dimen/text_medium" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal">
-
-
-            <EditText
-
-                android:id="@+id/desc_select"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:hint="@string/select_ad_desc"
-                android:inputType="textMultiLine"
-                android:textSize="@dimen/text_medium" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal">
+            android:orientation="vertical"
+            android:padding="@dimen/dp16">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp48"
-                android:layout_marginRight="@dimen/dp4"
-                android:gravity="center_vertical"
-                android:paddingRight="@dimen/dp4"
-                android:text="@string/new_ad_collection"
-                android:textSize="@dimen/text_medium" />
+                android:layout_height="@dimen/dp40"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dp4"
+                android:text="@string/new_ad"
+                android:textSize="@dimen/text_large" />
 
-            <Spinner
-                android:id="@+id/collection_select"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp48"
-                android:layout_marginLeft="@dimen/dp4"
-                android:entries="@+array/collections"
-                android:gravity="center_vertical"
-                android:spinnerMode="dialog"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
 
-                android:textSize="@dimen/text_medium" />
 
-        </TableRow>
+                <EditText
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal">
+                    android:id="@+id/name_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp48"
+                    android:gravity="center_vertical"
+                    android:hint="@string/select_ad_name"
+                    android:inputType="text"
+                    android:textSize="@dimen/text_medium" />
 
-            <ImageView
-                android:id="@+id/photoSelect"
-                android:layout_width="@dimen/dp96"
-                android:layout_height="@dimen/dp96"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/hand_to_hand" />
-            <ImageView
-                android:id="@+id/photoSelect2"
-                android:layout_width="@dimen/dp96"
-                android:layout_height="@dimen/dp96"
-                android:layout_marginLeft="@dimen/dp24"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/hand_to_hand" />
-            <ImageView
-                android:id="@+id/photoSelect3"
-                android:layout_width="@dimen/dp96"
-                android:layout_height="@dimen/dp96"
-                android:layout_marginLeft="@dimen/dp24"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/hand_to_hand" />
+            </TableRow>
 
-        </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal">
+
+                <EditText
+
+                    android:id="@+id/price_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp48"
+                    android:gravity="center_vertical"
+                    android:hint="@string/select_ad_price"
+                    android:inputType="number"
+                    android:textSize="@dimen/text_medium" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+
+                <EditText
+
+                    android:id="@+id/desc_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:hint="@string/select_ad_desc"
+                    android:inputType="textMultiLine"
+                    android:textSize="@dimen/text_medium" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp48"
+                    android:layout_marginRight="@dimen/dp4"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/dp4"
+                    android:text="@string/new_ad_collection"
+                    android:textSize="@dimen/text_medium" />
+
+                <Spinner
+                    android:id="@+id/collection_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp48"
+                    android:layout_marginLeft="@dimen/dp4"
+                    android:entries="@+array/collections"
+                    android:gravity="center_vertical"
+                    android:spinnerMode="dialog"
+
+                    android:textSize="@dimen/text_medium" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:id="@+id/photoSelect"
+                    android:layout_width="@dimen/dp96"
+                    android:layout_height="@dimen/dp96"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/hand_to_hand" />
+                <ImageView
+                    android:id="@+id/photoSelect2"
+                    android:layout_width="@dimen/dp96"
+                    android:layout_height="@dimen/dp96"
+                    android:layout_marginLeft="@dimen/dp24"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/hand_to_hand" />
+                <ImageView
+                    android:id="@+id/photoSelect3"
+                    android:layout_width="@dimen/dp96"
+                    android:layout_height="@dimen/dp96"
+                    android:layout_marginLeft="@dimen/dp24"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/hand_to_hand" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/photo_select_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_select_image"
+                    android:textSize="@dimen/text_small" />
+
+            </TableRow>
 
             <Button
-                android:id="@+id/photo_select_button"
-                android:layout_width="@dimen/dp96"
+                android:id="@+id/new_add_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/button_select_image"
-                android:textSize="@dimen/text_micro" />
-
-            <Button
-                android:id="@+id/photo_select_button2"
-                android:layout_width="@dimen/dp96"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp24"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/button_select_image"
-                android:textSize="@dimen/text_micro" />
-
-            <Button
-                android:id="@+id/photo_select_button3"
-                android:layout_width="@dimen/dp96"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp24"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/button_select_image"
-                android:textSize="@dimen/text_micro" />
-
-        </TableRow>
-
-        <Button
-            android:id="@+id/new_add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp48"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp4"
-            android:height="@dimen/dp40"
-            android:text="@string/new_ad_button"
-            android:textSize="@dimen/text_medium" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp4"
+                android:layout_margin="@dimen/dp40"
+                android:text="@string/new_ad_button"
+                android:textSize="@dimen/text_large" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

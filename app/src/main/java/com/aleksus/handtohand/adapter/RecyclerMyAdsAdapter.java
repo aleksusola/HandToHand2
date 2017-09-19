@@ -98,13 +98,18 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
 
                         switch (item.getItemId()) {
                             case R.id.mnu_item_change:
-                                Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Редактирование", Toast.LENGTH_SHORT).show();
+                                holder.photoIcon.buildDrawingCache();
+                                Bitmap image = holder.photoIcon.getDrawingCache();
+                                Bundle extras = new Bundle();
+                                extras.putParcelable("imagebitmap", image);
                                 Intent intentEdit = new Intent(holder.itemView.getContext(), EditActivity.class);
                                 intentEdit.putExtra("title", itemList.getTitle());
+                                intentEdit.putExtras(extras);
                                 mContext.startActivity(intentEdit);
                                 break;
                             case R.id.mnu_item_full:
-                                Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Подробно", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(holder.itemView.getContext(), InfoAdActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
                                 intent.putExtra("price", itemList.getPrice());

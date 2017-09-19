@@ -53,7 +53,7 @@
 
     <string name="new_ad">Новое объявление</string>
     <string name="new_ad_collection">Коллекция</string>
-    <string name="new_ad_button">Добавить</string>
+    <string name="new_ad_button">Создать</string>
     <string name="hint_name">Новое название…</string>
     <string name="hint_price">Новая цена…</string>
     <string name="new_collection">Новая коллекция:</string>

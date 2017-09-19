@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -91,7 +96,7 @@
                 android:layout_height="@dimen/dp96"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/hand_to_hand" />
+                 />
             <ImageView
                 android:id="@+id/photoSelect2"
                 android:layout_width="@dimen/dp96"
@@ -99,7 +104,7 @@
                 android:layout_marginLeft="@dimen/dp24"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/hand_to_hand" />
+                 />
             <ImageView
                 android:id="@+id/photoSelect3"
                 android:layout_width="@dimen/dp96"
@@ -107,8 +112,8 @@
                 android:layout_marginLeft="@dimen/dp24"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/hand_to_hand" />
-
+                 />
+            <!--android:src="@drawable/hand_to_hand"-->
         </TableRow>
 
         <TableRow
@@ -118,43 +123,21 @@
 
             <Button
                 android:id="@+id/photo_select_button"
-                android:layout_width="@dimen/dp96"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/button_select_image"
-                android:textSize="@dimen/text_micro" />
-
-            <Button
-                android:id="@+id/photo_select_button2"
-                android:layout_width="@dimen/dp96"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp24"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/button_select_image"
-                android:textSize="@dimen/text_micro" />
-
-            <Button
-                android:id="@+id/photo_select_button3"
-                android:layout_width="@dimen/dp96"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp24"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/button_select_image"
-                android:textSize="@dimen/text_micro" />
+                android:textSize="@dimen/text_small" />
 
         </TableRow>
 
         <Button
             android:id="@+id/editSaveButton"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp48"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp4"
-            android:height="@dimen/dp40"
+            android:layout_margin="@dimen/dp40"
             android:text="@string/button_save"
-            android:textSize="@dimen/text_medium" />
+            android:textSize="@dimen/text_large" />
     </LinearLayout>
-
-
 </LinearLayout>
+</ScrollView>

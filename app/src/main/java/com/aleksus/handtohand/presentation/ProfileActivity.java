@@ -198,13 +198,13 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             String whereClause = "login = '" + adAuthor + "'";
             DataQueryBuilder queryBuilder = DataQueryBuilder.create();
             queryBuilder.setWhereClause(whereClause);
-            queryBuilder.setSortBy(order);
             queryBuilder.setPageSize(25).setOffset(0);
             Backendless.Data.of(BackendlessUser.class).find(queryBuilder, new AsyncCallback<List<BackendlessUser>>() {
                 @Override
                 public void handleResponse(List<BackendlessUser> author) {
                     String whereClause = "ownerId = '" + author.get(0).getObjectId() + "'";
                     final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                    queryBuilder.setSortBy(order);
                     queryBuilder.setWhereClause(whereClause);
                     Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                         @Override
