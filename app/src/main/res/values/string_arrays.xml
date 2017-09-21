@@ -7,6 +7,7 @@
     <string-array name="collections">
         <item>Аксессуары</item>
         <item>Бытовая техника</item>
+        <item>Инструменты</item>
         <item>Мебель</item>
         <item>Недвижимость</item>
         <item>Одежда</item>
@@ -14,11 +15,13 @@
         <item>Транспорт</item>
         <item>Услуги</item>
         <item>Электроника</item>
+        <item>Другое</item>
     </string-array>
     <string-array name="collections_filter">
         <item>Все коллекции</item>
         <item>Аксессуары</item>
         <item>Бытовая техника</item>
+        <item>Инструменты</item>
         <item>Мебель</item>
         <item>Недвижимость</item>
         <item>Одежда</item>
@@ -26,6 +29,7 @@
         <item>Транспорт</item>
         <item>Услуги</item>
         <item>Электроника</item>
+        <item>Другое</item>
     </string-array>
     <string-array name="order_filter">
         <item>По дате &#8595;</item>

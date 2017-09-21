@@ -60,14 +60,15 @@ public class MyAdsActivity extends AppCompatActivity {
         final String whereClause = "ownerId = '" + AdsOwner.getObjectId() + "'";
         final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
+        queryBuilder.setSortBy("created DESC");
         queryBuilder.setPageSize(25).setOffset(0);
         Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
             @Override
             public void handleResponse(final List<Map> foundMyAds) {
                 if (foundMyAds.size() == 0) {
-                    Toast.makeText(MyAdsActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MyAdsActivity.this, "Ничего не найдено", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MyAdsActivity.this, "Найдено объявлений " + foundMyAds.size(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MyAdsActivity.this, "Найдено объявлений " + foundMyAds.size(), Toast.LENGTH_SHORT).show();
                     listItemsMy = new ArrayList<>();
                     for (int i = 0; i < foundMyAds.size(); i++)
                         listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("description").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString(), foundMyAds.get(i).get("created").toString()));
@@ -103,13 +104,17 @@ public class MyAdsActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
+                        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                        queryBuilder.setWhereClause(whereClause);
+                        queryBuilder.setSortBy("created DESC");
+                        queryBuilder.setPageSize(25).setOffset(0);
+                        Backendless.Persistence.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                             @Override
                             public void handleResponse(final List<Map> foundMyAds) {
                                 if (foundMyAds.size() == 0) {
-                                    Toast.makeText(MyAdsActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MyAdsActivity.this, "Ничего не найдено", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(MyAdsActivity.this, "Найдено объявлений " + foundMyAds.size(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MyAdsActivity.this, "Найдено объявлений " + foundMyAds.size(), Toast.LENGTH_SHORT).show();
                                     listItemsMy = new ArrayList<>();
                                     for (int i = 0; i < foundMyAds.size(); i++)
                                         listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("description").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString(), foundMyAds.get(i).get("created").toString()));

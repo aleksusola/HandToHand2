@@ -84,7 +84,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                 .load(itemList.getPhoto())
                 .placeholder(R.mipmap.ic_record_voice_over_black)
                 .error(R.drawable.ic_error)
-                .override(150, 150)
+                .override(200, 200)
                 .crossFade(100)
                 .into(holder.photoIcon);
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
@@ -99,13 +99,9 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                         switch (item.getItemId()) {
                             case R.id.mnu_item_change:
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_SHORT).show();
-                                holder.photoIcon.buildDrawingCache();
-                                Bitmap image = holder.photoIcon.getDrawingCache();
-                                Bundle extras = new Bundle();
-                                extras.putParcelable("imagebitmap", image);
                                 Intent intentEdit = new Intent(holder.itemView.getContext(), EditActivity.class);
                                 intentEdit.putExtra("title", itemList.getTitle());
-                                intentEdit.putExtras(extras);
+                                intentEdit.putExtra("collection", holder.txtCollection.getText());
                                 mContext.startActivity(intentEdit);
                                 break;
                             case R.id.mnu_item_full:
@@ -136,7 +132,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                                     public void handleResponse(Long response) {
                                                         listItemsMy.remove(position);
                                                         notifyDataSetChanged();
-                                                        Toast.makeText(mContext, "Объявление удалено", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(mContext, "Объявление удалено", Toast.LENGTH_SHORT).show();
                                                     }
 
                                                     @Override
@@ -155,7 +151,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 });
                                 sure.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int arg1) {
-                                        Toast.makeText(mContext, "Отменено", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext, "Отменено", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                                 sure.setCancelable(false);

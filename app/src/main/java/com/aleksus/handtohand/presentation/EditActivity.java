@@ -1,16 +1,24 @@
 package com.aleksus.handtohand.presentation;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,16 +42,17 @@ import java.util.Map;
 
 public class EditActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private ProgressDialog progressDoalog;
     private EditText nameEdit;
     private EditText priceEdit;
     private EditText descEdit;
     private ImageView photoAds;
     private ImageView photoAds2;
     private ImageView photoAds3;
+    private ImageView selIV;
 
     private Spinner spinner;
 
-    private Bitmap myImage;
     private Bitmap selImage;
     private Bitmap selImage2;
     private Bitmap selImage3;
@@ -54,6 +63,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private String collectionSelected;
     private String relationColumnName;
     private String adTitle;
+    private String adCol;
 
     private static final String TAG = "MYAPP";
 
@@ -73,6 +83,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        progressDoalog = new ProgressDialog(this);
         spinner = (Spinner) findViewById(R.id.edit_collection);
         nameEdit = (EditText) findViewById(R.id.edit_name);
         priceEdit = (EditText) findViewById(R.id.edit_price);
@@ -82,44 +93,67 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         photoAds3 = (ImageView) findViewById(R.id.photoSelect3);
         Button photoChangeButton = (Button) findViewById(R.id.photo_select_button);
         Button saveButton = (Button) findViewById(R.id.editSaveButton);
+
+        photoAds.setOnLongClickListener(IViewLongClickListener);
+        photoAds2.setOnLongClickListener(IViewLongClickListener);
+        photoAds3.setOnLongClickListener(IViewLongClickListener);
         saveButton.setOnClickListener(this);
+        photoChangeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onChangeButtonClicked();
+            }
+        });
         adTitle = getIntent().getStringExtra("title");
-        Bundle extras = getIntent().getExtras();
-        myImage = extras.getParcelable("imagebitmap");
-        photoAds.setImageBitmap(myImage);
+        adCol = getIntent().getStringExtra("collection");
+        if (adCol.equals("Аксессуары")) spinner.setSelection(0);
+        else if (adCol.equals("Бытовая техника")) spinner.setSelection(1);
+        else if (adCol.equals("Инструменты")) spinner.setSelection(2);
+        else if (adCol.equals("Мебель")) spinner.setSelection(3);
+        else if (adCol.equals("Недвижимость")) spinner.setSelection(4);
+        else if (adCol.equals("Одежда")) spinner.setSelection(5);
+        else if (adCol.equals("Телефоны")) spinner.setSelection(6);
+        else if (adCol.equals("Транспорт")) spinner.setSelection(7);
+        else if (adCol.equals("Услуги")) spinner.setSelection(8);
+        else if (adCol.equals("Электроника")) spinner.setSelection(9);
+        else spinner.setSelection(10);
         BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
         String whereClause = "ownerId = '" + AdsOwner.getObjectId() + "' and name = '" + adTitle + "'";
-        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-        queryBuilder.setWhereClause(whereClause);
-        Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
+        DataQueryBuilder adBuilder = DataQueryBuilder.create();
+        adBuilder.setWhereClause(whereClause);
+        Backendless.Data.of("ads_users").find(adBuilder, new AsyncCallback<List<Map>>() {
             @Override
             public void handleResponse(List<Map> ad) {
                 String adPrice = ad.get(0).get("price").toString();
                 String adDesc = ad.get(0).get("description").toString();
+                String adImage = ad.get(0).get("ads_icon").toString();
                 String adImage2 = ad.get(0).get("ads_icon2").toString();
                 String adImage3 = ad.get(0).get("ads_icon3").toString();
+                Glide
+                        .with(EditActivity.this)
+                        .load(adImage)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(200,200)
+                        .crossFade(100)
+                        .into(photoAds);
+                Glide
+                        .with(EditActivity.this)
+                        .load(adImage2)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(200,200)
+                        .crossFade(100)
+                        .into(photoAds2);
+                Glide
+                        .with(EditActivity.this)
+                        .load(adImage3)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(200,200)
+                        .crossFade(100)
+                        .into(photoAds3);
 
-                if (photoAds2.getDrawable() == null && photoAds3.getDrawable() == null) {
-                    Glide
-                            .with(EditActivity.this)
-                            .load(adImage2)
-                            .placeholder(R.mipmap.ic_record_voice_over_black)
-                            .error(R.drawable.ic_error)
-                            .override(150, 150)
-                            .crossFade(100)
-                            .into(photoAds2);
-                    Glide
-                            .with(EditActivity.this)
-                            .load(adImage3)
-                            .placeholder(R.mipmap.ic_record_voice_over_black)
-                            .error(R.drawable.ic_error)
-                            .override(150, 150)
-                            .crossFade(100)
-                            .into(photoAds3);
-                } else {
-                    Toast.makeText(EditActivity.this, "бла бла", Toast.LENGTH_SHORT).show();
-
-                }
                 nameEdit.setText(adTitle);
                 priceEdit.setText(adPrice);
                 descEdit.setText(adDesc);
@@ -127,15 +161,57 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "server reported an error - " + fault.getMessage());
             }
+        });
+    }
 
-        });
-        photoChangeButton.setOnClickListener(new View.OnClickListener() {
+    View.OnLongClickListener IViewLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            showPopupMenu(v);
+            return true;
+        }
+
+    };
+
+    private void showPopupMenu(final View v) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        popupMenu.inflate(R.menu.menu_popup);
+        int ivId = v.getId();
+        selIV = (ImageView) findViewById(ivId);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onClick(View view) {
-                onChangeButtonClicked();
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.iDel:
+                        selIV.setImageResource(R.drawable.hand_to_hand);
+                        Toast.makeText(getApplicationContext(), "Изображение изменено на стандартную", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.iChan:
+                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                        photoPickerIntent.setType("image/*");
+                        if (selIV.equals(photoAds)) startActivityForResult(photoPickerIntent, 1);
+                        else if (selIV.equals(photoAds2)) startActivityForResult(photoPickerIntent, 2);
+                        else startActivityForResult(photoPickerIntent, 3);
+                        return true;
+                    case R.id.iDef:
+                        if (selIV.equals(photoAds)) Toast.makeText(getApplicationContext(), "Это фото уже основное", Toast.LENGTH_SHORT).show();
+                        else {
+                            Drawable drawable = selIV.getDrawable();
+                            Drawable drawable2 = photoAds.getDrawable();
+                            photoAds.setImageDrawable(drawable);
+                            selIV.setImageDrawable(drawable2);
+                            Toast.makeText(getApplicationContext(), "Теперь это фото основное", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    default:
+                        return false;
+                }
             }
         });
+        popupMenu.show();
     }
 
     private void onChangeButtonClicked() {
@@ -197,6 +273,16 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         if (priceEdit.getText().toString().equals("")) priceSelected = 0;
         else priceSelected = Integer.parseInt(priceEdit.getText().toString());
 
+        photoAds.buildDrawingCache();
+        selImage = photoAds.getDrawingCache();
+        photoAds.setDrawingCacheEnabled(false);
+        photoAds2.buildDrawingCache();
+        selImage2 = photoAds2.getDrawingCache();
+        photoAds2.setDrawingCacheEnabled(false);
+        photoAds3.buildDrawingCache();
+        selImage3 = photoAds3.getDrawingCache();
+        photoAds3.setDrawingCacheEnabled(false);
+
         final BackendlessUser user = Backendless.UserService.CurrentUser();
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause("name != '" + adTitle + "' and name= '" + nameSelected + "' and ownerId = '" + Backendless.UserService.CurrentUser().getObjectId() + "'");
@@ -208,6 +294,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 else if (count != 0)
                     Toast.makeText(EditActivity.this, "У вас уже есть другое объявление с таким названием, измените его", Toast.LENGTH_SHORT).show();
                 else {
+                    progressDoalog.setMessage("Подождите, данные сохраняются");
+                    progressDoalog.show();
                     Backendless.Files.removeDirectory("icons/" + user.getProperty("login") + "/" + adTitle, new AsyncCallback<Void>() {
                         @Override
                         public void handleResponse(Void response) {

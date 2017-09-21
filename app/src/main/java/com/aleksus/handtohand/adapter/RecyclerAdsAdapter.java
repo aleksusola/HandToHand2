@@ -119,7 +119,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
 
                         switch (item.getItemId()) {
                             case R.id.mnu_item_connect:
-                                Toast.makeText(mContext, "Связываемся", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Связываемся", Toast.LENGTH_SHORT).show();
                                 Backendless.UserService.findById(itemList.getAuthor(), new AsyncCallback<BackendlessUser>() {
                                     public void handleResponse(BackendlessUser adsOwner) {
                                         userPhone = adsOwner.getProperty("phone").toString();
@@ -134,7 +134,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 });
                                 break;
                             case R.id.mnu_item_full:
-                                Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Редактирование", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(holder.itemView.getContext(), InfoAdActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
                                 intent.putExtra("price", itemList.getPrice());
@@ -148,7 +148,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                             case R.id.mnu_item_hide:
                                 listItems.remove(position);
                                 notifyDataSetChanged();
-                                Toast.makeText(mContext, "Скрыто", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Скрыто", Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.mnu_item_fav:
                                 String whereClause = "Users[favorites].objectId='" + user.getObjectId() + "' and name='" + itemList.getTitle() + "'";
@@ -161,7 +161,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                             Backendless.Data.of(BackendlessUser.class).addRelation(user, "favorites:ads_users:n", "name = '" + itemList.getTitle() + "'", new AsyncCallback<Integer>() {
                                                 @Override
                                                 public void handleResponse(Integer response) {
-                                                    Toast.makeText(mContext, "Добавлено в избранные", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(mContext, "Добавлено в избранные", Toast.LENGTH_SHORT).show();
                                                 }
 
                                                 @Override
@@ -170,7 +170,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                                 }
                                             });
                                         } else {
-                                            Toast.makeText(mContext, "Объявление уже есть в вашем списке избранных", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(mContext, "Объявление уже есть в вашем списке избранных", Toast.LENGTH_SHORT).show();
                                         }
                                     }
 

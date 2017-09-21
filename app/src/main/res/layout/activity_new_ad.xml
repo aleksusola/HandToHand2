@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -117,22 +116,27 @@
                     android:layout_height="@dimen/dp96"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/hand_to_hand" />
+
                 <ImageView
                     android:id="@+id/photoSelect2"
                     android:layout_width="@dimen/dp96"
                     android:layout_height="@dimen/dp96"
-                    android:layout_marginLeft="@dimen/dp24"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/dp24"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/hand_to_hand" />
+
                 <ImageView
                     android:id="@+id/photoSelect3"
                     android:layout_width="@dimen/dp96"
                     android:layout_height="@dimen/dp96"
-                    android:layout_marginLeft="@dimen/dp24"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/dp24"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/hand_to_hand" />
 
             </TableRow>
@@ -156,8 +160,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp4"
                 android:layout_margin="@dimen/dp40"
+                android:layout_marginTop="@dimen/dp4"
                 android:text="@string/new_ad_button"
                 android:textSize="@dimen/text_large" />
         </LinearLayout>

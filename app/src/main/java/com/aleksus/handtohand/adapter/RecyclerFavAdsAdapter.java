@@ -66,7 +66,7 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
                     ownerName = "Вы";
                     holder.txtAuthor.setText(ownerName);
                 } else {
-                    ownerName = adsOwner.getProperty("login").toString();
+                    ownerName = adsOwner.getProperty("firstName").toString();
                     ownerFamily = adsOwner.getProperty("secondName").toString();
                     holder.txtAuthor.setText(ownerName + " " + ownerFamily);
                 }
@@ -105,7 +105,7 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
                 .load(itemList.getPhoto())
                 .placeholder(R.mipmap.ic_record_voice_over_black)
                 .error(R.drawable.ic_error)
-                .override(150, 150)
+                .override(200,200)
                 .crossFade(100)
                 .into(holder.photoIcon);
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +119,7 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
 
                         switch (item.getItemId()) {
                             case R.id.mnu_item_connect:
-                                Toast.makeText(mContext, "Связываемся", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Связываемся", Toast.LENGTH_SHORT).show();
                                 Backendless.UserService.findById(itemList.getAuthor(), new AsyncCallback<BackendlessUser>() {
                                     public void handleResponse(BackendlessUser adsOwner) {
                                         userPhone = adsOwner.getProperty("phone").toString();
@@ -134,7 +134,7 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
                                 });
                                 break;
                             case R.id.mnu_item_full:
-                                Toast.makeText(mContext, "Редактирование", Toast.LENGTH_LONG).show();
+                                Toast.makeText(mContext, "Редактирование", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(holder.itemView.getContext(), InfoAdActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
                                 intent.putExtra("price", itemList.getPrice());
@@ -151,7 +151,7 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
                                     public void handleResponse(Integer response) {
                                         listItems.remove(position);
                                         notifyDataSetChanged();
-                                        Toast.makeText(mContext, "Удалено из избранных", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext, "Удалено из избранных", Toast.LENGTH_SHORT).show();
                                     }
                                     @Override
                                     public void handleFault(BackendlessFault fault) {

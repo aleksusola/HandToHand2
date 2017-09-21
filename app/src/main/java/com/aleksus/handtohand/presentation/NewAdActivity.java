@@ -3,13 +3,16 @@ package com.aleksus.handtohand.presentation;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +41,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     private ImageView photoGallery;
     private ImageView photoGallery2;
     private ImageView photoGallery3;
+    private ImageView selIV;
     private Spinner spinner;
 
     private Bitmap selImage;
@@ -81,6 +85,10 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         selImage = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
         selImage2 = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
         selImage3 = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
+
+        photoGallery.setOnLongClickListener(IViewLongClickListener);
+        photoGallery2.setOnLongClickListener(IViewLongClickListener);
+        photoGallery3.setOnLongClickListener(IViewLongClickListener);
         Button photoSelectButton = (Button) findViewById(R.id.photo_select_button);
         photoSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +104,54 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         photoPickerIntent.setType("image/*");
         for (int i = 3; i>0; i--)
             startActivityForResult(photoPickerIntent, i);
+    }
+
+    View.OnLongClickListener IViewLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            showPopupMenu(v);
+            return true;
+        }
+
+    };
+
+    private void showPopupMenu(final View v) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        popupMenu.inflate(R.menu.menu_popup);
+        int ivId = v.getId();
+        selIV = (ImageView) findViewById(ivId);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.iDel:
+                        selIV.setImageResource(R.drawable.hand_to_hand);
+                        Toast.makeText(getApplicationContext(), "Изображение изменено на стандартную", Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.iChan:
+                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                        photoPickerIntent.setType("image/*");
+                        if (selIV.equals(photoGallery)) startActivityForResult(photoPickerIntent, 1);
+                        else if (selIV.equals(photoGallery2)) startActivityForResult(photoPickerIntent, 2);
+                        else startActivityForResult(photoPickerIntent, 3);
+                        return true;
+                    case R.id.iDef:
+                        if (selIV.equals(photoGallery)) Toast.makeText(getApplicationContext(), "Это фото уже основное", Toast.LENGTH_SHORT).show();
+                        else {
+                            Drawable drawable = selIV.getDrawable();
+                            Drawable drawable2 = photoGallery.getDrawable();
+                            photoGallery.setImageDrawable(drawable);
+                            selIV.setImageDrawable(drawable2);
+                            Toast.makeText(getApplicationContext(), "Теперь это фото основное", Toast.LENGTH_SHORT).show();
+                        }
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        popupMenu.show();
     }
 
     @Override
