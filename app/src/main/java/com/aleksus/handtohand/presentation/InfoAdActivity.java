@@ -10,7 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aleksus.handtohand.R;
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
+
+import java.util.List;
+import java.util.Map;
 
 public class InfoAdActivity extends AppCompatActivity {
 
@@ -21,8 +29,14 @@ public class InfoAdActivity extends AppCompatActivity {
     private TextView createdInfo;
     private TextView descInfo;
 
-    private ImageView iconInfo;
-    private Bitmap infoImage;
+    private Bitmap adImage;
+
+    private String adTitle;
+    private String adAuthor;
+    private String adCol;
+    private String adCreated;
+    private String adOwnerName;
+    private PhotoView iconInfo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,27 +59,61 @@ public class InfoAdActivity extends AppCompatActivity {
         collectionInfo = (TextView) findViewById(R.id.info_collection);
         createdInfo = (TextView) findViewById(R.id.info_created);
         descInfo = (TextView) findViewById(R.id.info_desc);
-        iconInfo = (ImageView) findViewById(R.id.info_icon);
-        String adTitle = getIntent().getStringExtra("title");
-        String adPrice = getIntent().getStringExtra("price");
-        String adAuthor = getIntent().getStringExtra("author");
-        String adCollection = getIntent().getStringExtra("collection");
-        String adCreated = getIntent().getStringExtra("created");
-        String adDesc = getIntent().getStringExtra("desc");
-        String adImage = getIntent().getStringExtra("image");
-        Glide
-                .with(this)
-                .load(adImage)
-                .placeholder(R.mipmap.ic_record_voice_over_black)
-                .error(R.drawable.ic_error)
-                .override(300, 300)
-                .crossFade(100)
-                .into(iconInfo);
-        titleInfo.setText(adTitle);
-        priceInfo.setText("Цена: " + adPrice + " руб.");
-        authorInfo.setText("Автор: " + adAuthor);
-        collectionInfo.setText("Коллекция: " + adCollection);
-        createdInfo.setText(adCreated);
-        descInfo.setText(adDesc);
+        iconInfo = (PhotoView) findViewById(R.id.view_pager);
+        adTitle = getIntent().getStringExtra("title");
+        adAuthor = getIntent().getStringExtra("author");
+        adCol = getIntent().getStringExtra("collection");
+        adCreated = getIntent().getStringExtra("created");
+        adOwnerName = getIntent().getStringExtra("ownerName");
+        if (adAuthor.equals("Вы")) adAuthor = Backendless.UserService.CurrentUser().getObjectId();
+
+        final String whereClause = "ownerId = '" + adAuthor + "' and name = '" + adTitle + "'";
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause(whereClause);
+        Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
+            @Override
+            public void handleResponse(List<Map> ad) {
+                String adPrice = ad.get(0).get("price").toString();
+                String adDesc = ad.get(0).get("description").toString();
+                String adImage = ad.get(0).get("ads_icon").toString();
+                String adImage2 = ad.get(0).get("ads_icon2").toString();
+                String adImage3 = ad.get(0).get("ads_icon3").toString();
+                Glide
+                        .with(InfoAdActivity.this)
+                        .load(adImage)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(250, 250)
+                        .crossFade(100)
+                        .into(iconInfo);
+                Glide
+                        .with(InfoAdActivity.this)
+                        .load(adImage2)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(250, 250)
+                        .crossFade(100)
+                        .into(iconInfo);
+                Glide
+                        .with(InfoAdActivity.this)
+                        .load(adImage3)
+                        .placeholder(R.mipmap.ic_record_voice_over_black)
+                        .error(R.drawable.ic_error)
+                        .override(250, 250)
+                        .crossFade(100)
+                        .into(iconInfo);
+                titleInfo.setText(adTitle);
+                priceInfo.setText("Цена: " + adPrice + " руб.");
+                authorInfo.setText("Автор: " + adOwnerName);
+                collectionInfo.setText("Коллекция: " + adCol);
+                createdInfo.setText(adCreated);
+                descInfo.setText(adDesc);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+
+            }
+        });
     }
 }

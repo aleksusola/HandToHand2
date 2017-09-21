@@ -137,12 +137,10 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 Toast.makeText(mContext, "Редактирование", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(holder.itemView.getContext(), InfoAdActivity.class);
                                 intent.putExtra("title", itemList.getTitle());
-                                intent.putExtra("price", itemList.getPrice());
-                                intent.putExtra("author", "Вы");
+                                intent.putExtra("author", itemList.getAuthor());
                                 intent.putExtra("collection", holder.txtCollection.getText());
                                 intent.putExtra("created", holder.txtCreated.getText());
-                                intent.putExtra("desc", itemList.getDesc());
-                                intent.putExtra("image", itemList.getPhoto());
+                                intent.putExtra("ownerName", holder.txtAuthor.getText());
                                 mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_hide:

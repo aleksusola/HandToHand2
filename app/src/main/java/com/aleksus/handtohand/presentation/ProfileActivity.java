@@ -44,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private RecyclerAdsAdapter adapter;
     private List<RecyclerAdsItem> listItems;
     private List<RecyclerAdsItem> listItemsPrice;
+    private List<RecyclerAdsItem> listItemsDate;
     private List<RecyclerAdsItem> listItemsFilter;
     private TextView selectedFilter;
 
@@ -345,6 +346,34 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                                 listItemsPrice.add(new RecyclerAdsItem(priceSortingAds.get(i).get("name").toString(), priceSortingAds.get(i).get("description").toString(), priceSortingAds.get(i).get("ownerId").toString(), priceSortingAds.get(i).get("collection").toString(), priceSortingAds.get(i).get("price").toString(), priceSortingAds.get(i).get("ads_icon").toString(), priceSortingAds.get(i).get("created").toString()));
                             }
                             adapter = new RecyclerAdsAdapter(listItemsPrice, ProfileActivity.this);
+                            recyclerViewAds.setAdapter(adapter);
+                        }
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Log.e(TAG, "server reported an error - " + fault.getMessage());
+                    }
+                });
+                break;
+            case R.id.action_sort_by_date:
+                Toast.makeText(ProfileActivity.this, getString(R.string.action_sort_by_date), Toast.LENGTH_SHORT).show();
+                selectedFilter.setVisibility(View.GONE);
+                DataQueryBuilder queryBuilder1 = DataQueryBuilder.create();
+                queryBuilder1.setSortBy("created");
+                queryBuilder1.setPageSize(25).setOffset(0);
+                Backendless.Persistence.of("ads_users").find(queryBuilder1, new AsyncCallback<List<Map>>() {
+                    @Override
+                    public void handleResponse(final List<Map> dateSortingAds) {
+                        if (dateSortingAds.size() == 0) {
+                            Toast.makeText(ProfileActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Найдено объявлений " + dateSortingAds.size(), Toast.LENGTH_LONG).show();
+                            listItemsDate = new ArrayList<>();
+                            for (int i = 0; i < dateSortingAds.size(); i++) {
+                                listItemsDate.add(new RecyclerAdsItem(dateSortingAds.get(i).get("name").toString(), dateSortingAds.get(i).get("description").toString(), dateSortingAds.get(i).get("ownerId").toString(), dateSortingAds.get(i).get("collection").toString(), dateSortingAds.get(i).get("price").toString(), dateSortingAds.get(i).get("ads_icon").toString(), dateSortingAds.get(i).get("created").toString()));
+                            }
+                            adapter = new RecyclerAdsAdapter(listItemsDate, ProfileActivity.this);
                             recyclerViewAds.setAdapter(adapter);
                         }
                     }
