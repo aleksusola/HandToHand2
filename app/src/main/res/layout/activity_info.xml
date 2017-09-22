@@ -25,11 +25,10 @@
                 android:textSize="@dimen/text_large" />
 
 
-            <com.github.chrisbanes.photoview.sample.HackyViewPager
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/view_pager"
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"/>
+                android:layout_height="250dp"
+                android:id="@+id/info_icon"/>
         </LinearLayout>
 
         <LinearLayout
