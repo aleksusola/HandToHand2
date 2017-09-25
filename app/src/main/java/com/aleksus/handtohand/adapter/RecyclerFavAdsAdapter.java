@@ -105,7 +105,7 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
                 .load(itemList.getPhoto())
                 .placeholder(R.mipmap.ic_record_voice_over_black)
                 .error(R.drawable.ic_error)
-                .override(200,200)
+                .override(200, 200)
                 .crossFade(100)
                 .into(holder.photoIcon);
         holder.txtOptionDigit.setOnClickListener(new View.OnClickListener() {
@@ -144,13 +144,14 @@ public class RecyclerFavAdsAdapter extends RecyclerView.Adapter<RecyclerFavAdsAd
                                 mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_remove:
-                                Backendless.Data.of(BackendlessUser.class ).deleteRelation(user, "favorites", "name = '" + itemList.getTitle() + "'", new AsyncCallback<Integer>() {
+                                Backendless.Data.of(BackendlessUser.class).deleteRelation(user, "favorites", "name = '" + itemList.getTitle() + "'", new AsyncCallback<Integer>() {
                                     @Override
                                     public void handleResponse(Integer response) {
                                         listItems.remove(position);
                                         notifyDataSetChanged();
                                         Toast.makeText(mContext, "Удалено из избранных", Toast.LENGTH_SHORT).show();
                                     }
+
                                     @Override
                                     public void handleFault(BackendlessFault fault) {
                                         Log.e(TAG, "server reported an error - " + fault.getMessage());

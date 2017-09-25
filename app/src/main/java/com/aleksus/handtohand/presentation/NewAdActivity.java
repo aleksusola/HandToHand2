@@ -102,7 +102,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
 
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
-        for (int i = 3; i>0; i--)
+        for (int i = 3; i > 0; i--)
             startActivityForResult(photoPickerIntent, i);
     }
 
@@ -132,12 +132,15 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                     case R.id.iChan:
                         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                         photoPickerIntent.setType("image/*");
-                        if (selIV.equals(photoGallery)) startActivityForResult(photoPickerIntent, 1);
-                        else if (selIV.equals(photoGallery2)) startActivityForResult(photoPickerIntent, 2);
+                        if (selIV.equals(photoGallery))
+                            startActivityForResult(photoPickerIntent, 1);
+                        else if (selIV.equals(photoGallery2))
+                            startActivityForResult(photoPickerIntent, 2);
                         else startActivityForResult(photoPickerIntent, 3);
                         return true;
                     case R.id.iDef:
-                        if (selIV.equals(photoGallery)) Toast.makeText(getApplicationContext(), "Это фото уже основное", Toast.LENGTH_SHORT).show();
+                        if (selIV.equals(photoGallery))
+                            Toast.makeText(getApplicationContext(), "Это фото уже основное", Toast.LENGTH_SHORT).show();
                         else {
                             Drawable drawable = selIV.getDrawable();
                             Drawable drawable2 = photoGallery.getDrawable();
@@ -207,7 +210,7 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         else priceSelected = Integer.parseInt(priceSelect.getText().toString());
 
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-        queryBuilder.setWhereClause( "name= '" + nameSelected + "' and ownerId = '"+ Backendless.UserService.CurrentUser().getObjectId() + "'");
+        queryBuilder.setWhereClause("name= '" + nameSelected + "' and ownerId = '" + Backendless.UserService.CurrentUser().getObjectId() + "'");
         final BackendlessUser user = Backendless.UserService.CurrentUser();
         Backendless.Data.of("ads_users").getObjectCount(queryBuilder, new AsyncCallback<Integer>() {
             @Override
@@ -217,16 +220,16 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                 else if (count != 0)
                     Toast.makeText(NewAdActivity.this, "У вас уже есть объявление с таким названием, измените его", Toast.LENGTH_SHORT).show();
                 else {
-                    Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, "1.png", "icons/" + user.getProperty("login") + "/" +  nameSelected, new AsyncCallback<BackendlessFile>() {
+                    Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, "1.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
                         @Override
                         public void handleResponse(final BackendlessFile firstFile) {
-                            Backendless.Files.Android.upload(selImage2, Bitmap.CompressFormat.PNG, 100, "2.png", "icons/" + user.getProperty("login") + "/" +  nameSelected, new AsyncCallback<BackendlessFile>() {
+                            Backendless.Files.Android.upload(selImage2, Bitmap.CompressFormat.PNG, 100, "2.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
                                 @Override
                                 public void handleResponse(final BackendlessFile secondFile) {
-                                    Backendless.Files.Android.upload(selImage3, Bitmap.CompressFormat.PNG, 100, "3.png", "icons/" + user.getProperty("login") + "/" +  nameSelected, new AsyncCallback<BackendlessFile>() {
+                                    Backendless.Files.Android.upload(selImage3, Bitmap.CompressFormat.PNG, 100, "3.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
                                         @Override
                                         public void handleResponse(BackendlessFile thirdFile) {
-                                            HashMap < String, java.io.Serializable > newAd = new HashMap<>();
+                                            HashMap<String, java.io.Serializable> newAd = new HashMap<>();
                                             newAd.put("___class", "ads_users");
                                             newAd.put("name", nameSelected);
                                             newAd.put("price", priceSelected);
@@ -244,35 +247,52 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                                                     Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause, new AsyncCallback<Integer>() {
 
                                                         @Override
-                                                        public void handleResponse(Integer colNum) {Log.i(TAG, "related objects have been added" + colNum);}
+                                                        public void handleResponse(Integer colNum) {
+                                                            Log.i(TAG, "related objects have been added" + colNum);
+                                                        }
 
                                                         @Override
-                                                        public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
+                                                        public void handleFault(BackendlessFault fault) {
+                                                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                                        }
                                                     });
                                                     Toast.makeText(NewAdActivity.this, "Добавлено! Обновите главную страницу", Toast.LENGTH_SHORT).show();
                                                     NewAdActivity.super.onBackPressed();
                                                 }
 
                                                 @Override
-                                                public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
+                                                public void handleFault(BackendlessFault fault) {
+                                                    Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                                }
                                             });
                                         }
+
                                         @Override
-                                        public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
+                                        public void handleFault(BackendlessFault fault) {
+                                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                        }
                                     });
                                 }
+
                                 @Override
-                                public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
+                                public void handleFault(BackendlessFault fault) {
+                                    Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                }
                             });
                         }
+
                         @Override
-                        public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
+                        public void handleFault(BackendlessFault fault) {
+                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                        }
                     });
                 }
             }
 
             @Override
-            public void handleFault(BackendlessFault fault) {Log.e(TAG, "server reported an error - " + fault.getMessage());}
+            public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "server reported an error - " + fault.getMessage());
+            }
         });
 
 

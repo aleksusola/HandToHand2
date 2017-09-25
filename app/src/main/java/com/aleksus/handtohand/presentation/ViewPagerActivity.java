@@ -15,63 +15,63 @@ import com.github.chrisbanes.photoview.PhotoView;
 
 public class ViewPagerActivity extends AppCompatActivity {
 
-	public static String firstImage;
-	public static String secondImage;
-	public static String thirdImage;
+    public static String firstImage;
+    public static String secondImage;
+    public static String thirdImage;
 
 
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
-		ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-		firstImage = getIntent().getStringExtra("image1");
-		secondImage = getIntent().getStringExtra("image2");
-		thirdImage = getIntent().getStringExtra("image3");
-		viewPager.setAdapter(new SamplePagerAdapter());
-	}
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        firstImage = getIntent().getStringExtra("image1");
+        secondImage = getIntent().getStringExtra("image2");
+        thirdImage = getIntent().getStringExtra("image3");
+        viewPager.setAdapter(new SamplePagerAdapter());
+    }
 
-	static class SamplePagerAdapter extends PagerAdapter {
+    private static class SamplePagerAdapter extends PagerAdapter {
 
-		final String[] sImages = new String[]{ firstImage, secondImage, thirdImage  };
+        final String[] sImages = new String[]{firstImage, secondImage, thirdImage};
 
-		@Override
-		public int getCount() {
-			return sImages.length;
-		}
+        @Override
+        public int getCount() {
+            return sImages.length;
+        }
 
-		@Override
-		public View instantiateItem(ViewGroup container, int position) {
-			PhotoView photoView = new PhotoView(container.getContext());
+        @Override
+        public View instantiateItem(ViewGroup container, int position) {
+            PhotoView photoView = new PhotoView(container.getContext());
 //			photoView.setImageResource(sImages[position]);
-			Glide
-					.with(container.getContext())
-					.load(sImages[position])
-					.placeholder(R.mipmap.ic_record_voice_over_black)
-					.error(R.drawable.ic_error)
-					.crossFade(100)
-					.into(photoView);
+            Glide
+                    .with(container.getContext())
+                    .load(sImages[position])
+                    .placeholder(R.mipmap.ic_record_voice_over_black)
+                    .error(R.drawable.ic_error)
+                    .crossFade(100)
+                    .into(photoView);
 
-			// Now just add PhotoView to ViewPager and return it
-			container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            // Now just add PhotoView to ViewPager and return it
+            container.addView(photoView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
-			return photoView;
-		}
+            return photoView;
+        }
 
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			container.removeView((View) object);
-		}
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
 
-		@Override
-		public boolean isViewFromObject(View view, Object object) {
-			return view == object;
-		}
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
 
-	}
+    }
 
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-	}
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

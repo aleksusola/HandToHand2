@@ -4,18 +4,18 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_my_ads"
-            android:icon="@drawable/ic_assignment_black_48dp"
             android:checkable="false"
+            android:icon="@drawable/ic_assignment_black_48dp"
             android:title="@string/item_myads" />
         <item
             android:id="@+id/nav_new_ad"
-            android:icon="@drawable/ic_insert_drive_file_black_48dp"
             android:checkable="false"
+            android:icon="@drawable/ic_insert_drive_file_black_48dp"
             android:title="Новое объявление" />
         <item
             android:id="@+id/nav_fav"
-            android:icon="@drawable/ic_star_black_48dp"
             android:checkable="false"
+            android:icon="@drawable/ic_star_black_48dp"
             android:title="Избранные" />
 
     </group>

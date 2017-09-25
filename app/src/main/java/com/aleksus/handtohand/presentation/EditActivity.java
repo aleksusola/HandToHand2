@@ -3,7 +3,6 @@ package com.aleksus.handtohand.presentation;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,12 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -134,7 +129,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .load(adImage)
                         .placeholder(R.mipmap.ic_record_voice_over_black)
                         .error(R.drawable.ic_error)
-                        .override(200,200)
+                        .override(200, 200)
                         .crossFade(100)
                         .into(photoAds);
                 Glide
@@ -142,7 +137,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .load(adImage2)
                         .placeholder(R.mipmap.ic_record_voice_over_black)
                         .error(R.drawable.ic_error)
-                        .override(200,200)
+                        .override(200, 200)
                         .crossFade(100)
                         .into(photoAds2);
                 Glide
@@ -150,7 +145,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .load(adImage3)
                         .placeholder(R.mipmap.ic_record_voice_over_black)
                         .error(R.drawable.ic_error)
-                        .override(200,200)
+                        .override(200, 200)
                         .crossFade(100)
                         .into(photoAds3);
 
@@ -193,11 +188,13 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                         photoPickerIntent.setType("image/*");
                         if (selIV.equals(photoAds)) startActivityForResult(photoPickerIntent, 1);
-                        else if (selIV.equals(photoAds2)) startActivityForResult(photoPickerIntent, 2);
+                        else if (selIV.equals(photoAds2))
+                            startActivityForResult(photoPickerIntent, 2);
                         else startActivityForResult(photoPickerIntent, 3);
                         return true;
                     case R.id.iDef:
-                        if (selIV.equals(photoAds)) Toast.makeText(getApplicationContext(), "Это фото уже основное", Toast.LENGTH_SHORT).show();
+                        if (selIV.equals(photoAds))
+                            Toast.makeText(getApplicationContext(), "Это фото уже основное", Toast.LENGTH_SHORT).show();
                         else {
                             Drawable drawable = selIV.getDrawable();
                             Drawable drawable2 = photoAds.getDrawable();
@@ -321,15 +318,28 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                                             queryBuilder.setWhereClause(whereClause);
                                             Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
                                                 @Override
-                                                public void handleResponse(List<Map> editAd) {
-                                                    editAd.get(0).put("___class", "ads_users");
-                                                    editAd.get(0).put("name", nameSelected);
-                                                    editAd.get(0).put("price", priceSelected);
-                                                    editAd.get(0).put("description", descSelected);
-                                                    editAd.get(0).put("ads_icon", firstFile.getFileURL());
-                                                    editAd.get(0).put("ads_icon2", secondFile.getFileURL());
-                                                    editAd.get(0).put("ads_icon3", thirdFile.getFileURL());
-                                                    Backendless.Persistence.of("ads_users").save(editAd.get(0), new AsyncCallback<Map>() {
+                                                public void handleResponse(List<Map> oldAd) {
+
+                                                    Backendless.Persistence.of("ads_users").remove(oldAd.get(0), new AsyncCallback<Long>() {
+                                                        @Override
+                                                        public void handleResponse(Long response) {
+                                                        }
+
+                                                        @Override
+                                                        public void handleFault(BackendlessFault fault) {
+                                                            Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                                        }
+                                                    });
+
+                                                    HashMap<String, java.io.Serializable> newAd = new HashMap<>();
+                                                    newAd.put("___class", "ads_users");
+                                                    newAd.put("name", nameSelected);
+                                                    newAd.put("price", priceSelected);
+                                                    newAd.put("description", descSelected);
+                                                    newAd.put("ads_icon", firstFile.getFileURL());
+                                                    newAd.put("ads_icon2", secondFile.getFileURL());
+                                                    newAd.put("ads_icon3", thirdFile.getFileURL());
+                                                    Backendless.Persistence.of("ads_users").save(newAd, new AsyncCallback<Map>() {
                                                         public void handleResponse(Map savedAd) {
                                                             HashMap<String, Object> parentObject = new HashMap<>();
                                                             parentObject.put("objectId", savedAd.get("objectId"));

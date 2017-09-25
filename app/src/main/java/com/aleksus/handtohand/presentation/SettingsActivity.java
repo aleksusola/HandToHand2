@@ -2,7 +2,6 @@ package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,7 +22,6 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.files.BackendlessFile;
-import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 
@@ -108,7 +106,7 @@ public class SettingsActivity extends AppCompatActivity {
         final BackendlessUser user = Backendless.UserService.CurrentUser();
         if (txtNewPassword.equals("") && avatar == null) {
             Toast.makeText(SettingsActivity.this, "Ничего не изменилось", Toast.LENGTH_LONG).show();
-        } else if (txtNewPassword.equals("") && avatar != null){
+        } else if (txtNewPassword.equals("") && avatar != null) {
             Backendless.Files.remove("icons/" + user.getProperty("login") + "_user.png", new AsyncCallback<Void>() {
                 @Override
                 public void handleResponse(Void response) {
@@ -140,21 +138,21 @@ public class SettingsActivity extends AppCompatActivity {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
                 }
             });
-        } else if(!txtNewPassword.equals("") && avatar == null){
+        } else if (!txtNewPassword.equals("") && avatar == null) {
             user.setPassword(txtNewPassword);
             Backendless.UserService.update(user, new AsyncCallback<BackendlessUser>() {
                 public void handleResponse(BackendlessUser user) {
                     Toast.makeText(SettingsActivity.this, "Пароль изменен, авторизуйтесь заново", Toast.LENGTH_LONG).show();
-                    Backendless.UserService.logout(new DefaultCallback<Void>(SettingsActivity.this)
-                    {
+                    Backendless.UserService.logout(new DefaultCallback<Void>(SettingsActivity.this) {
                         @Override
-                        public void handleResponse (Void response){
+                        public void handleResponse(Void response) {
                             super.handleResponse(response);
                             startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
                             finish();
                         }
+
                         @Override
-                        public void handleFault (BackendlessFault fault){
+                        public void handleFault(BackendlessFault fault) {
                             if (fault.getCode().equals("3023")) // Unable to logout: not logged in (session expired, etc.)
                                 handleResponse(null);
                             else
@@ -167,7 +165,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
                 }
             });
-        } else if(!txtNewPassword.equals("") && avatar != null){
+        } else if (!txtNewPassword.equals("") && avatar != null) {
             Backendless.Files.remove("icons/" + user.getProperty("login") + "_user.png", new AsyncCallback<Void>() {
                 @Override
                 public void handleResponse(Void response) {
@@ -186,16 +184,16 @@ public class SettingsActivity extends AppCompatActivity {
                     Backendless.UserService.update(user, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {
                             Toast.makeText(SettingsActivity.this, "Пароль и аватар изменены", Toast.LENGTH_LONG).show();
-                            Backendless.UserService.logout(new DefaultCallback<Void>(SettingsActivity.this)
-                            {
+                            Backendless.UserService.logout(new DefaultCallback<Void>(SettingsActivity.this) {
                                 @Override
-                                public void handleResponse (Void response){
+                                public void handleResponse(Void response) {
                                     super.handleResponse(response);
                                     startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
                                     finish();
                                 }
+
                                 @Override
-                                public void handleFault (BackendlessFault fault){
+                                public void handleFault(BackendlessFault fault) {
                                     if (fault.getCode().equals("3023")) // Unable to logout: not logged in (session expired, etc.)
                                         handleResponse(null);
                                     else

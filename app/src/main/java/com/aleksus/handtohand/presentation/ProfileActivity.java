@@ -117,6 +117,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                             @Override
                             public void handleFault(BackendlessFault fault) {
                                 Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                Toast.makeText(ProfileActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                             }
                         });
                         mSwipeRefresh.setRefreshing(false);
@@ -189,6 +190,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 @Override
                 public void handleFault(BackendlessFault fault) {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
+                    Toast.makeText(ProfileActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                 }
             });
         } else if (adCollection.equals("Все коллекции") && !adAuthor.equals("Все авторы")) {
@@ -224,6 +226,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                         @Override
                         public void handleFault(BackendlessFault fault) {
                             Log.e(TAG, "server reported an error - " + fault.getMessage());
+                            Toast.makeText(ProfileActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -260,6 +263,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 @Override
                 public void handleFault(BackendlessFault fault) {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
+                    Toast.makeText(ProfileActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                 }
             });
         } else if (!adCollection.equals("Все коллекции") && !adAuthor.equals("Все авторы")) {
@@ -295,6 +299,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                         @Override
                         public void handleFault(BackendlessFault fault) {
                             Log.e(TAG, "server reported an error - " + fault.getMessage());
+                            Toast.makeText(ProfileActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -302,6 +307,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 @Override
                 public void handleFault(BackendlessFault fault) {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
+                    Toast.makeText(ProfileActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -353,6 +359,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     @Override
                     public void handleFault(BackendlessFault fault) {
                         Log.e(TAG, "server reported an error - " + fault.getMessage());
+                        Toast.makeText(ProfileActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
@@ -381,6 +388,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     @Override
                     public void handleFault(BackendlessFault fault) {
                         Log.e(TAG, "server reported an error - " + fault.getMessage());
+                        Toast.makeText(ProfileActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;

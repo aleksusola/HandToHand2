@@ -4,17 +4,17 @@
     tools:context=".MainActivity">
     <item
         android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter_list"
         android:orderInCategory="1"
         android:title="@string/action_filter"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_filter_list"/>
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_sort_by_price"
+        android:icon="@drawable/sort_price"
         android:orderInCategory="2"
         android:title="@string/action_sort_by_price"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/sort_price"/>
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"

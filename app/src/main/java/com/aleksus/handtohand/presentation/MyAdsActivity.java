@@ -80,6 +80,8 @@ public class MyAdsActivity extends AppCompatActivity {
             @Override
             public void handleFault(BackendlessFault fault) {
                 Log.e(TAG, "server reported an error - " + fault.getMessage());
+                Toast.makeText(MyAdsActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -105,6 +107,7 @@ public class MyAdsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+
                         queryBuilder.setWhereClause(whereClause);
                         queryBuilder.setSortBy("created DESC");
                         queryBuilder.setPageSize(25).setOffset(0);
@@ -126,6 +129,7 @@ public class MyAdsActivity extends AppCompatActivity {
                             @Override
                             public void handleFault(BackendlessFault fault) {
                                 Log.e(TAG, "server reported an error - " + fault.getMessage());
+                                Toast.makeText(MyAdsActivity.this, "Ошибка связи с сервером, попробуйте еще раз", Toast.LENGTH_SHORT).show();
                             }
                         });
                         mSwipeRefresh.setRefreshing(false)

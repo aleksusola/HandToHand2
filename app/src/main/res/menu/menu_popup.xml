@@ -3,11 +3,11 @@
 
     <item
         android:id="@+id/iDel"
-        android:title="Удалить"/>
+        android:title="Удалить" />
     <item
         android:id="@+id/iChan"
-        android:title="Заменить"/>
+        android:title="Заменить" />
     <item
         android:id="@+id/iDef"
-        android:title="Сделать основным"/>
+        android:title="Сделать основным" />
 </menu>

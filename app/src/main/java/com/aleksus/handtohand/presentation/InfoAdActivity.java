@@ -99,7 +99,8 @@ public class InfoAdActivity extends AppCompatActivity {
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.e(TAG, "server reported an error - " + fault.getMessage());}
+                Log.e(TAG, "server reported an error - " + fault.getMessage());
+            }
         });
 
         iconInfo.setOnClickListener(IViewClickListener);
