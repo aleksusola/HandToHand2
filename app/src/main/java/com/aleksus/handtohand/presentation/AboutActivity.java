@@ -14,7 +14,7 @@ import com.aleksus.handtohand.R;
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btn_mail;
+    private Button btn_mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -39,6 +39,9 @@ import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "MYAPP";
+    private static long back_pressed;
+
     private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView recyclerViewAds;
     private RecyclerAdsAdapter adapter;
@@ -52,8 +55,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private String adAuthor;
     private String adOrder;
     private String order;
-    private static final String TAG = "MYAPP";
-    private static long back_pressed;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

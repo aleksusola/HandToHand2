@@ -1,5 +1,6 @@
 package com.aleksus.handtohand.presentation;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -35,6 +36,7 @@ import java.util.Map;
 
 public class NewAdActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private ProgressDialog progressDialog;
     private EditText nameSelect;
     private EditText priceSelect;
     private EditText descSelect;
@@ -72,8 +74,8 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                 NewAdActivity.super.onBackPressed();
             }
         });
+        progressDialog = new ProgressDialog(this);
         spinner = (Spinner) findViewById(R.id.collection_select);
-
         nameSelect = (EditText) findViewById(R.id.name_select);
         priceSelect = (EditText) findViewById(R.id.price_select);
         descSelect = (EditText) findViewById(R.id.desc_select);
@@ -220,6 +222,8 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                 else if (count != 0)
                     Toast.makeText(NewAdActivity.this, "У вас уже есть объявление с таким названием, измените его", Toast.LENGTH_SHORT).show();
                 else {
+                    progressDialog.setMessage("Подождите, данные сохраняются");
+                    progressDialog.show();
                     Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, "1.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
                         @Override
                         public void handleResponse(final BackendlessFile firstFile) {

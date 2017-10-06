@@ -2,13 +2,9 @@ package com.aleksus.handtohand.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextPaint;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -35,13 +31,13 @@ import java.util.Map;
 
 public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.ViewHolder> {
 
+    private static final String TAG = "MYAPP";
+
     private List<RecyclerAdsItem> listItems;
     private Context mContext;
     private String userPhone;
     private String ownerName;
     private String ownerFamily;
-
-    private static final String TAG = "MYAPP";
 
     public RecyclerAdsAdapter(List<RecyclerAdsItem> listItems, Context mContext) {
         this.listItems = listItems;

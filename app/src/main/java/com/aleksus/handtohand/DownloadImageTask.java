@@ -23,7 +23,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             InputStream in = new java.net.URL(avatar).openStream();
             mIcon = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
-            Log.e("Ошибка передачи изображения", e.getMessage());
             e.printStackTrace();
         }
         return mIcon;

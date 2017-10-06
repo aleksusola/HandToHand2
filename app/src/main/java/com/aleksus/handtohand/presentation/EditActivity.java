@@ -37,7 +37,7 @@ import java.util.Map;
 
 public class EditActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ProgressDialog progressDoalog;
+    private ProgressDialog progressDialog;
     private EditText nameEdit;
     private EditText priceEdit;
     private EditText descEdit;
@@ -52,13 +52,13 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     private Bitmap selImage2;
     private Bitmap selImage3;
 
+    private int mPrice;
+
     private String nameSelected;
-    private int priceSelected;
     private String descSelected;
     private String collectionSelected;
     private String relationColumnName;
     private String adTitle;
-    private String adCol;
 
     private static final String TAG = "MYAPP";
 
@@ -78,7 +78,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        progressDoalog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         spinner = (Spinner) findViewById(R.id.edit_collection);
         nameEdit = (EditText) findViewById(R.id.edit_name);
         priceEdit = (EditText) findViewById(R.id.edit_price);
@@ -100,18 +100,42 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         adTitle = getIntent().getStringExtra("title");
-        adCol = getIntent().getStringExtra("collection");
-        if (adCol.equals("Аксессуары")) spinner.setSelection(0);
-        else if (adCol.equals("Бытовая техника")) spinner.setSelection(1);
-        else if (adCol.equals("Инструменты")) spinner.setSelection(2);
-        else if (adCol.equals("Мебель")) spinner.setSelection(3);
-        else if (adCol.equals("Недвижимость")) spinner.setSelection(4);
-        else if (adCol.equals("Одежда")) spinner.setSelection(5);
-        else if (adCol.equals("Телефоны")) spinner.setSelection(6);
-        else if (adCol.equals("Транспорт")) spinner.setSelection(7);
-        else if (adCol.equals("Услуги")) spinner.setSelection(8);
-        else if (adCol.equals("Электроника")) spinner.setSelection(9);
-        else spinner.setSelection(10);
+        String adCol = getIntent().getStringExtra("collection");
+        switch (adCol) {
+            case "Аксессуары":
+                spinner.setSelection(0);
+                break;
+            case "Бытовая техника":
+                spinner.setSelection(1);
+                break;
+            case "Инструменты":
+                spinner.setSelection(2);
+                break;
+            case "Мебель":
+                spinner.setSelection(3);
+                break;
+            case "Недвижимость":
+                spinner.setSelection(4);
+                break;
+            case "Одежда":
+                spinner.setSelection(5);
+                break;
+            case "Телефоны":
+                spinner.setSelection(6);
+                break;
+            case "Транспорт":
+                spinner.setSelection(7);
+                break;
+            case "Услуги":
+                spinner.setSelection(8);
+                break;
+            case "Электроника":
+                spinner.setSelection(9);
+                break;
+            default:
+                spinner.setSelection(10);
+                break;
+        }
         BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
         String whereClause = "ownerId = '" + AdsOwner.getObjectId() + "' and name = '" + adTitle + "'";
         DataQueryBuilder adBuilder = DataQueryBuilder.create();
@@ -129,7 +153,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .load(adImage)
                         .placeholder(R.mipmap.ic_record_voice_over_black)
                         .error(R.drawable.ic_error)
-                        .override(200, 200)
+                        .override(500, 500)
                         .crossFade(100)
                         .into(photoAds);
                 Glide
@@ -137,7 +161,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .load(adImage2)
                         .placeholder(R.mipmap.ic_record_voice_over_black)
                         .error(R.drawable.ic_error)
-                        .override(200, 200)
+                        .override(500, 500)
                         .crossFade(100)
                         .into(photoAds2);
                 Glide
@@ -145,7 +169,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .load(adImage3)
                         .placeholder(R.mipmap.ic_record_voice_over_black)
                         .error(R.drawable.ic_error)
-                        .override(200, 200)
+                        .override(500, 500)
                         .crossFade(100)
                         .into(photoAds3);
 
@@ -267,8 +291,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         descSelected = descEdit.getText().toString();
         collectionSelected = spinner.getSelectedItem().toString();
         if (descSelected.equals("")) descSelected = "description";
-        if (priceEdit.getText().toString().equals("")) priceSelected = 0;
-        else priceSelected = Integer.parseInt(priceEdit.getText().toString());
+        if (priceEdit.getText().toString().equals("")) mPrice = 0;
+        else mPrice = Integer.parseInt(priceEdit.getText().toString());
 
         photoAds.buildDrawingCache();
         selImage = photoAds.getDrawingCache();
@@ -291,8 +315,8 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 else if (count != 0)
                     Toast.makeText(EditActivity.this, "У вас уже есть другое объявление с таким названием, измените его", Toast.LENGTH_SHORT).show();
                 else {
-                    progressDoalog.setMessage("Подождите, данные сохраняются");
-                    progressDoalog.show();
+                    progressDialog.setMessage("Подождите, данные сохраняются");
+                    progressDialog.show();
                     Backendless.Files.removeDirectory("icons/" + user.getProperty("login") + "/" + adTitle, new AsyncCallback<Void>() {
                         @Override
                         public void handleResponse(Void response) {
@@ -334,7 +358,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                                                     HashMap<String, java.io.Serializable> newAd = new HashMap<>();
                                                     newAd.put("___class", "ads_users");
                                                     newAd.put("name", nameSelected);
-                                                    newAd.put("price", priceSelected);
+                                                    newAd.put("price", mPrice);
                                                     newAd.put("description", descSelected);
                                                     newAd.put("ads_icon", firstFile.getFileURL());
                                                     newAd.put("ads_icon2", secondFile.getFileURL());
