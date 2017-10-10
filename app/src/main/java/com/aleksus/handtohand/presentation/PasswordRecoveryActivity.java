@@ -32,7 +32,7 @@ public class PasswordRecoveryActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        Button loginButton = (Button) findViewById(R.id.loginButton);
+        Button loginButton = (Button) findViewById(R.id.button_login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

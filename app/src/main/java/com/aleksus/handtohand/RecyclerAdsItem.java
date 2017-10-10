@@ -2,78 +2,44 @@ package com.aleksus.handtohand;
 
 public class RecyclerAdsItem {
 
-    private String title;
-    private String desc;
-    private String author;
-    private String collection;
-    private String price;
-    private String photo;
-    private String created;
+    private String mTitle;
+    private String mAuthor;
+    private String mCollection;
+    private String mPrice;
+    private String mPhoto;
+    private String mCreated;
 
-    public RecyclerAdsItem(String title, String desc, String author, String collection, String price, String photo, String created) {
-        this.title = title;
-        this.desc = desc;
-        this.author = author;
-        this.collection = collection;
-        this.price = price;
-        this.photo = photo;
-        this.created = created;
+    public RecyclerAdsItem(String title, String author, String collection, String price, String photo, String created) {
+        this.mTitle = title;
+        this.mAuthor = author;
+        this.mCollection = collection;
+        this.mPrice = price;
+        this.mPhoto = photo;
+        this.mCreated = created;
     }
 
     public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
+        return mTitle;
     }
 
     public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
+        return mAuthor;
     }
 
     public String getCollection() {
-        return collection;
-    }
-
-    public void setCollection(String collection) {
-        this.collection = collection;
+        return mCollection;
     }
 
     public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.title = price;
+        return mPrice;
     }
 
     public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
+        return mPhoto;
     }
 
     public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
+        return mCreated;
     }
 
 }

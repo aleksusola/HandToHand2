@@ -31,8 +31,7 @@
 
 
                 <EditText
-
-                    android:id="@+id/name_select"
+                    android:id="@+id/edit_name"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp48"
                     android:gravity="center_vertical"
@@ -49,8 +48,7 @@
 
 
                 <EditText
-
-                    android:id="@+id/price_select"
+                    android:id="@+id/edit_price"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp48"
                     android:gravity="center_vertical"
@@ -67,8 +65,7 @@
 
 
                 <EditText
-
-                    android:id="@+id/desc_select"
+                    android:id="@+id/edit_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -93,7 +90,7 @@
                     android:textSize="@dimen/text_medium" />
 
                 <Spinner
-                    android:id="@+id/collection_select"
+                    android:id="@+id/spinner_collection"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp48"
                     android:layout_marginLeft="@dimen/dp4"
@@ -111,7 +108,7 @@
                 android:gravity="center_horizontal">
 
                 <ImageView
-                    android:id="@+id/photoSelect"
+                    android:id="@+id/imageview_first"
                     android:layout_width="@dimen/dp96"
                     android:layout_height="@dimen/dp96"
                     android:layout_alignParentLeft="true"
@@ -120,7 +117,7 @@
                     android:src="@drawable/hand_to_hand" />
 
                 <ImageView
-                    android:id="@+id/photoSelect2"
+                    android:id="@+id/imageview_second"
                     android:layout_width="@dimen/dp96"
                     android:layout_height="@dimen/dp96"
                     android:layout_alignParentLeft="true"
@@ -130,7 +127,7 @@
                     android:src="@drawable/hand_to_hand" />
 
                 <ImageView
-                    android:id="@+id/photoSelect3"
+                    android:id="@+id/imageview_third"
                     android:layout_width="@dimen/dp96"
                     android:layout_height="@dimen/dp96"
                     android:layout_alignParentLeft="true"
@@ -147,7 +144,7 @@
                 android:gravity="center_horizontal">
 
                 <Button
-                    android:id="@+id/photo_select_button"
+                    android:id="@+id/button_select_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/button_select_image"
@@ -156,7 +153,7 @@
             </TableRow>
 
             <Button
-                android:id="@+id/new_add_button"
+                android:id="@+id/button_create"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

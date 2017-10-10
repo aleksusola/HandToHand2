@@ -2,67 +2,37 @@ package com.aleksus.handtohand;
 
 public class RecyclerMyAdsItem {
 
-    private String title;
-    private String desc;
-    private String collection;
-    private String price;
-    private String photo;
-    private String created;
+    private String mTitle;
+    private String mCollection;
+    private String mPrice;
+    private String mPhoto;
+    private String mCreated;
 
-    public RecyclerMyAdsItem(String title, String desc, String collection, String price, String photo, String created) {
-        this.title = title;
-        this.desc = desc;
-        this.collection = collection;
-        this.price = price;
-        this.photo = photo;
-        this.created = created;
+    public RecyclerMyAdsItem(String title, String collection, String price, String photo, String created) {
+        this.mTitle = title;
+        this.mCollection = collection;
+        this.mPrice = price;
+        this.mPhoto = photo;
+        this.mCreated = created;
     }
 
     public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
+        return mTitle;
     }
 
     public String getCollection() {
-        return collection;
-    }
-
-    public void setCollection(String collection) {
-        this.collection = collection;
+        return mCollection;
     }
 
     public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
+        return mPrice;
     }
 
     public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
+        return mPhoto;
     }
 
     public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
+        return mCreated;
     }
 }

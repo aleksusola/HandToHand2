@@ -3,17 +3,16 @@ package com.aleksus.handtohand;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.InputStream;
 
 
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    private ImageView imageView;
+    private ImageView mImageView;
 
     public DownloadImageTask(ImageView imageView) {
-        this.imageView = imageView;
+        this.mImageView = imageView;
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -29,7 +28,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        imageView.setImageBitmap(result);
+        mImageView.setImageBitmap(result);
     }
 }
 

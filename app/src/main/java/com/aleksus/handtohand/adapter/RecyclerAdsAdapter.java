@@ -33,14 +33,14 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
 
     private static final String TAG = "MYAPP";
 
-    private List<RecyclerAdsItem> listItems;
+    private List<RecyclerAdsItem> mListItems;
     private Context mContext;
-    private String userPhone;
-    private String ownerName;
-    private String ownerFamily;
+    private String mUserPhone;
+    private String mOwnerName;
+    private String mOwnerFamily;
 
     public RecyclerAdsAdapter(List<RecyclerAdsItem> listItems, Context mContext) {
-        this.listItems = listItems;
+        this.mListItems = listItems;
         this.mContext = mContext;
     }
 
@@ -53,18 +53,18 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        final RecyclerAdsItem itemList = listItems.get(position);
+        final RecyclerAdsItem itemList = mListItems.get(position);
         final BackendlessUser user = Backendless.UserService.CurrentUser();
 
         Backendless.UserService.findById(itemList.getAuthor(), new AsyncCallback<BackendlessUser>() {
             public void handleResponse(BackendlessUser adsOwner) {
                 if (user.getObjectId().equals(adsOwner.getObjectId())) {
-                    ownerName = "Вы";
-                    holder.txtAuthor.setText(ownerName);
+                    mOwnerName = "Вы";
+                    holder.txtAuthor.setText(mOwnerName);
                 } else {
-                    ownerName = adsOwner.getProperty("firstName").toString();
-                    ownerFamily = adsOwner.getProperty("secondName").toString();
-                    holder.txtAuthor.setText(ownerName + " " + ownerFamily);
+                    mOwnerName = adsOwner.getProperty("firstName").toString();
+                    mOwnerFamily = adsOwner.getProperty("secondName").toString();
+                    holder.txtAuthor.setText(mOwnerName + " " + mOwnerFamily);
                 }
             }
 
@@ -118,9 +118,9 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 Toast.makeText(mContext, "Связываемся", Toast.LENGTH_SHORT).show();
                                 Backendless.UserService.findById(itemList.getAuthor(), new AsyncCallback<BackendlessUser>() {
                                     public void handleResponse(BackendlessUser adsOwner) {
-                                        userPhone = adsOwner.getProperty("phone").toString();
+                                        mUserPhone = adsOwner.getProperty("phone").toString();
                                         Intent intent = new Intent(Intent.ACTION_DIAL);
-                                        intent.setData(Uri.parse("tel:+7" + userPhone));
+                                        intent.setData(Uri.parse("tel:+7" + mUserPhone));
                                         mContext.startActivity(intent);
                                     }
 
@@ -136,11 +136,11 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
                                 intent.putExtra("author", itemList.getAuthor());
                                 intent.putExtra("collection", holder.txtCollection.getText());
                                 intent.putExtra("created", holder.txtCreated.getText());
-                                intent.putExtra("ownerName", holder.txtAuthor.getText());
+                                intent.putExtra("mOwnerName", holder.txtAuthor.getText());
                                 mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_hide:
-                                listItems.remove(position);
+                                mListItems.remove(position);
                                 notifyDataSetChanged();
                                 Toast.makeText(mContext, "Скрыто", Toast.LENGTH_SHORT).show();
                                 break;
@@ -187,7 +187,7 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return mListItems.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -202,13 +202,13 @@ public class RecyclerAdsAdapter extends RecyclerView.Adapter<RecyclerAdsAdapter.
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
-            txtAuthor = (TextView) itemView.findViewById(R.id.txtAuthor);
-            txtCollection = (TextView) itemView.findViewById(R.id.txtCollection);
-            txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
-            txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
-            photoIcon = (ImageView) itemView.findViewById(R.id.photoIcon);
-            txtCreated = (TextView) itemView.findViewById(R.id.txtCreated);
+            txtTitle = (TextView) itemView.findViewById(R.id.textview_title);
+            txtAuthor = (TextView) itemView.findViewById(R.id.textview_author);
+            txtCollection = (TextView) itemView.findViewById(R.id.textview_collection);
+            txtPrice = (TextView) itemView.findViewById(R.id.textview_price);
+            txtOptionDigit = (TextView) itemView.findViewById(R.id.textview_option_digit);
+            photoIcon = (ImageView) itemView.findViewById(R.id.imageview_photo);
+            txtCreated = (TextView) itemView.findViewById(R.id.textview_created);
         }
     }
 }

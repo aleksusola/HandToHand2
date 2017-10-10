@@ -15,25 +15,24 @@ import com.github.chrisbanes.photoview.PhotoView;
 
 public class ViewPagerActivity extends AppCompatActivity {
 
-    public static String firstImage;
-    public static String secondImage;
-    public static String thirdImage;
-
-
+    public static String mFirstImage;
+    public static String mSecondImage;
+    public static String mThirdImage;
+    
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        firstImage = getIntent().getStringExtra("image1");
-        secondImage = getIntent().getStringExtra("image2");
-        thirdImage = getIntent().getStringExtra("image3");
+        mFirstImage = getIntent().getStringExtra("image1");
+        mSecondImage = getIntent().getStringExtra("image2");
+        mThirdImage = getIntent().getStringExtra("image3");
         viewPager.setAdapter(new SamplePagerAdapter());
     }
 
     private static class SamplePagerAdapter extends PagerAdapter {
 
-        final String[] sImages = new String[]{firstImage, secondImage, thirdImage};
+        final String[] sImages = new String[]{mFirstImage, mSecondImage, mThirdImage};
 
         @Override
         public int getCount() {

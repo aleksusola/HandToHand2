@@ -27,13 +27,12 @@ import java.util.Map;
 
 public class MyAdsActivity extends AppCompatActivity {
 
+    private static final String TAG = "MYAPP";
 
     private SwipeRefreshLayout mSwipeRefresh;
-    private RecyclerView recyclerViewMyAds;
-    private RecyclerMyAdsAdapter adapterMy;
-    private List<RecyclerMyAdsItem> listItemsMy;
-
-    private static final String TAG = "MYAPP";
+    private RecyclerView mRecyclerViewMyAds;
+    private RecyclerMyAdsAdapter mAdapterMy;
+    private List<RecyclerMyAdsItem> mListItemsMy;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,9 +50,9 @@ public class MyAdsActivity extends AppCompatActivity {
             }
         });
 
-        recyclerViewMyAds = (RecyclerView) findViewById(R.id.recyclerViewMyAds);
-        recyclerViewMyAds.setHasFixedSize(true);
-        recyclerViewMyAds.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerViewMyAds = (RecyclerView) findViewById(R.id.recyclerview_myads);
+        mRecyclerViewMyAds.setHasFixedSize(true);
+        mRecyclerViewMyAds.setLayoutManager(new LinearLayoutManager(this));
 
 
         final BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
@@ -69,11 +68,11 @@ public class MyAdsActivity extends AppCompatActivity {
                     Toast.makeText(MyAdsActivity.this, "Ничего не найдено", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MyAdsActivity.this, "Найдено объявлений " + foundMyAds.size(), Toast.LENGTH_SHORT).show();
-                    listItemsMy = new ArrayList<>();
+                    mListItemsMy = new ArrayList<>();
                     for (int i = 0; i < foundMyAds.size(); i++)
-                        listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("description").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString(), foundMyAds.get(i).get("created").toString()));
-                    adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
-                    recyclerViewMyAds.setAdapter(adapterMy);
+                        mListItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString(), foundMyAds.get(i).get("created").toString()));
+                    mAdapterMy = new RecyclerMyAdsAdapter(mListItemsMy, MyAdsActivity.this);
+                    mRecyclerViewMyAds.setAdapter(mAdapterMy);
                 }
             }
 
@@ -86,7 +85,7 @@ public class MyAdsActivity extends AppCompatActivity {
         });
 
         mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_my);
-        recyclerViewMyAds.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerViewMyAds.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 int topRowVerticalPosition =
@@ -118,11 +117,11 @@ public class MyAdsActivity extends AppCompatActivity {
                                     Toast.makeText(MyAdsActivity.this, "Ничего не найдено", Toast.LENGTH_SHORT).show();
                                 } else {
                                     Toast.makeText(MyAdsActivity.this, "Найдено объявлений " + foundMyAds.size(), Toast.LENGTH_SHORT).show();
-                                    listItemsMy = new ArrayList<>();
+                                    mListItemsMy = new ArrayList<>();
                                     for (int i = 0; i < foundMyAds.size(); i++)
-                                        listItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("description").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString(), foundMyAds.get(i).get("created").toString()));
-                                    adapterMy = new RecyclerMyAdsAdapter(listItemsMy, MyAdsActivity.this);
-                                    recyclerViewMyAds.setAdapter(adapterMy);
+                                        mListItemsMy.add(new RecyclerMyAdsItem(foundMyAds.get(i).get("name").toString(), foundMyAds.get(i).get("collection").toString(), foundMyAds.get(i).get("price").toString(), foundMyAds.get(i).get("ads_icon").toString(), foundMyAds.get(i).get("created").toString()));
+                                    mAdapterMy = new RecyclerMyAdsAdapter(mListItemsMy, MyAdsActivity.this);
+                                    mRecyclerViewMyAds.setAdapter(mAdapterMy);
                                 }
                             }
 

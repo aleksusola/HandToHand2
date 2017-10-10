@@ -33,14 +33,14 @@ import java.util.Map;
 
 public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdapter.ViewHolder> {
 
-    private List<RecyclerMyAdsItem> listItemsMy;
-    private Context mContext;
-    private AlertDialog.Builder sure;
-
     private static final String TAG = "MYAPP";
 
+    private List<RecyclerMyAdsItem> mListItemsMy;
+    private Context mContext;
+    private AlertDialog.Builder mSure;
+
     public RecyclerMyAdsAdapter(List<RecyclerMyAdsItem> listItemsMy, Context mContext) {
-        this.listItemsMy = listItemsMy;
+        this.mListItemsMy = listItemsMy;
         this.mContext = mContext;
     }
 
@@ -57,7 +57,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
         final String buttonYes = "Да";
         final String buttonNo = "Нет";
 
-        final RecyclerMyAdsItem itemList = listItemsMy.get(position);
+        final RecyclerMyAdsItem itemList = mListItemsMy.get(position);
         holder.txtTitle.setText(itemList.getTitle());
         holder.txtPrice.setText("Цена: " + itemList.getPrice());
         Date date = new Date(itemList.getCreated());
@@ -113,9 +113,9 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                 mContext.startActivity(intent);
                                 break;
                             case R.id.mnu_item_hide:
-                                sure = new AlertDialog.Builder(mContext);
-                                sure.setMessage(message + itemList.getTitle());
-                                sure.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+                                mSure = new AlertDialog.Builder(mContext);
+                                mSure.setMessage(message + itemList.getTitle());
+                                mSure.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int arg1) {
                                         String whereClause = "name = '" + itemList.getTitle() + "'";
                                         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -126,7 +126,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                                 Backendless.Persistence.of("ads_users").remove(delete.get(0), new AsyncCallback<Long>() {
                                                     @Override
                                                     public void handleResponse(Long response) {
-                                                        listItemsMy.remove(position);
+                                                        mListItemsMy.remove(position);
                                                         notifyDataSetChanged();
                                                         Toast.makeText(mContext, "Объявление удалено", Toast.LENGTH_SHORT).show();
                                                     }
@@ -145,13 +145,13 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
                                         });
                                     }
                                 });
-                                sure.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
+                                mSure.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int arg1) {
                                         Toast.makeText(mContext, "Отменено", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                                sure.setCancelable(false);
-                                sure.show();
+                                mSure.setCancelable(false);
+                                mSure.show();
                                 break;
                             default:
                                 break;
@@ -167,7 +167,7 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
 
     @Override
     public int getItemCount() {
-        return listItemsMy.size();
+        return mListItemsMy.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -181,12 +181,12 @@ public class RecyclerMyAdsAdapter extends RecyclerView.Adapter<RecyclerMyAdsAdap
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
-            txtCollection = (TextView) itemView.findViewById(R.id.txtCollection);
-            txtPrice = (TextView) itemView.findViewById(R.id.txtPrice);
-            photoIcon = (ImageView) itemView.findViewById(R.id.photoIcon);
-            txtOptionDigit = (TextView) itemView.findViewById(R.id.txtOptionDigit);
-            txtCreated = (TextView) itemView.findViewById(R.id.txtCreated);
+            txtTitle = (TextView) itemView.findViewById(R.id.textview_title);
+            txtCollection = (TextView) itemView.findViewById(R.id.textview_collection);
+            txtPrice = (TextView) itemView.findViewById(R.id.textview_price);
+            photoIcon = (ImageView) itemView.findViewById(R.id.imageview_photo);
+            txtOptionDigit = (TextView) itemView.findViewById(R.id.textview_option_digit);
+            txtCreated = (TextView) itemView.findViewById(R.id.textview_created);
         }
     }
 

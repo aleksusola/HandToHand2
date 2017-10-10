@@ -1,7 +1,6 @@
 package com.aleksus.handtohand;
 
 import android.app.Application;
-import android.content.res.Configuration;
 
 public class HandToHandApp extends Application {
     // Called when the application is starting, before any other application objects have been created.

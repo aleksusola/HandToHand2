@@ -26,11 +26,11 @@ import java.util.Map;
 
 public class FavoritesActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerViewFavorites;
-    private RecyclerFavAdsAdapter adapter;
-    private List<RecyclerAdsItem> listItems;
-
     private static final String TAG = "MYAPP";
+
+    private RecyclerView mRecyclerViewFavorites;
+    private RecyclerFavAdsAdapter mAdapter;
+    private List<RecyclerAdsItem> mListItems;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,9 +48,9 @@ public class FavoritesActivity extends AppCompatActivity {
             }
         });
 
-        recyclerViewFavorites = (RecyclerView) findViewById(R.id.recyclerViewFavorites);
-        recyclerViewFavorites.setHasFixedSize(true);
-        recyclerViewFavorites.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerViewFavorites = (RecyclerView) findViewById(R.id.recyclerview_favorites);
+        mRecyclerViewFavorites.setHasFixedSize(true);
+        mRecyclerViewFavorites.setLayoutManager(new LinearLayoutManager(this));
 
         BackendlessUser adsOwner = Backendless.UserService.CurrentUser();
         String whereClause = "Users[favorites].objectId='" + adsOwner.getObjectId() + "'";
@@ -63,12 +63,12 @@ public class FavoritesActivity extends AppCompatActivity {
                     Toast.makeText(FavoritesActivity.this, "Ничего не найдено", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(FavoritesActivity.this, "Найдено объявлений " + favorites.size(), Toast.LENGTH_LONG).show();
-                    listItems = new ArrayList<>();
+                    mListItems = new ArrayList<>();
                     for (int i = 0; i < favorites.size(); i++) {
-                        listItems.add(new RecyclerAdsItem(favorites.get(i).get("name").toString(), favorites.get(i).get("description").toString(), favorites.get(i).get("ownerId").toString(), favorites.get(i).get("collection").toString(), favorites.get(i).get("price").toString(), favorites.get(i).get("ads_icon").toString(), favorites.get(i).get("created").toString()));
+                        mListItems.add(new RecyclerAdsItem(favorites.get(i).get("name").toString(), favorites.get(i).get("ownerId").toString(), favorites.get(i).get("collection").toString(), favorites.get(i).get("price").toString(), favorites.get(i).get("ads_icon").toString(), favorites.get(i).get("created").toString()));
                     }
-                    adapter = new RecyclerFavAdsAdapter(listItems, FavoritesActivity.this);
-                    recyclerViewFavorites.setAdapter(adapter);
+                    mAdapter = new RecyclerFavAdsAdapter(mListItems, FavoritesActivity.this);
+                    mRecyclerViewFavorites.setAdapter(mAdapter);
                 }
             }
 

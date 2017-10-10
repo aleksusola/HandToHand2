@@ -22,24 +22,24 @@ import java.util.Map;
 
 public class InfoAdActivity extends AppCompatActivity {
 
-    private TextView titleInfo;
-    private TextView priceInfo;
-    private TextView authorInfo;
-    private TextView collectionInfo;
-    private TextView createdInfo;
-    private TextView descInfo;
-    private ImageView iconInfo;
-
-    private String adTitle;
-    private String adAuthor;
-    private String adCol;
-    private String adCreated;
-    private String adOwnerName;
-    private String adImage;
-    private String adImage2;
-    private String adImage3;
-
     private static final String TAG = "MYAPP";
+
+    private TextView mTitleInfo;
+    private TextView mPriceInfo;
+    private TextView mAuthorInfo;
+    private TextView mCollectionInfo;
+    private TextView mCreatedInfo;
+    private TextView mDescInfo;
+    private ImageView mIconInfo;
+
+    private String mAdTitle;
+    private String mAdCol;
+    private String mAdCreated;
+    private String mAdOwnerName;
+    private String mAdImage;
+    private String mAdImage2;
+    private String mAdImage3;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,21 +56,21 @@ public class InfoAdActivity extends AppCompatActivity {
                 InfoAdActivity.super.onBackPressed();
             }
         });
-        titleInfo = (TextView) findViewById(R.id.info_title);
-        priceInfo = (TextView) findViewById(R.id.info_price);
-        authorInfo = (TextView) findViewById(R.id.info_author);
-        collectionInfo = (TextView) findViewById(R.id.info_collection);
-        createdInfo = (TextView) findViewById(R.id.info_created);
-        descInfo = (TextView) findViewById(R.id.info_desc);
-        iconInfo = (ImageView) findViewById(R.id.info_icon);
-        adTitle = getIntent().getStringExtra("title");
-        adAuthor = getIntent().getStringExtra("author");
-        adCol = getIntent().getStringExtra("collection");
-        adCreated = getIntent().getStringExtra("created");
-        adOwnerName = getIntent().getStringExtra("ownerName");
-        if (adAuthor.equals("Вы")) adAuthor = Backendless.UserService.CurrentUser().getObjectId();
+        mTitleInfo = (TextView) findViewById(R.id.textview_title);
+        mPriceInfo = (TextView) findViewById(R.id.textview_price);
+        mAuthorInfo = (TextView) findViewById(R.id.textview_author);
+        mCollectionInfo = (TextView) findViewById(R.id.textview_collection);
+        mCreatedInfo = (TextView) findViewById(R.id.textview_created);
+        mDescInfo = (TextView) findViewById(R.id.textview_desc);
+        mIconInfo = (ImageView) findViewById(R.id.imageview_icon);
+        mAdTitle = getIntent().getStringExtra("title");
+        String mAdAuthor = getIntent().getStringExtra("author");
+        mAdCol = getIntent().getStringExtra("collection");
+        mAdCreated = getIntent().getStringExtra("created");
+        mAdOwnerName = getIntent().getStringExtra("ownerName");
+        if (mAdAuthor.equals("Вы")) mAdAuthor = Backendless.UserService.CurrentUser().getObjectId();
 
-        final String whereClause = "ownerId = '" + adAuthor + "' and name = '" + adTitle + "'";
+        final String whereClause = "ownerId = '" + mAdAuthor + "' and name = '" + mAdTitle + "'";
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause(whereClause);
         Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
@@ -78,23 +78,23 @@ public class InfoAdActivity extends AppCompatActivity {
             public void handleResponse(List<Map> ad) {
                 String adPrice = ad.get(0).get("price").toString();
                 String adDesc = ad.get(0).get("description").toString();
-                adImage = ad.get(0).get("ads_icon").toString();
-                adImage2 = ad.get(0).get("ads_icon2").toString();
-                adImage3 = ad.get(0).get("ads_icon3").toString();
+                mAdImage = ad.get(0).get("ads_icon").toString();
+                mAdImage2 = ad.get(0).get("ads_icon2").toString();
+                mAdImage3 = ad.get(0).get("ads_icon3").toString();
                 Glide
                         .with(InfoAdActivity.this)
-                        .load(adImage)
+                        .load(mAdImage)
                         .placeholder(R.mipmap.ic_record_voice_over_black)
                         .error(R.drawable.ic_error)
                         .override(500, 500)
                         .crossFade(100)
-                        .into(iconInfo);
-                titleInfo.setText(adTitle);
-                priceInfo.setText("Цена: " + adPrice + " руб.");
-                authorInfo.setText("Автор: " + adOwnerName);
-                collectionInfo.setText("Коллекция: " + adCol);
-                createdInfo.setText(adCreated);
-                descInfo.setText(adDesc);
+                        .into(mIconInfo);
+                mTitleInfo.setText(mAdTitle);
+                mPriceInfo.setText("Цена: " + adPrice + " руб.");
+                mAuthorInfo.setText("Автор: " + mAdOwnerName);
+                mCollectionInfo.setText("Коллекция: " + mAdCol);
+                mCreatedInfo.setText(mAdCreated);
+                mDescInfo.setText(adDesc);
             }
 
             @Override
@@ -103,16 +103,16 @@ public class InfoAdActivity extends AppCompatActivity {
             }
         });
 
-        iconInfo.setOnClickListener(IViewClickListener);
+        mIconInfo.setOnClickListener(IViewClickListener);
     }
 
     View.OnClickListener IViewClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(InfoAdActivity.this, ViewPagerActivity.class);
-            intent.putExtra("image1", adImage);
-            intent.putExtra("image2", adImage2);
-            intent.putExtra("image3", adImage3);
+            intent.putExtra("image1", mAdImage);
+            intent.putExtra("image2", mAdImage2);
+            intent.putExtra("image3", mAdImage3);
             startActivity(intent);
         }
     };

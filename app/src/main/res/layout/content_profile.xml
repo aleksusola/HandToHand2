@@ -16,7 +16,7 @@
         tools:layout_editor_absoluteY="8dp">
 
         <TextView
-            android:id="@+id/selectedFilter"
+            android:id="@+id/textview_selected_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -29,7 +29,7 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerViewAds"
+                android:id="@+id/recyclerview_ads"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

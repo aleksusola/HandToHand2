@@ -9,28 +9,28 @@ import com.backendless.exceptions.BackendlessFault;
 
 
 public class DefaultCallback<T> extends BackendlessCallback<T> {
-    private Context context;
-    private ProgressDialog progressDialog;
+    private Context mContext;
+    private ProgressDialog mProgressDialog;
 
 
     protected DefaultCallback(Context context) {
-        this.context = context;
-        progressDialog = ProgressDialog.show(context, "", "Подождите...", true);
+        this.mContext = context;
+        mProgressDialog = ProgressDialog.show(context, "", "Подождите...", true);
     }
 
     protected DefaultCallback(Context context, String message) {
-        this.context = context;
-        progressDialog = ProgressDialog.show(context, "", message, true);
+        this.mContext = context;
+        mProgressDialog = ProgressDialog.show(context, "", message, true);
     }
 
     @Override
     public void handleResponse(T response) {
-        progressDialog.cancel();
+        mProgressDialog.cancel();
     }
 
     @Override
     public void handleFault(BackendlessFault fault) {
-        progressDialog.cancel();
-        Toast.makeText(context, fault.getMessage(), Toast.LENGTH_LONG).show();
+        mProgressDialog.cancel();
+        Toast.makeText(mContext, fault.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

@@ -28,7 +28,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         Backendless.setUrl(Defaults.SERVER_URL);
         Backendless.initApp(getApplicationContext(), Defaults.APPLICATION_ID, Defaults.API_KEY);
 
-        LinearLayout linearAnim = (LinearLayout) findViewById(R.id.linearAnim);
+        LinearLayout linearAnim = (LinearLayout) findViewById(R.id.linear_anim);
         Animation anim = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.combo);
         linearAnim.startAnimation(anim);
         new Thread() {

@@ -25,7 +25,7 @@
             android:padding="@dimen/dp16">
 
             <ImageView
-                android:id="@+id/iconChange"
+                android:id="@+id/imageview_avatar"
                 android:layout_width="@dimen/dp96"
                 android:layout_height="@dimen/dp96"
                 android:layout_alignParentLeft="true"
@@ -34,7 +34,7 @@
                 android:scaleType="centerInside" />
 
             <Button
-                android:id="@+id/icon_change_button"
+                android:id="@+id/button_change_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp40"
                 android:layout_gravity="center_vertical"
@@ -51,7 +51,7 @@
             android:padding="@dimen/dp16">
 
             <EditText
-                android:id="@+id/passwordFieldNew"
+                android:id="@+id/edit_password"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -65,7 +65,7 @@
 
 
         <Button
-            android:id="@+id/saveButton"
+            android:id="@+id/button_save"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp48"
             android:layout_gravity="center_horizontal"

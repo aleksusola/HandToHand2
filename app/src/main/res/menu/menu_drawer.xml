@@ -3,17 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_my_ads"
+            android:id="@+id/item_my_ads"
             android:checkable="false"
             android:icon="@drawable/ic_assignment_black_48dp"
             android:title="@string/item_myads" />
         <item
-            android:id="@+id/nav_new_ad"
+            android:id="@+id/item_new_ad"
             android:checkable="false"
             android:icon="@drawable/ic_insert_drive_file_black_48dp"
             android:title="Новое объявление" />
         <item
-            android:id="@+id/nav_fav"
+            android:id="@+id/item_fav"
             android:checkable="false"
             android:icon="@drawable/ic_star_black_48dp"
             android:title="Избранные" />
@@ -23,19 +23,19 @@
     <item android:title="Инструменты">
         <menu>
             <item
-                android:id="@+id/nav_settings"
+                android:id="@+id/item_settings"
                 android:icon="@drawable/ic_settings_black_48dp"
                 android:title="@string/item_settings" />
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/item_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="@string/item_share" />
             <item
-                android:id="@+id/nav_about"
+                android:id="@+id/item_about"
                 android:icon="@drawable/ic_info_black_36dp"
                 android:title="@string/item_about" />
             <item
-                android:id="@+id/nav_user_change"
+                android:id="@+id/item_user_change"
                 android:icon="@drawable/ic_supervisor_account_black_48dp"
                 android:title="@string/item_user_change" />
         </menu>

@@ -25,10 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText identityField, passwordField;
-    Button registerButton;
-    Button loginButton;
-    private CheckBox rememberLoginBox;
+    private EditText mIdentityField;
+    private EditText mPasswordField;
+    private CheckBox mRememberLoginBox;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,13 +73,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        registerButton = (Button) findViewById(R.id.registerButton);
-        TextView restoreLink = (TextView) findViewById(R.id.restoreLink);
-        identityField = (EditText) findViewById(R.id.identityField);
-        passwordField = (EditText) findViewById(R.id.passwordField);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        rememberLoginBox = (CheckBox) findViewById(R.id.rememberLoginBox);
-        Button facebookButton = (Button) findViewById(R.id.loginFacebookButton);
+        Button registerButton = (Button) findViewById(R.id.button_register);
+        TextView restoreLink = (TextView) findViewById(R.id.textview_restore);
+        mIdentityField = (EditText) findViewById(R.id.edit_login);
+        mPasswordField = (EditText) findViewById(R.id.edit_password);
+        Button loginButton = (Button) findViewById(R.id.button_login);
+        mRememberLoginBox = (CheckBox) findViewById(R.id.checkbox_remember);
+        Button facebookButton = (Button) findViewById(R.id.button_login_facebook);
 
         String tempString = getResources().getString(R.string.register_text);
         SpannableString underlinedContent = new SpannableString(tempString);
@@ -121,9 +120,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginButtonClicked() {
-        String identity = identityField.getText().toString();
-        String password = passwordField.getText().toString();
-        boolean rememberLogin = rememberLoginBox.isChecked();
+        String identity = mIdentityField.getText().toString();
+        String password = mPasswordField.getText().toString();
+        boolean rememberLogin = mRememberLoginBox.isChecked();
 
         Backendless.UserService.login(identity, password, new DefaultCallback<BackendlessUser>(LoginActivity.this) {
             public void handleResponse(BackendlessUser backendlessUser) {

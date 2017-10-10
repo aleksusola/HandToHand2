@@ -28,25 +28,25 @@ import java.io.IOException;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText passwordField;
-    private EditText loginField;
-    private EditText emailField;
-    private EditText phoneField;
-    private EditText nameField;
-    private EditText familyField;
-    private ImageView iconGallery;
+    private static final int GALLERY_REQUEST = 1;
 
-    private Bitmap selImage;
+    private EditText mPasswordField;
+    private EditText mLoginField;
+    private EditText mEmailField;
+    private EditText mPhoneField;
+    private EditText mNameField;
+    private EditText mFamilyField;
+    private ImageView mIconGallery;
 
-    private String password;
-    private String login;
-    private String email;
-    private String phone;
-    private String name;
-    private String family;
-    private Bitmap avatar;
+    private Bitmap mSelImage;
 
-    static final int GALLERY_REQUEST = 1;
+    private String mPassword;
+    private String mLogin;
+    private String mEmail;
+    private String mPhone;
+    private String mName;
+    private String mFamily;
+    private Bitmap mAvatar;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,23 +67,23 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        passwordField = (EditText) findViewById(R.id.passwordField);
-        loginField = (EditText) findViewById(R.id.loginField);
-        emailField = (EditText) findViewById(R.id.emailField);
-        phoneField = (EditText) findViewById(R.id.phoneField);
-        nameField = (EditText) findViewById(R.id.nameField);
-        familyField = (EditText) findViewById(R.id.familyField);
-        iconGallery = (ImageView) findViewById(R.id.iconSelect);
-        iconGallery.buildDrawingCache();
-        selImage = iconGallery.getDrawingCache();
-        Button registerButton = (Button) findViewById(R.id.registerButton);
+        mPasswordField = (EditText) findViewById(R.id.edit_password);
+        mLoginField = (EditText) findViewById(R.id.edit_login);
+        mEmailField = (EditText) findViewById(R.id.edit_email);
+        mPhoneField = (EditText) findViewById(R.id.edit_phone);
+        mNameField = (EditText) findViewById(R.id.edit_name);
+        mFamilyField = (EditText) findViewById(R.id.edit_family);
+        mIconGallery = (ImageView) findViewById(R.id.imageview_avatar);
+        mIconGallery.buildDrawingCache();
+        mSelImage = mIconGallery.getDrawingCache();
+        Button registerButton = (Button) findViewById(R.id.button_register);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onRegisterButtonClicked();
             }
         });
-        Button iconSelectButton = (Button) findViewById(R.id.icon_select_button);
+        Button iconSelectButton = (Button) findViewById(R.id.button_avatar_select);
         iconSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,28 +102,28 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        selImage = null;
+        mSelImage = null;
         switch (requestCode) {
             case GALLERY_REQUEST:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        selImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mSelImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    iconGallery.setImageBitmap(selImage);
+                    mIconGallery.setImageBitmap(mSelImage);
                 }
         }
     }
 
     private void onRegisterButtonClicked() {
-        String passwordText = passwordField.getText().toString().trim();
-        String loginText = loginField.getText().toString().trim();
-        String emailText = emailField.getText().toString().trim();
-        String phoneText = phoneField.getText().toString().trim();
-        String nameText = nameField.getText().toString().trim();
-        String familyText = familyField.getText().toString().trim();
+        String passwordText = mPasswordField.getText().toString().trim();
+        String loginText = mLoginField.getText().toString().trim();
+        String emailText = mEmailField.getText().toString().trim();
+        String phoneText = mPhoneField.getText().toString().trim();
+        String nameText = mNameField.getText().toString().trim();
+        String familyText = mFamilyField.getText().toString().trim();
 
         if (loginText.isEmpty()) {
             showToast("Поле 'Логин' не может быть пустым.");
@@ -155,34 +155,34 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        if (selImage == null) {
+        if (mSelImage == null) {
             showToast("Загрузите ваш аватар");
             return;
         }
 
-        if (!passwordText.isEmpty() && !loginText.isEmpty() && !emailText.isEmpty() && !phoneText.isEmpty() && !nameText.isEmpty() && !familyText.isEmpty() && selImage != null) {
-            password = passwordText;
-            login = loginText;
-            email = emailText;
-            phone = phoneText;
-            name = nameText;
-            family = familyText;
-            avatar = selImage;
+        if (!passwordText.isEmpty() && !loginText.isEmpty() && !emailText.isEmpty() && !phoneText.isEmpty() && !nameText.isEmpty() && !familyText.isEmpty() && mSelImage != null) {
+            mPassword = passwordText;
+            mLogin = loginText;
+            mEmail = emailText;
+            mPhone = phoneText;
+            mName = nameText;
+            mFamily = familyText;
+            mAvatar = mSelImage;
         }
 
-        Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 10, login + "_user.png", "icons", new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.Android.upload(mSelImage, Bitmap.CompressFormat.PNG, 10, mLogin + "_user.png", "icons", new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(final BackendlessFile backendlessFile) {
                 ExampleUser user = new ExampleUser();
 
-                if (password != null && login != null && email != null && phone != null && name != null && family != null && avatar != null) {
-                    user.setPassword(password);
-                    user.setLogin(login);
-                    user.setEmail(email);
-                    user.setPhone(phone);
-                    user.setFirstName(name);
-                    user.setSecondName(family);
-                    user.setProperty("avatar", backendlessFile.getFileURL());
+                if (mPassword != null && mLogin != null && mEmail != null && mPhone != null && mName != null && mFamily != null && mAvatar != null) {
+                    user.setPassword(mPassword);
+                    user.setLogin(mLogin);
+                    user.setEmail(mEmail);
+                    user.setPhone(mPhone);
+                    user.setFirstName(mName);
+                    user.setSecondName(mFamily);
+                    user.setProperty("mAvatar", backendlessFile.getFileURL());
                 }
 
                 Backendless.UserService.register(user, new DefaultCallback<BackendlessUser>(RegisterActivity.this) {

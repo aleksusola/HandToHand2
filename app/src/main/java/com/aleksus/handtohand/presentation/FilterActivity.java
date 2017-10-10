@@ -4,8 +4,6 @@ package com.aleksus.handtohand.presentation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,7 +11,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.aleksus.handtohand.R;
 import com.backendless.Backendless;
@@ -26,12 +23,12 @@ import java.util.List;
 
 public class FilterActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Spinner spinnerCollection;
-    private Spinner spinnerAuthor;
-    private Spinner spinnerOrder;
-    private List<Object> authors;
-
     private static final String TAG = "MYAPP";
+
+    private Spinner mSpinnerCollection;
+    private Spinner mSpinnerAuthor;
+    private Spinner mSpinnerOrder;
+    private List<Object> mAuthors;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,24 +45,24 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
                 FilterActivity.super.onBackPressed();
             }
         });
-        spinnerCollection = (Spinner) findViewById(R.id.collection_filter_select);
-        spinnerAuthor = (Spinner) findViewById(R.id.author_filter_select);
-        spinnerOrder = (Spinner) findViewById(R.id.order_select);
+        mSpinnerCollection = (Spinner) findViewById(R.id.spinner_collection_filter);
+        mSpinnerAuthor = (Spinner) findViewById(R.id.spinner_author_filter);
+        mSpinnerOrder = (Spinner) findViewById(R.id.spinner_order);
 
-        Button filterButton = (Button) findViewById(R.id.filter_button);
+        Button filterButton = (Button) findViewById(R.id.button_filter);
         filterButton.setOnClickListener(this);
 
         Backendless.Persistence.of(BackendlessUser.class).find(new AsyncCallback<List<BackendlessUser>>() {
             @Override
             public void handleResponse(List<BackendlessUser> users) {
-                authors = new ArrayList<>();
-                authors.add(0, "Все авторы");
+                mAuthors = new ArrayList<>();
+                mAuthors.add(0, "Все авторы");
                 for (int i = 0; i < users.size(); i++) {
-                    authors.add(i + 1, users.get(i).getProperty("login"));
+                    mAuthors.add(i + 1, users.get(i).getProperty("login"));
                 }
-                ArrayAdapter<Object> adapter = new ArrayAdapter<>(FilterActivity.this, android.R.layout.simple_spinner_item, authors);
+                ArrayAdapter<Object> adapter = new ArrayAdapter<>(FilterActivity.this, android.R.layout.simple_spinner_item, mAuthors);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerAuthor.setAdapter(adapter);
+                mSpinnerAuthor.setAdapter(adapter);
             }
 
             @Override
@@ -78,9 +75,9 @@ public class FilterActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
 
-        String collectionSelected = spinnerCollection.getSelectedItem().toString();
-        String authorSelected = spinnerAuthor.getSelectedItem().toString();
-        String orderSelected = spinnerOrder.getSelectedItem().toString();
+        String collectionSelected = mSpinnerCollection.getSelectedItem().toString();
+        String authorSelected = mSpinnerAuthor.getSelectedItem().toString();
+        String orderSelected = mSpinnerOrder.getSelectedItem().toString();
         Intent intent = new Intent(FilterActivity.this, ProfileActivity.class);
         intent.putExtra("collection", collectionSelected);
         intent.putExtra("author", authorSelected);

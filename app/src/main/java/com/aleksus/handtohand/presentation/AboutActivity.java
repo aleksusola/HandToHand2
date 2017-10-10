@@ -2,7 +2,6 @@ package com.aleksus.handtohand.presentation;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +13,7 @@ import com.aleksus.handtohand.R;
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button btn_mail;
+    private Button mDoMail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +30,9 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
                 AboutActivity.super.onBackPressed();
             }
         });
-        btn_mail = (Button) findViewById(R.id.btn_mail);
-        btn_mail.setOnClickListener(this);
-        TextView appVersion = (TextView) findViewById(R.id.textView6);
+        mDoMail = (Button) findViewById(R.id.btn_mail);
+        mDoMail.setOnClickListener(this);
+        TextView appVersion = (TextView) findViewById(R.id.textView_version);
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             appVersion.setText(appVersion.getText() + " " + versionName);

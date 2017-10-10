@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/iDel"
+        android:id="@+id/item_delete"
         android:title="Удалить" />
     <item
-        android:id="@+id/iChan"
+        android:id="@+id/item_change"
         android:title="Заменить" />
     <item
-        android:id="@+id/iDef"
+        android:id="@+id/item_default"
         android:title="Сделать основным" />
 </menu>

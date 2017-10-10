@@ -27,7 +27,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <Spinner
-                android:id="@+id/collection_filter_select"
+                android:id="@+id/spinner_collection_filter"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -53,7 +53,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <Spinner
-                android:id="@+id/author_filter_select"
+                android:id="@+id/spinner_author_filter"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -79,7 +79,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <Spinner
-                android:id="@+id/order_select"
+                android:id="@+id/spinner_order"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -92,7 +92,7 @@
         </TableRow>
 
         <Button
-            android:id="@+id/filter_button"
+            android:id="@+id/button_filter"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp48"
             android:layout_gravity="center_horizontal"

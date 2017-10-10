@@ -10,25 +10,25 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/userIcon"
+        android:id="@+id/imageview_avatar"
         android:layout_width="@dimen/dp96"
         android:layout_height="@dimen/dp96" />
 
     <TextView
-        android:id="@+id/userName"
+        android:id="@+id/textview_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/user_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/userMail"
+        android:id="@+id/textview_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/user_email" />
 
     <TextView
-        android:id="@+id/userPhone"
+        android:id="@+id/textview_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/user_phone" />

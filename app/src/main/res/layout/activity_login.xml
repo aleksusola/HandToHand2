@@ -37,7 +37,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <EditText
-                android:id="@+id/identityField"
+                android:id="@+id/edit_login"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -62,7 +62,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <EditText
-                android:id="@+id/passwordField"
+                android:id="@+id/edit_password"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -75,7 +75,7 @@
 
 
         <TextView
-            android:id="@+id/restoreLink"
+            android:id="@+id/textview_restore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -86,7 +86,7 @@
             android:textSize="@dimen/text_medium" />
 
         <CheckBox
-            android:id="@+id/rememberLoginBox"
+            android:id="@+id/checkbox_remember"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/remember_login_text"
@@ -99,7 +99,7 @@
             android:gravity="center_horizontal">
 
             <Button
-                android:id="@+id/registerButton"
+                android:id="@+id/button_register"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -107,7 +107,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <Button
-                android:id="@+id/loginButton"
+                android:id="@+id/button_login"
                 android:layout_width="@dimen/dp144"
                 android:layout_height="@dimen/dp48"
                 android:layout_marginLeft="@dimen/dp4"
@@ -125,7 +125,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/loginFacebookButton"
+            android:id="@+id/button_login_facebook"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp48"
             android:layout_marginBottom="@dimen/dp4"

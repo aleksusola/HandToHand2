@@ -17,7 +17,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/info_title"
+                android:id="@+id/textview_title"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp40"
                 android:layout_gravity="center"
@@ -27,7 +27,7 @@
 
 
             <ImageView
-                android:id="@+id/info_icon"
+                android:id="@+id/imageview_icon"
                 android:layout_width="match_parent"
                 android:layout_height="250dp" />
         </LinearLayout>
@@ -39,7 +39,7 @@
             android:padding="@dimen/dp16">
 
             <TextView
-                android:id="@+id/info_price"
+                android:id="@+id/textview_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -47,7 +47,7 @@
                 android:textSize="@dimen/text_large" />
 
             <TextView
-                android:id="@+id/info_author"
+                android:id="@+id/textview_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -55,7 +55,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <TextView
-                android:id="@+id/info_collection"
+                android:id="@+id/textview_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -63,7 +63,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <TextView
-                android:id="@+id/info_created"
+                android:id="@+id/textview_created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -71,7 +71,7 @@
                 android:textSize="@dimen/text_medium" />
 
             <TextView
-                android:id="@+id/info_desc"
+                android:id="@+id/textview_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"

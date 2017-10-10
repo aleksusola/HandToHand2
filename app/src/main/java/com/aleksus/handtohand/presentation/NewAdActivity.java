@@ -36,28 +36,28 @@ import java.util.Map;
 
 public class NewAdActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ProgressDialog progressDialog;
-    private EditText nameSelect;
-    private EditText priceSelect;
-    private EditText descSelect;
-    private ImageView photoGallery;
-    private ImageView photoGallery2;
-    private ImageView photoGallery3;
-    private ImageView selIV;
-    private Spinner spinner;
-
-    private Bitmap selImage;
-    private Bitmap selImage2;
-    private Bitmap selImage3;
-
-    private String nameSelected;
-    private String collectionSelected;
-    private String descSelected;
-    private String relationColumnName;
-
-    private int priceSelected;
     private static final String TAG = "MYAPP";
 
+    private ProgressDialog mProgressDialog;
+    private EditText mNameSelect;
+    private EditText mPriceSelect;
+    private EditText mDescSelect;
+    private ImageView mPhotoGallery;
+    private ImageView mPhotoGallery2;
+    private ImageView mPhotoGallery3;
+    private ImageView mSelectedView;
+    private Spinner mSpinner;
+
+    private Bitmap mSelImage;
+    private Bitmap mSelImage2;
+    private Bitmap mSelImage3;
+
+    private String mNameSelected;
+    private String mCollectionSelected;
+    private String mDescSelected;
+    private String mRelationColumnName;
+
+    private int mPriceSelected;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,24 +74,24 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                 NewAdActivity.super.onBackPressed();
             }
         });
-        progressDialog = new ProgressDialog(this);
-        spinner = (Spinner) findViewById(R.id.collection_select);
-        nameSelect = (EditText) findViewById(R.id.name_select);
-        priceSelect = (EditText) findViewById(R.id.price_select);
-        descSelect = (EditText) findViewById(R.id.desc_select);
-        Button newAdButton = (Button) findViewById(R.id.new_add_button);
+        mProgressDialog = new ProgressDialog(this);
+        mSpinner = (Spinner) findViewById(R.id.spinner_collection);
+        mNameSelect = (EditText) findViewById(R.id.edit_name);
+        mPriceSelect = (EditText) findViewById(R.id.edit_price);
+        mDescSelect = (EditText) findViewById(R.id.edit_desc);
+        Button newAdButton = (Button) findViewById(R.id.button_create);
         newAdButton.setOnClickListener(this);
-        photoGallery = (ImageView) findViewById(R.id.photoSelect);
-        photoGallery2 = (ImageView) findViewById(R.id.photoSelect2);
-        photoGallery3 = (ImageView) findViewById(R.id.photoSelect3);
-        selImage = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
-        selImage2 = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
-        selImage3 = ((BitmapDrawable) photoGallery.getDrawable()).getBitmap();
+        mPhotoGallery = (ImageView) findViewById(R.id.imageview_first);
+        mPhotoGallery2 = (ImageView) findViewById(R.id.imageview_second);
+        mPhotoGallery3 = (ImageView) findViewById(R.id.imageview_third);
+        mSelImage = ((BitmapDrawable) mPhotoGallery.getDrawable()).getBitmap();
+        mSelImage2 = ((BitmapDrawable) mPhotoGallery.getDrawable()).getBitmap();
+        mSelImage3 = ((BitmapDrawable) mPhotoGallery.getDrawable()).getBitmap();
 
-        photoGallery.setOnLongClickListener(IViewLongClickListener);
-        photoGallery2.setOnLongClickListener(IViewLongClickListener);
-        photoGallery3.setOnLongClickListener(IViewLongClickListener);
-        Button photoSelectButton = (Button) findViewById(R.id.photo_select_button);
+        mPhotoGallery.setOnLongClickListener(IViewLongClickListener);
+        mPhotoGallery2.setOnLongClickListener(IViewLongClickListener);
+        mPhotoGallery3.setOnLongClickListener(IViewLongClickListener);
+        Button photoSelectButton = (Button) findViewById(R.id.button_select_photo);
         photoSelectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,33 +121,35 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
         PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.inflate(R.menu.menu_popup);
         int ivId = v.getId();
-        selIV = (ImageView) findViewById(ivId);
+        mSelectedView = (ImageView) findViewById(ivId);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
 
-                    case R.id.iDel:
-                        selIV.setImageResource(R.drawable.hand_to_hand);
+                    case R.id.item_delete:
+                        mSelectedView.setImageResource(R.drawable.hand_to_hand);
                         Toast.makeText(getApplicationContext(), "Изображение изменено на стандартную", Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.iChan:
+                    case R.id.item_change:
                         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                         photoPickerIntent.setType("image/*");
-                        if (selIV.equals(photoGallery))
+                        if (mSelectedView.equals(mPhotoGallery)) {
                             startActivityForResult(photoPickerIntent, 1);
-                        else if (selIV.equals(photoGallery2))
+                        } else if (mSelectedView.equals(mPhotoGallery2)) {
                             startActivityForResult(photoPickerIntent, 2);
-                        else startActivityForResult(photoPickerIntent, 3);
+                        } else {
+                            startActivityForResult(photoPickerIntent, 3);
+                        }
                         return true;
-                    case R.id.iDef:
-                        if (selIV.equals(photoGallery))
+                    case R.id.item_default:
+                        if (mSelectedView.equals(mPhotoGallery)) {
                             Toast.makeText(getApplicationContext(), "Это фото уже основное", Toast.LENGTH_SHORT).show();
-                        else {
-                            Drawable drawable = selIV.getDrawable();
-                            Drawable drawable2 = photoGallery.getDrawable();
-                            photoGallery.setImageDrawable(drawable);
-                            selIV.setImageDrawable(drawable2);
+                        } else {
+                            Drawable drawable = mSelectedView.getDrawable();
+                            Drawable drawable2 = mPhotoGallery.getDrawable();
+                            mPhotoGallery.setImageDrawable(drawable);
+                            mSelectedView.setImageDrawable(drawable2);
                             Toast.makeText(getApplicationContext(), "Теперь это фото основное", Toast.LENGTH_SHORT).show();
                         }
                         return true;
@@ -169,33 +171,33 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        selImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mSelImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    photoGallery.setImageBitmap(selImage);
+                    mPhotoGallery.setImageBitmap(mSelImage);
                 }
                 break;
             case 2:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        selImage2 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mSelImage2 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    photoGallery2.setImageBitmap(selImage2);
+                    mPhotoGallery2.setImageBitmap(mSelImage2);
                 }
                 break;
             case 3:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        selImage3 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mSelImage3 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    photoGallery3.setImageBitmap(selImage3);
+                    mPhotoGallery3.setImageBitmap(mSelImage3);
                 }
                 break;
         }
@@ -204,40 +206,40 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
 
-        nameSelected = nameSelect.getText().toString();
-        collectionSelected = spinner.getSelectedItem().toString();
-        descSelected = descSelect.getText().toString();
-        if (descSelected.equals("")) descSelected = "description";
-        if (priceSelect.getText().toString().equals("")) priceSelected = 0;
-        else priceSelected = Integer.parseInt(priceSelect.getText().toString());
+        mNameSelected = mNameSelect.getText().toString();
+        mCollectionSelected = mSpinner.getSelectedItem().toString();
+        mDescSelected = mDescSelect.getText().toString();
+        if (mDescSelected.equals("")) mDescSelected = "description";
+        if (mPriceSelect.getText().toString().equals("")) mPriceSelected = 0;
+        else mPriceSelected = Integer.parseInt(mPriceSelect.getText().toString());
 
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-        queryBuilder.setWhereClause("name= '" + nameSelected + "' and ownerId = '" + Backendless.UserService.CurrentUser().getObjectId() + "'");
+        queryBuilder.setWhereClause("name= '" + mNameSelected + "' and ownerId = '" + Backendless.UserService.CurrentUser().getObjectId() + "'");
         final BackendlessUser user = Backendless.UserService.CurrentUser();
         Backendless.Data.of("ads_users").getObjectCount(queryBuilder, new AsyncCallback<Integer>() {
             @Override
             public void handleResponse(Integer count) {
-                if (nameSelected.equals(""))
+                if (mNameSelected.equals(""))
                     Toast.makeText(NewAdActivity.this, "Не заполнены все данные", Toast.LENGTH_SHORT).show();
                 else if (count != 0)
                     Toast.makeText(NewAdActivity.this, "У вас уже есть объявление с таким названием, измените его", Toast.LENGTH_SHORT).show();
                 else {
-                    progressDialog.setMessage("Подождите, данные сохраняются");
-                    progressDialog.show();
-                    Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, "1.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                    mProgressDialog.setMessage("Подождите, данные сохраняются");
+                    mProgressDialog.show();
+                    Backendless.Files.Android.upload(mSelImage, Bitmap.CompressFormat.PNG, 100, "1.png", "icons/" + user.getProperty("login") + "/" + mNameSelected, new AsyncCallback<BackendlessFile>() {
                         @Override
                         public void handleResponse(final BackendlessFile firstFile) {
-                            Backendless.Files.Android.upload(selImage2, Bitmap.CompressFormat.PNG, 100, "2.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                            Backendless.Files.Android.upload(mSelImage2, Bitmap.CompressFormat.PNG, 100, "2.png", "icons/" + user.getProperty("login") + "/" + mNameSelected, new AsyncCallback<BackendlessFile>() {
                                 @Override
                                 public void handleResponse(final BackendlessFile secondFile) {
-                                    Backendless.Files.Android.upload(selImage3, Bitmap.CompressFormat.PNG, 100, "3.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                                    Backendless.Files.Android.upload(mSelImage3, Bitmap.CompressFormat.PNG, 100, "3.png", "icons/" + user.getProperty("login") + "/" + mNameSelected, new AsyncCallback<BackendlessFile>() {
                                         @Override
                                         public void handleResponse(BackendlessFile thirdFile) {
                                             HashMap<String, java.io.Serializable> newAd = new HashMap<>();
                                             newAd.put("___class", "ads_users");
-                                            newAd.put("name", nameSelected);
-                                            newAd.put("price", priceSelected);
-                                            newAd.put("description", descSelected);
+                                            newAd.put("name", mNameSelected);
+                                            newAd.put("price", mPriceSelected);
+                                            newAd.put("description", mDescSelected);
                                             newAd.put("ads_icon", firstFile.getFileURL());
                                             newAd.put("ads_icon2", secondFile.getFileURL());
                                             newAd.put("ads_icon3", thirdFile.getFileURL());
@@ -246,9 +248,9 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                                                 public void handleResponse(final Map savedAd) {
                                                     HashMap<String, Object> parentObject = new HashMap<>();
                                                     parentObject.put("objectId", savedAd.get("objectId"));
-                                                    relationColumnName = "collection:collection:1";
-                                                    String whereClause = "type = '" + collectionSelected + "'";
-                                                    Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause, new AsyncCallback<Integer>() {
+                                                    mRelationColumnName = "collection:collection:1";
+                                                    String whereClause = "type = '" + mCollectionSelected + "'";
+                                                    Backendless.Data.of("ads_users").setRelation(parentObject, mRelationColumnName, whereClause, new AsyncCallback<Integer>() {
 
                                                         @Override
                                                         public void handleResponse(Integer colNum) {
@@ -298,7 +300,5 @@ public class NewAdActivity extends AppCompatActivity implements View.OnClickList
                 Log.e(TAG, "server reported an error - " + fault.getMessage());
             }
         });
-
-
     }
 }

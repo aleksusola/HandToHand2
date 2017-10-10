@@ -14,7 +14,7 @@ import com.aleksus.handtohand.R;
 import com.backendless.Backendless;
 
 public class RestorePasswordActivity extends AppCompatActivity {
-    private EditText loginField;
+    private EditText mLoginField;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,8 @@ public class RestorePasswordActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        Button restorePasswordButton = (Button) findViewById(R.id.restorePasswordButton);
-        loginField = (EditText) findViewById(R.id.loginField);
+        Button restorePasswordButton = (Button) findViewById(R.id.button_restore);
+        mLoginField = (EditText) findViewById(R.id.edit_login);
 
         restorePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +47,7 @@ public class RestorePasswordActivity extends AppCompatActivity {
     }
 
     public void onRestorePasswordButtonClicked() {
-        String login = loginField.getText().toString();
+        String login = mLoginField.getText().toString();
         Backendless.UserService.restorePassword(login, new DefaultCallback<Void>(this) {
             @Override
             public void handleResponse(Void response) {

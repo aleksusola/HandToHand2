@@ -33,8 +33,8 @@ public class RegistrationSuccessActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        TextView messageView = (TextView) findViewById(R.id.messageView);
-        Button loginButton = (Button) findViewById(R.id.loginButton);
+        TextView messageView = (TextView) findViewById(R.id.textview_message);
+        Button loginButton = (Button) findViewById(R.id.button_login);
 
         Resources resources = getResources();
         String message = String.format(resources.getString(R.string.registration_success_message), resources.getString(R.string.app_name));

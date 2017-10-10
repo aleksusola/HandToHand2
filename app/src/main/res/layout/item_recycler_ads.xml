@@ -16,7 +16,7 @@
             android:padding="@dimen/dp8">
 
             <ImageView
-                android:id="@+id/photoIcon"
+                android:id="@+id/imageview_photo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_centerVertical="true"
@@ -24,57 +24,57 @@
                 android:scaleType="fitCenter" />
 
             <TextView
-                android:id="@+id/txtTitle"
+                android:id="@+id/textview_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@id/photoIcon"
+                android:layout_toRightOf="@id/imageview_photo"
                 android:text=""
                 android:textAppearance="?android:textAppearanceLarge" />
 
             <TextView
-                android:id="@+id/txtAuthor"
+                android:id="@+id/textview_author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtTitle"
-                android:layout_toRightOf="@id/photoIcon"
+                android:layout_below="@id/textview_title"
+                android:layout_toRightOf="@id/imageview_photo"
                 android:text=""
                 android:textAlignment="textEnd"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/txtCollection"
+                android:id="@+id/textview_collection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtAuthor"
-                android:layout_toRightOf="@id/photoIcon"
+                android:layout_below="@id/textview_author"
+                android:layout_toRightOf="@id/imageview_photo"
                 android:text=""
                 android:textAlignment="textEnd"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/txtPrice"
+                android:id="@+id/textview_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtCollection"
-                android:layout_toRightOf="@id/photoIcon"
+                android:layout_below="@id/textview_collection"
+                android:layout_toRightOf="@id/imageview_photo"
                 android:text=""
                 android:textAlignment="textEnd"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/txtCreated"
+                android:id="@+id/textview_created"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtPrice"
-                android:layout_toRightOf="@id/photoIcon"
+                android:layout_below="@id/textview_price"
+                android:layout_toRightOf="@id/imageview_photo"
                 android:text=""
                 android:textAlignment="textEnd"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
-                android:id="@+id/txtOptionDigit"
+                android:id="@+id/textview_option_digit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

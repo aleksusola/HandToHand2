@@ -37,30 +37,30 @@ import java.util.Map;
 
 public class EditActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ProgressDialog progressDialog;
-    private EditText nameEdit;
-    private EditText priceEdit;
-    private EditText descEdit;
-    private ImageView photoAds;
-    private ImageView photoAds2;
-    private ImageView photoAds3;
-    private ImageView selIV;
+    private static final String TAG = "MYAPP";
 
-    private Spinner spinner;
+    private ProgressDialog mProgressDialog;
+    private EditText mNameEdit;
+    private EditText mPriceEdit;
+    private EditText mDescEdit;
+    private ImageView mPhotoAds;
+    private ImageView mPhotoAds2;
+    private ImageView mPhotoAds3;
+    private ImageView mSelIV;
 
-    private Bitmap selImage;
-    private Bitmap selImage2;
-    private Bitmap selImage3;
+    private Spinner mSpinner;
+
+    private Bitmap mSelImage;
+    private Bitmap mSelImage2;
+    private Bitmap mSelImage3;
 
     private int mPrice;
 
-    private String nameSelected;
-    private String descSelected;
-    private String collectionSelected;
-    private String relationColumnName;
-    private String adTitle;
-
-    private static final String TAG = "MYAPP";
+    private String mNameSelected;
+    private String mDescSelected;
+    private String mCollectionSelected;
+    private String mRelationColumnName;
+    private String mAdTitle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,20 +78,20 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        progressDialog = new ProgressDialog(this);
-        spinner = (Spinner) findViewById(R.id.edit_collection);
-        nameEdit = (EditText) findViewById(R.id.edit_name);
-        priceEdit = (EditText) findViewById(R.id.edit_price);
-        descEdit = (EditText) findViewById(R.id.edit_desc);
-        photoAds = (ImageView) findViewById(R.id.photoSelect);
-        photoAds2 = (ImageView) findViewById(R.id.photoSelect2);
-        photoAds3 = (ImageView) findViewById(R.id.photoSelect3);
-        Button photoChangeButton = (Button) findViewById(R.id.photo_select_button);
-        Button saveButton = (Button) findViewById(R.id.editSaveButton);
+        mProgressDialog = new ProgressDialog(this);
+        mSpinner = (Spinner) findViewById(R.id.spinner_collection);
+        mNameEdit = (EditText) findViewById(R.id.edit_name);
+        mPriceEdit = (EditText) findViewById(R.id.edit_price);
+        mDescEdit = (EditText) findViewById(R.id.edit_desc);
+        mPhotoAds = (ImageView) findViewById(R.id.imageview_first);
+        mPhotoAds2 = (ImageView) findViewById(R.id.imageview_second);
+        mPhotoAds3 = (ImageView) findViewById(R.id.imageview_third);
+        Button photoChangeButton = (Button) findViewById(R.id.button_select_photo);
+        Button saveButton = (Button) findViewById(R.id.button_save);
 
-        photoAds.setOnLongClickListener(IViewLongClickListener);
-        photoAds2.setOnLongClickListener(IViewLongClickListener);
-        photoAds3.setOnLongClickListener(IViewLongClickListener);
+        mPhotoAds.setOnLongClickListener(IViewLongClickListener);
+        mPhotoAds2.setOnLongClickListener(IViewLongClickListener);
+        mPhotoAds3.setOnLongClickListener(IViewLongClickListener);
         saveButton.setOnClickListener(this);
         photoChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,45 +99,45 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 onChangeButtonClicked();
             }
         });
-        adTitle = getIntent().getStringExtra("title");
+        mAdTitle = getIntent().getStringExtra("title");
         String adCol = getIntent().getStringExtra("collection");
         switch (adCol) {
             case "Аксессуары":
-                spinner.setSelection(0);
+                mSpinner.setSelection(0);
                 break;
             case "Бытовая техника":
-                spinner.setSelection(1);
+                mSpinner.setSelection(1);
                 break;
             case "Инструменты":
-                spinner.setSelection(2);
+                mSpinner.setSelection(2);
                 break;
             case "Мебель":
-                spinner.setSelection(3);
+                mSpinner.setSelection(3);
                 break;
             case "Недвижимость":
-                spinner.setSelection(4);
+                mSpinner.setSelection(4);
                 break;
             case "Одежда":
-                spinner.setSelection(5);
+                mSpinner.setSelection(5);
                 break;
             case "Телефоны":
-                spinner.setSelection(6);
+                mSpinner.setSelection(6);
                 break;
             case "Транспорт":
-                spinner.setSelection(7);
+                mSpinner.setSelection(7);
                 break;
             case "Услуги":
-                spinner.setSelection(8);
+                mSpinner.setSelection(8);
                 break;
             case "Электроника":
-                spinner.setSelection(9);
+                mSpinner.setSelection(9);
                 break;
             default:
-                spinner.setSelection(10);
+                mSpinner.setSelection(10);
                 break;
         }
         BackendlessUser AdsOwner = Backendless.UserService.CurrentUser();
-        String whereClause = "ownerId = '" + AdsOwner.getObjectId() + "' and name = '" + adTitle + "'";
+        String whereClause = "ownerId = '" + AdsOwner.getObjectId() + "' and name = '" + mAdTitle + "'";
         DataQueryBuilder adBuilder = DataQueryBuilder.create();
         adBuilder.setWhereClause(whereClause);
         Backendless.Data.of("ads_users").find(adBuilder, new AsyncCallback<List<Map>>() {
@@ -155,7 +155,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .error(R.drawable.ic_error)
                         .override(500, 500)
                         .crossFade(100)
-                        .into(photoAds);
+                        .into(mPhotoAds);
                 Glide
                         .with(EditActivity.this)
                         .load(adImage2)
@@ -163,7 +163,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .error(R.drawable.ic_error)
                         .override(500, 500)
                         .crossFade(100)
-                        .into(photoAds2);
+                        .into(mPhotoAds2);
                 Glide
                         .with(EditActivity.this)
                         .load(adImage3)
@@ -171,11 +171,11 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         .error(R.drawable.ic_error)
                         .override(500, 500)
                         .crossFade(100)
-                        .into(photoAds3);
+                        .into(mPhotoAds3);
 
-                nameEdit.setText(adTitle);
-                priceEdit.setText(adPrice);
-                descEdit.setText(adDesc);
+                mNameEdit.setText(mAdTitle);
+                mPriceEdit.setText(adPrice);
+                mDescEdit.setText(adDesc);
             }
 
             @Override
@@ -198,32 +198,32 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         PopupMenu popupMenu = new PopupMenu(this, v);
         popupMenu.inflate(R.menu.menu_popup);
         int ivId = v.getId();
-        selIV = (ImageView) findViewById(ivId);
+        mSelIV = (ImageView) findViewById(ivId);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
 
-                    case R.id.iDel:
-                        selIV.setImageResource(R.drawable.hand_to_hand);
+                    case R.id.item_delete:
+                        mSelIV.setImageResource(R.drawable.hand_to_hand);
                         Toast.makeText(getApplicationContext(), "Изображение изменено на стандартную", Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.iChan:
+                    case R.id.item_change:
                         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                         photoPickerIntent.setType("image/*");
-                        if (selIV.equals(photoAds)) startActivityForResult(photoPickerIntent, 1);
-                        else if (selIV.equals(photoAds2))
+                        if (mSelIV.equals(mPhotoAds)) startActivityForResult(photoPickerIntent, 1);
+                        else if (mSelIV.equals(mPhotoAds2))
                             startActivityForResult(photoPickerIntent, 2);
                         else startActivityForResult(photoPickerIntent, 3);
                         return true;
-                    case R.id.iDef:
-                        if (selIV.equals(photoAds))
+                    case R.id.item_default:
+                        if (mSelIV.equals(mPhotoAds))
                             Toast.makeText(getApplicationContext(), "Это фото уже основное", Toast.LENGTH_SHORT).show();
                         else {
-                            Drawable drawable = selIV.getDrawable();
-                            Drawable drawable2 = photoAds.getDrawable();
-                            photoAds.setImageDrawable(drawable);
-                            selIV.setImageDrawable(drawable2);
+                            Drawable drawable = mSelIV.getDrawable();
+                            Drawable drawable2 = mPhotoAds.getDrawable();
+                            mPhotoAds.setImageDrawable(drawable);
+                            mSelIV.setImageDrawable(drawable2);
                             Toast.makeText(getApplicationContext(), "Теперь это фото основное", Toast.LENGTH_SHORT).show();
                         }
                         return true;
@@ -251,33 +251,33 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        selImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mSelImage = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    photoAds.setImageBitmap(selImage);
+                    mPhotoAds.setImageBitmap(mSelImage);
                 }
                 break;
             case 2:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        selImage2 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mSelImage2 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    photoAds2.setImageBitmap(selImage2);
+                    mPhotoAds2.setImageBitmap(mSelImage2);
                 }
                 break;
             case 3:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        selImage3 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mSelImage3 = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    photoAds3.setImageBitmap(selImage3);
+                    mPhotoAds3.setImageBitmap(mSelImage3);
                 }
                 break;
         }
@@ -287,37 +287,37 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
-        nameSelected = nameEdit.getText().toString();
-        descSelected = descEdit.getText().toString();
-        collectionSelected = spinner.getSelectedItem().toString();
-        if (descSelected.equals("")) descSelected = "description";
-        if (priceEdit.getText().toString().equals("")) mPrice = 0;
-        else mPrice = Integer.parseInt(priceEdit.getText().toString());
+        mNameSelected = mNameEdit.getText().toString();
+        mDescSelected = mDescEdit.getText().toString();
+        mCollectionSelected = mSpinner.getSelectedItem().toString();
+        if (mDescSelected.equals("")) mDescSelected = "description";
+        if (mPriceEdit.getText().toString().equals("")) mPrice = 0;
+        else mPrice = Integer.parseInt(mPriceEdit.getText().toString());
 
-        photoAds.buildDrawingCache();
-        selImage = photoAds.getDrawingCache();
-        photoAds.setDrawingCacheEnabled(false);
-        photoAds2.buildDrawingCache();
-        selImage2 = photoAds2.getDrawingCache();
-        photoAds2.setDrawingCacheEnabled(false);
-        photoAds3.buildDrawingCache();
-        selImage3 = photoAds3.getDrawingCache();
-        photoAds3.setDrawingCacheEnabled(false);
+        mPhotoAds.buildDrawingCache();
+        mSelImage = mPhotoAds.getDrawingCache();
+        mPhotoAds.setDrawingCacheEnabled(false);
+        mPhotoAds2.buildDrawingCache();
+        mSelImage2 = mPhotoAds2.getDrawingCache();
+        mPhotoAds2.setDrawingCacheEnabled(false);
+        mPhotoAds3.buildDrawingCache();
+        mSelImage3 = mPhotoAds3.getDrawingCache();
+        mPhotoAds3.setDrawingCacheEnabled(false);
 
         final BackendlessUser user = Backendless.UserService.CurrentUser();
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-        queryBuilder.setWhereClause("name != '" + adTitle + "' and name= '" + nameSelected + "' and ownerId = '" + Backendless.UserService.CurrentUser().getObjectId() + "'");
+        queryBuilder.setWhereClause("name != '" + mAdTitle + "' and name= '" + mNameSelected + "' and ownerId = '" + Backendless.UserService.CurrentUser().getObjectId() + "'");
         Backendless.Data.of("ads_users").getObjectCount(queryBuilder, new AsyncCallback<Integer>() {
             @Override
             public void handleResponse(Integer count) {
-                if (nameSelected.equals(""))
+                if (mNameSelected.equals(""))
                     Toast.makeText(EditActivity.this, "Не заполнены все данные", Toast.LENGTH_SHORT).show();
                 else if (count != 0)
                     Toast.makeText(EditActivity.this, "У вас уже есть другое объявление с таким названием, измените его", Toast.LENGTH_SHORT).show();
                 else {
-                    progressDialog.setMessage("Подождите, данные сохраняются");
-                    progressDialog.show();
-                    Backendless.Files.removeDirectory("icons/" + user.getProperty("login") + "/" + adTitle, new AsyncCallback<Void>() {
+                    mProgressDialog.setMessage("Подождите, данные сохраняются");
+                    mProgressDialog.show();
+                    Backendless.Files.removeDirectory("icons/" + user.getProperty("login") + "/" + mAdTitle, new AsyncCallback<Void>() {
                         @Override
                         public void handleResponse(Void response) {
                         }
@@ -328,16 +328,16 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     });
 
-                    Backendless.Files.Android.upload(selImage, Bitmap.CompressFormat.PNG, 100, "1.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                    Backendless.Files.Android.upload(mSelImage, Bitmap.CompressFormat.PNG, 100, "1.png", "icons/" + user.getProperty("login") + "/" + mNameSelected, new AsyncCallback<BackendlessFile>() {
                         @Override
                         public void handleResponse(final BackendlessFile firstFile) {
-                            Backendless.Files.Android.upload(selImage2, Bitmap.CompressFormat.PNG, 100, "2.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                            Backendless.Files.Android.upload(mSelImage2, Bitmap.CompressFormat.PNG, 100, "2.png", "icons/" + user.getProperty("login") + "/" + mNameSelected, new AsyncCallback<BackendlessFile>() {
                                 @Override
                                 public void handleResponse(final BackendlessFile secondFile) {
-                                    Backendless.Files.Android.upload(selImage3, Bitmap.CompressFormat.PNG, 100, "3.png", "icons/" + user.getProperty("login") + "/" + nameSelected, new AsyncCallback<BackendlessFile>() {
+                                    Backendless.Files.Android.upload(mSelImage3, Bitmap.CompressFormat.PNG, 100, "3.png", "icons/" + user.getProperty("login") + "/" + mNameSelected, new AsyncCallback<BackendlessFile>() {
                                         @Override
                                         public void handleResponse(final BackendlessFile thirdFile) {
-                                            String whereClause = "name = '" + adTitle + "'";
+                                            String whereClause = "name = '" + mAdTitle + "'";
                                             DataQueryBuilder queryBuilder = DataQueryBuilder.create();
                                             queryBuilder.setWhereClause(whereClause);
                                             Backendless.Data.of("ads_users").find(queryBuilder, new AsyncCallback<List<Map>>() {
@@ -357,9 +357,9 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
                                                     HashMap<String, java.io.Serializable> newAd = new HashMap<>();
                                                     newAd.put("___class", "ads_users");
-                                                    newAd.put("name", nameSelected);
+                                                    newAd.put("name", mNameSelected);
                                                     newAd.put("price", mPrice);
-                                                    newAd.put("description", descSelected);
+                                                    newAd.put("description", mDescSelected);
                                                     newAd.put("ads_icon", firstFile.getFileURL());
                                                     newAd.put("ads_icon2", secondFile.getFileURL());
                                                     newAd.put("ads_icon3", thirdFile.getFileURL());
@@ -367,9 +367,9 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                                                         public void handleResponse(Map savedAd) {
                                                             HashMap<String, Object> parentObject = new HashMap<>();
                                                             parentObject.put("objectId", savedAd.get("objectId"));
-                                                            relationColumnName = "collection:collection:1";
-                                                            String whereClause1 = "type = '" + collectionSelected + "'";
-                                                            Backendless.Data.of("ads_users").setRelation(parentObject, relationColumnName, whereClause1, new AsyncCallback<Integer>() {
+                                                            mRelationColumnName = "collection:collection:1";
+                                                            String whereClause1 = "type = '" + mCollectionSelected + "'";
+                                                            Backendless.Data.of("ads_users").setRelation(parentObject, mRelationColumnName, whereClause1, new AsyncCallback<Integer>() {
                                                                 @Override
                                                                 public void handleResponse(Integer colNum) {
                                                                     Toast.makeText(EditActivity.this, "Изменено! Обновите данные на странице", Toast.LENGTH_SHORT).show();

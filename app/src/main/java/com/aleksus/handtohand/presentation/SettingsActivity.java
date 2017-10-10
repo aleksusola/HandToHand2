@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,15 +28,13 @@ import java.io.IOException;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private TextView newPassword;
-    private ImageView iconChange;
-
-    private Bitmap avatar;
-
-    private String txtNewPassword;
-
     private static final String TAG = "MYAPP";
-    static final int GALLERY_REQUEST = 1;
+    private static final int GALLERY_REQUEST = 1;
+
+    private TextView mNewPassword;
+    private ImageView mIconChange;
+    private Bitmap mAvatar;
+    private String mTxtNewPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,16 +52,16 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        iconChange = (ImageView) findViewById(R.id.iconChange);
-        newPassword = (TextView) findViewById(R.id.passwordFieldNew);
-        Button saveButton = (Button) findViewById(R.id.saveButton);
+        mIconChange = (ImageView) findViewById(R.id.imageview_avatar);
+        mNewPassword = (EditText) findViewById(R.id.edit_password);
+        Button saveButton = (Button) findViewById(R.id.button_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onSaveButtonClicked();
             }
         });
-        Button iconChangeButton = (Button) findViewById(R.id.icon_change_button);
+        Button iconChangeButton = (Button) findViewById(R.id.button_change_avatar);
         iconChangeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
         BackendlessUser user = Backendless.UserService.CurrentUser();
         if (user != null) {
-            new DownloadImageTask(iconChange).execute(user.getProperty("avatar").toString());
+            new DownloadImageTask(mIconChange).execute(user.getProperty("avatar").toString());
         }
     }
 
@@ -84,17 +83,17 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        avatar = null;
+        mAvatar = null;
         switch (requestCode) {
             case GALLERY_REQUEST:
                 if (resultCode == RESULT_OK) {
                     Uri selectedImage = imageReturnedIntent.getData();
                     try {
-                        avatar = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                        mAvatar = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    iconChange.setImageBitmap(avatar);
+                    mIconChange.setImageBitmap(mAvatar);
                 }
         }
     }
@@ -102,11 +101,11 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void onSaveButtonClicked() {
 
-        txtNewPassword = newPassword.getText().toString();
+        mTxtNewPassword = mNewPassword.getText().toString();
         final BackendlessUser user = Backendless.UserService.CurrentUser();
-        if (txtNewPassword.equals("") && avatar == null) {
+        if (mTxtNewPassword.equals("") && mAvatar == null) {
             Toast.makeText(SettingsActivity.this, "Ничего не изменилось", Toast.LENGTH_LONG).show();
-        } else if (txtNewPassword.equals("") && avatar != null) {
+        } else if (mTxtNewPassword.equals("") && mAvatar != null) {
             Backendless.Files.remove("icons/" + user.getProperty("login") + "_user.png", new AsyncCallback<Void>() {
                 @Override
                 public void handleResponse(Void response) {
@@ -117,10 +116,10 @@ public class SettingsActivity extends AppCompatActivity {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
                 }
             });
-            Backendless.Files.Android.upload(avatar, Bitmap.CompressFormat.PNG, 10, user.getProperty("login") + "_user.png", "icons", new AsyncCallback<BackendlessFile>() {
+            Backendless.Files.Android.upload(mAvatar, Bitmap.CompressFormat.PNG, 10, user.getProperty("login") + "_user.png", "icons", new AsyncCallback<BackendlessFile>() {
                 @Override
                 public void handleResponse(final BackendlessFile backendlessFile) {
-                    user.setProperty("avatar", backendlessFile.getFileURL());
+                    user.setProperty("mAvatar", backendlessFile.getFileURL());
                     Backendless.UserService.update(user, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {
                             startActivity(new Intent(SettingsActivity.this, ProfileActivity.class));
@@ -138,8 +137,8 @@ public class SettingsActivity extends AppCompatActivity {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
                 }
             });
-        } else if (!txtNewPassword.equals("") && avatar == null) {
-            user.setPassword(txtNewPassword);
+        } else if (!mTxtNewPassword.equals("") && mAvatar == null) {
+            user.setPassword(mTxtNewPassword);
             Backendless.UserService.update(user, new AsyncCallback<BackendlessUser>() {
                 public void handleResponse(BackendlessUser user) {
                     Toast.makeText(SettingsActivity.this, "Пароль изменен, авторизуйтесь заново", Toast.LENGTH_LONG).show();
@@ -165,7 +164,7 @@ public class SettingsActivity extends AppCompatActivity {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
                 }
             });
-        } else if (!txtNewPassword.equals("") && avatar != null) {
+        } else if (!mTxtNewPassword.equals("") && mAvatar != null) {
             Backendless.Files.remove("icons/" + user.getProperty("login") + "_user.png", new AsyncCallback<Void>() {
                 @Override
                 public void handleResponse(Void response) {
@@ -176,11 +175,11 @@ public class SettingsActivity extends AppCompatActivity {
                     Log.e(TAG, "server reported an error - " + fault.getMessage());
                 }
             });
-            Backendless.Files.Android.upload(avatar, Bitmap.CompressFormat.PNG, 10, user.getProperty("login") + "_user.png", "icons", new AsyncCallback<BackendlessFile>() {
+            Backendless.Files.Android.upload(mAvatar, Bitmap.CompressFormat.PNG, 10, user.getProperty("login") + "_user.png", "icons", new AsyncCallback<BackendlessFile>() {
                 @Override
                 public void handleResponse(final BackendlessFile backendlessFile) {
-                    user.setProperty("avatar", backendlessFile.getFileURL());
-                    user.setPassword(txtNewPassword);
+                    user.setProperty("mAvatar", backendlessFile.getFileURL());
+                    user.setPassword(mTxtNewPassword);
                     Backendless.UserService.update(user, new AsyncCallback<BackendlessUser>() {
                         public void handleResponse(BackendlessUser user) {
                             Toast.makeText(SettingsActivity.this, "Пароль и аватар изменены", Toast.LENGTH_LONG).show();
